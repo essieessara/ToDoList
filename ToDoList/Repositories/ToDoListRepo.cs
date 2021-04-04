@@ -31,29 +31,7 @@ namespace ToDoList.Repositories
             return toDoList;
         }
 
-        public async Task<ToDoListEntity> EditToDoById(int id, ToDoListEntity toDodb)
-        {
-
-            if (id == toDodb.ItemID)
-           try {
-                    _context.Entry(toDodb).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();
-                }
-
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ToDodbExists(id))
-                {
-                        return null;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return toDodb;
-        }
+       
 
         public async Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb)
         {
@@ -78,9 +56,26 @@ namespace ToDoList.Repositories
             return _context.Lists.Any(e => e.ItemID == id);
         }
 
-        Task IToDoListRepo.EditToDoById(int id, ToDoListEntity toDodb)
+        public async Task EditToDoById(int id, ToDoListEntity toDodb)
         {
-            throw new NotImplementedException();
+
+            if (id == toDodb.ItemID)
+                try
+                {
+                    _context.Entry(toDodb).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                }
+
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (ToDodbExists(id))
+                    {
+                        throw;
+                    }
+    
+                }
+
+           
         }
     }
 }
