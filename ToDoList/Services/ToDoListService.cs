@@ -7,9 +7,9 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Services
 {
-    public class ToDoListService 
+    public class ToDoListService : IToDoListService
     {
-        // interface
+
         private readonly ToDoListRepo _toDo;
 
         public ToDoListService(ToDoListRepo ToDo)
@@ -17,7 +17,7 @@ namespace ToDoList.Services
             _toDo = ToDo;
         }
 
-       public async Task<List<ToDoListEntity>> GetListAsync()
+        public async Task<List<ToDoListEntity>> GetListAsync()
         {
             return await _toDo.GetAllToDoList();
         }
@@ -29,17 +29,17 @@ namespace ToDoList.Services
 
         public async Task<ToDoListEntity> Update(int id, ToDoListEntity toDodb)
         {
-            return await _toDo.EditToDoById(id,toDodb);
+            return await _toDo.EditToDoById(id, toDodb);
         }
 
-        public async Task<ToDoListEntity> Create( ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> Create(ToDoListEntity toDodb)
         {
             return await _toDo.CreateToDoItem(toDodb);
         }
 
         public async Task DeleteAsync(int id)
         {
-             await _toDo.DeleteToDoById(id);
+            await _toDo.DeleteToDoById(id);
         }
 
     }
