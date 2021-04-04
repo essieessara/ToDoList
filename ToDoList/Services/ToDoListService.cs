@@ -10,9 +10,9 @@ namespace ToDoList.Services
     public class ToDoListService : IToDoListService
     {
 
-        private readonly ToDoListRepo _toDo;
+        private readonly IToDoListRepo _toDo;
 
-        public ToDoListService(ToDoListRepo ToDo)
+        public ToDoListService(IToDoListRepo ToDo)
         {
             _toDo = ToDo;
         }
