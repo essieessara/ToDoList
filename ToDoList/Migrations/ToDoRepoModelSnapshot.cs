@@ -7,7 +7,7 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Migrations
 {
-    [DbContext(typeof(Repositories.ToDoList))]
+    [DbContext(typeof(Repositories.ToDoListContext))]
     partial class ToDoRepoModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

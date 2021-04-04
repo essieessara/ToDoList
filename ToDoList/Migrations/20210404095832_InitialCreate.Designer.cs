@@ -8,7 +8,7 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Migrations
 {
-    [DbContext(typeof(Repositories.ToDoList))]
+    [DbContext(typeof(Repositories.ToDoListContext))]
     [Migration("20210404095832_InitialCreate")]
     partial class InitialCreate
     {

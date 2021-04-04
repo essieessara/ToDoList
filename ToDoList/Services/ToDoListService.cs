@@ -27,9 +27,9 @@ namespace ToDoList.Services
             return await _toDo.GetToDoById(id);
         }
 
-        public async Task<ToDoListEntity> Update(int id, ToDoListEntity toDodb)
+        public async Task Update(int id, ToDoListEntity toDodb)
         {
-            return await _toDo.EditToDoById(id, toDodb);
+             await _toDo.EditToDoById(id, toDodb);
         }
 
         public async Task<ToDoListEntity> Create(ToDoListEntity toDodb)
@@ -42,6 +42,10 @@ namespace ToDoList.Services
             await _toDo.DeleteToDoById(id);
         }
 
+        Task IToDoListService.Update(int id, ToDoListEntity toDodb)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

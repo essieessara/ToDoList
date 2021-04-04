@@ -8,7 +8,7 @@ namespace ToDoList.Repositories
     {
         Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb);
         Task DeleteToDoById(int id);
-        Task<ToDoListEntity> EditToDoById(int id, ToDoListEntity toDodb);
+        Task EditToDoById(int id, ToDoListEntity toDodb);
         Task<List<ToDoListEntity>> GetAllToDoList();
         Task<ToDoListEntity> GetToDoById(int id);
     }

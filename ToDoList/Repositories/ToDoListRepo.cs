@@ -8,8 +8,8 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Repositories
 {
-
-    public class ToDoListRepo : IToDoListRepo
+    // interface
+    public class ToDoListRepo
     {
         private readonly ToDoListContext _context;
 
@@ -23,7 +23,7 @@ namespace ToDoList.Repositories
             return await _context.Lists.ToListAsync();
         }
 
-
+    
         public async Task<ToDoListEntity> GetToDoById(int id)
         {
             var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
@@ -35,33 +35,32 @@ namespace ToDoList.Repositories
         {
 
             if (id == toDodb.ItemID)
-                try
-                {
+           try {
                     _context.Entry(toDodb).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                 }
 
-                catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ToDodbExists(id))
                 {
-                    if (!ToDodbExists(id))
-                    {
                         return null;
-                    }
-                    else
-                    {
-                        throw;
-                    }
                 }
+                else
+                {
+                    throw;
+                }
+            }
 
             return toDodb;
         }
 
         public async Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb)
         {
-            _context.Lists.Add(toDodb);
-            await _context.SaveChangesAsync();
+             _context.Lists.Add(toDodb);
+             await _context.SaveChangesAsync();
 
-            return toDodb;
+            return toDodb ;
         }
 
         public async Task DeleteToDoById(int id)

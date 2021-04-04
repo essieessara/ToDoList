@@ -40,7 +40,7 @@ namespace ToDoList.Controllers
         // PUT: api/ToDoList/5
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateListItem(int id, ToDoListEntity toDodb)
+        public async Task UpdateListItem(int id, ToDoListEntity toDodb)
         {
              await _service.Update(id, toDodb);
         }
