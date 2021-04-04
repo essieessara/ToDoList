@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Repositories;
+using ToDoList.Services;
 
 namespace ToDoList.Controllers
 {
@@ -12,63 +13,36 @@ namespace ToDoList.Controllers
     [ApiController]
     public class ToDoListController : ControllerBase
     {
-        private readonly ToDoListContext _context;
+        private readonly IToDoListService _service;
 
-        public ToDoListController(ToDoListContext context)
+        public ToDoListController(IToDoListService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/ToDoList
         [HttpGet]
-        //public async Task<ActionResult<IEnumerable<ToDoListEntity>>> GetLists()
-        //{
-        //    return await _context.Lists.ToListAsync();
-        //}
+
+        public async Task<ActionResult<IEnumerable<ToDoListEntity>>> GetLists()
+        {
+            return await _service.GetListAsync();
+        }
+
+
 
         // GET: api/ToDoList/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ToDoListEntity>> GetToDodb(int id)
+        public async Task<ActionResult<ToDoListEntity>> GetListItemById(int id)
         {
-            var toDodb = await _context.Lists.FindAsync(id);
-
-            if (toDodb == null)
-            {
-                return NotFound();
-            }
-
-            return toDodb;
+            return await _service.GetById(id);
         }
 
         // PUT: api/ToDoList/5
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutToDodb(int id, ToDoListEntity toDodb)
+        public async Task<ActionResult> UpdateListItem(int id, ToDoListEntity toDodb)
         {
-            if (id != toDodb.ItemID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(toDodb).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ToDodbExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+             await _service.Update(id, toDodb);
         }
 
         // POST: api/ToDoList
@@ -76,31 +50,15 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<ActionResult<ToDoListEntity>> PostToDodb(ToDoListEntity toDodb)
         {
-            _context.Lists.Add(toDodb);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetToDodb", new { id = toDodb.ItemID }, toDodb);
+            return await _service.Create(toDodb);
         }
 
         // DELETE: api/ToDoList/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteToDodb(int id)
+        public async Task DeleteToDodb(int id)
         {
-            var toDodb = await _context.Lists.FindAsync(id);
-            if (toDodb == null)
-            {
-                return NotFound();
-            }
-
-            _context.Lists.Remove(toDodb);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            await _service.DeleteAsync(id);
         }
 
-        private bool ToDodbExists(int id)
-        {
-            return _context.Lists.Any(e => e.ItemID == id);
-        }
     }
 }
