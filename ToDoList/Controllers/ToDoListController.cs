@@ -20,7 +20,6 @@ namespace ToDoList.Controllers
             _service = service;
         }
 
-        // GET: api/ToDoList
         [HttpGet]
 
         public async Task<ActionResult<IEnumerable<ToDoListEntity>>> GetLists()
@@ -29,15 +28,13 @@ namespace ToDoList.Controllers
         }
 
 
-
-        // GET: api/ToDoList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ToDoListEntity>> GetListItemById(int id)
         {
             return await _service.GetById(id);
         }
 
-        // PUT: api/ToDoList/5
+
 
         [HttpPut("{id}")]
         public async Task UpdateListItem(int id, ToDoListEntity toDodb)
@@ -45,7 +42,7 @@ namespace ToDoList.Controllers
              await _service.Update(id, toDodb);
         }
 
-        // POST: api/ToDoList
+
 
         [HttpPost]
         public async Task<ActionResult<ToDoListEntity>> PostToDodb(ToDoListEntity toDodb)
@@ -53,7 +50,7 @@ namespace ToDoList.Controllers
             return await _service.Create(toDodb);
         }
 
-        // DELETE: api/ToDoList/5
+
         [HttpDelete("{id}")]
         public async Task DeleteToDodb(int id)
         {
