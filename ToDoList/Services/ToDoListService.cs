@@ -42,10 +42,6 @@ namespace ToDoList.Services
             await _toDo.DeleteToDoById(id);
         }
 
-        Task IToDoListService.Update(int id, ToDoListEntity toDodb)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 }

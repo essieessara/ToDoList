@@ -8,8 +8,8 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Repositories
 {
-    // interface
-    public class ToDoListRepo
+
+    public class ToDoListRepo:IToDoListRepo
     {
         private readonly ToDoListContext _context;
 
@@ -78,6 +78,10 @@ namespace ToDoList.Repositories
             return _context.Lists.Any(e => e.ItemID == id);
         }
 
+        Task IToDoListRepo.EditToDoById(int id, ToDoListEntity toDodb)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
