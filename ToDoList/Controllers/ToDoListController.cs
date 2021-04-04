@@ -24,7 +24,8 @@ namespace ToDoList.Controllers
 
         public async Task<ActionResult<IEnumerable<ToDoListEntity>>> GetLists()
         {
-            return await _service.GetListAsync();
+            var ToDo= await _service.GetListAsync();
+            return Ok(ToDo);
         }
 
 

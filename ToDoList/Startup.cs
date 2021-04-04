@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ToDoList.Repositories;
+using ToDoList.Services;
 
 namespace ToDoList
 {
@@ -29,6 +30,10 @@ namespace ToDoList
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList", Version = "v1" });
             });
+
+            services.AddScoped<IToDoListRepo, ToDoListRepo>();
+            services.AddScoped<IToDoListService, ToDoListService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
