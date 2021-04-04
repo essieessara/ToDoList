@@ -22,14 +22,24 @@ namespace ToDoList.Services
             return await _toDo.GetAllToDoList();
         }
 
-        public async Task<List<ToDoListEntity>> GetById(int id)
+        public async Task<ToDoListEntity> GetById(int id)
         {
-            //return await _toDo.GetToDoById(id);
+            return await _toDo.GetToDoById(id);
         }
 
-        public async Task<List<ToDoListEntity>> Update(int id, ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> Update(int id, ToDoListEntity toDodb)
         {
-            //return await _toDo.EditToDoById(id,toDodb);
+            return await _toDo.EditToDoById(id,toDodb);
+        }
+
+        public async Task<ToDoListEntity> Create( ToDoListEntity toDodb)
+        {
+            return await _toDo.CreateToDoItem(toDodb);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+             await _toDo.DeleteToDoById(id);
         }
 
     }

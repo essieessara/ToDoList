@@ -55,7 +55,7 @@ namespace ToDoList.Repositories
             return toDodb;
         }
 
-        public async Task<ToDoListEntity> CreateToDodb(ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb)
         {
              _context.Lists.Add(toDodb);
              await _context.SaveChangesAsync();
