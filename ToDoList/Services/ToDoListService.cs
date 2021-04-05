@@ -66,7 +66,6 @@ namespace ToDoList.Services
                 EndedDate = null
             };
 
-            dbModel.ItemName = "ahmed";
             if (id == dbModel.ItemID)
                 try
                 {
