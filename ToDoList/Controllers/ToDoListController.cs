@@ -45,6 +45,11 @@ namespace ToDoList.Controllers
              await _service.Update(id, toDodb);
         }
 
+        [HttpPut]
+        public async Task UpdateListItemStatus(int id, ToDoListEntity toDodb)
+        {
+            await _service.Update(id, toDodb);
+        }
 
 
         [HttpPost]

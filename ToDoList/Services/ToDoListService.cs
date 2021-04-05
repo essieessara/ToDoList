@@ -81,6 +81,27 @@ namespace ToDoList.Services
 
         }
 
+        public async Task Update(int id, ToDoListEntity toDodb)
+        {
+            toDodb.ItemID = id;
+            toDodb.IsFinished = true;
+            toDodb.EndedDate = DateTime.Now;
+
+            if (id == toDodb.ItemID)
+                try
+                {
+                    await _toDo.EditToDoById(toDodb);
+                }
+                catch (Exception e)
+                {
+                    if (id != toDodb.ItemID)
+                        Console.WriteLine("IOException source: {0}", id);
+                    throw;
+                }
+
+
+        }
+
     }
 
 }
