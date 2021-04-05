@@ -55,17 +55,26 @@ namespace ToDoList.Services
         }
 
 
-        public async Task Update(int id, ToDoListEntity toDodb)
+        public async Task Update(int id, UpdateTodoItemModel toDodb)
         {
+            ToDoListEntity dbModel = new ToDoListEntity()
+            {
+                ItemID = id ,
+                CreatedDate = DateTime.Now,
+                IsFinished = false,
+                ItemName = toDodb.ItemName,
+                EndedDate = null
+            };
 
-            if (id == toDodb.ItemID)
+            dbModel.ItemName = "ahmed";
+            if (id == dbModel.ItemID)
                 try
                 {
-                    await _toDo.EditToDoById(toDodb); 
+                    await _toDo.EditToDoById(dbModel); 
                 }
                 catch (Exception e)
                 {
-                    if (id != toDodb.ItemID)
+                    if (id != dbModel.ItemID)
                         Console.WriteLine("IOException source: {0}", id);
                     throw;
                 }   

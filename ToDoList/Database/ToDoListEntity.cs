@@ -11,8 +11,10 @@ namespace ToDoList.Database
         [Required]
         public string ItemName { get; set; }
         [DefaultValue("false")]
-        public bool IsFinished { get; set; }
+        public bool IsFinished { get;  set; }
         public DateTime CreatedDate { get; set; } 
         public DateTime? EndedDate { get; set; }
+
+       
     }
 }
