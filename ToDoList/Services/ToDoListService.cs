@@ -59,24 +59,34 @@ namespace ToDoList.Services
         {
             ToDoListEntity Model = await GetById(id);
        
-            Model.ItemID = id;
-            Model.CreatedDate = DateTime.Now;
-            Model.IsFinished = false;
-            Model.ItemName = toDodb.ItemName;
-            Model.EndedDate = null;
-      
+            if (Model.IsFinished != false)
+            {
+                Console.WriteLine("Can not Update");
 
-            if (id == Model.ItemID)
-                try
-                {
-                    await _toDo.EditToDoById(Model); 
-                }
-                catch (Exception e)
-                {
-                    if (id != Model.ItemID)
-                        Console.WriteLine("IOException source: {0}", id);
-                    throw;
-                }   
+            }
+            else
+            {
+                Model.ItemID = id;
+                Model.CreatedDate = DateTime.Now;
+                Model.IsFinished = false;
+                Model.ItemName = toDodb.ItemName;
+                Model.EndedDate = null;
+
+
+                if (id == Model.ItemID)
+                    try
+                    {
+                        await _toDo.EditToDoById(Model);
+                    }
+                    catch (Exception e)
+                    {
+                        if (id != Model.ItemID)
+                            Console.WriteLine("IOException source: {0}", id);
+                        throw;
+                    }
+
+
+            }
 
 
         }
@@ -84,24 +94,30 @@ namespace ToDoList.Services
         public async Task UpdateStatus(int id, UpdateTodoItemStatusModel toDodb)
         {
             ToDoListEntity Model = await GetById(id);
+            if (Model.IsFinished != false)
+            {
+                Console.WriteLine("Can not Update");
 
-            Model.ItemID = id;
-            Model.IsFinished = true;
-            Model.EndedDate = DateTime.Now;
+            }
+            else
+            {
+                Model.ItemID = id;
+                Model.IsFinished = true;
+                Model.EndedDate = DateTime.Now;
 
-            if (id == Model.ItemID)
-                try
-                {
-                    await _toDo.EditToDoById(Model);
-                }
-                catch (Exception e)
-                {
-                    if (id != Model.ItemID)
-                        Console.WriteLine("IOException source: {0}", id);
-                    throw;
-                }
+                if (id == Model.ItemID)
+                    try
+                    {
+                        await _toDo.EditToDoById(Model);
+                    }
+                    catch (Exception e)
+                    {
+                        if (id != Model.ItemID)
+                            Console.WriteLine("IOException source: {0}", id);
+                        throw;
+                    }
 
-
+            }
         }
 
     }
