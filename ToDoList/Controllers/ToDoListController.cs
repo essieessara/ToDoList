@@ -40,13 +40,13 @@ namespace ToDoList.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task UpdateListItem( int id, ToDoListEntity toDodb)
+        public async Task UpdateListItem( int id, UpdateTodoItemNameModel toDodb)
         { 
              await _service.Update(id, toDodb);
         }
 
         [HttpPut]
-        public async Task UpdateListItemStatus(int id, ToDoListEntity toDodb)
+        public async Task UpdateListItemStatus(int id, UpdateTodoItemStatusModel toDodb)
         {
             await _service.UpdateStatus(id, toDodb);
         }

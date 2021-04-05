@@ -55,24 +55,25 @@ namespace ToDoList.Services
         }
 
 
-        public async Task Update(int id, ToDoListEntity toDodb)
+        public async Task Update(int id, UpdateTodoItemNameModel toDodb)
         {
-
-            toDodb.ItemID = id;
-            toDodb.CreatedDate = DateTime.Now;
-            toDodb.IsFinished = false;
-            toDodb.ItemName = toDodb.ItemName;
-            toDodb.EndedDate = null;
+            ToDoListEntity Model = await GetById(id);
+       
+            Model.ItemID = id;
+            Model.CreatedDate = DateTime.Now;
+            Model.IsFinished = false;
+            Model.ItemName = toDodb.ItemName;
+            Model.EndedDate = null;
       
 
-            if (id == toDodb.ItemID)
+            if (id == Model.ItemID)
                 try
                 {
-                    await _toDo.EditToDoById(toDodb); 
+                    await _toDo.EditToDoById(Model); 
                 }
                 catch (Exception e)
                 {
-                    if (id != toDodb.ItemID)
+                    if (id != Model.ItemID)
                         Console.WriteLine("IOException source: {0}", id);
                     throw;
                 }   
@@ -80,20 +81,22 @@ namespace ToDoList.Services
 
         }
 
-        public async Task UpdateStatus(int id, ToDoListEntity toDodb)
+        public async Task UpdateStatus(int id, UpdateTodoItemStatusModel toDodb)
         {
-            toDodb.ItemID = id;
-            toDodb.IsFinished = true;
-            toDodb.EndedDate = DateTime.Now;
+            ToDoListEntity Model = await GetById(id);
 
-            if (id == toDodb.ItemID)
+            Model.ItemID = id;
+            Model.IsFinished = true;
+            Model.EndedDate = DateTime.Now;
+
+            if (id == Model.ItemID)
                 try
                 {
-                    await _toDo.EditToDoById(toDodb);
+                    await _toDo.EditToDoById(Model);
                 }
                 catch (Exception e)
                 {
-                    if (id != toDodb.ItemID)
+                    if (id != Model.ItemID)
                         Console.WriteLine("IOException source: {0}", id);
                     throw;
                 }
