@@ -66,13 +66,9 @@ namespace ToDoList.Services
             }
             else
             {
-                Model.ItemID = id;
-                Model.CreatedDate = DateTime.Now;
-                Model.IsFinished = false;
+                
                 Model.ItemName = toDodb.ItemName;
-                Model.EndedDate = null;
-
-
+               
                 if (id == Model.ItemID)
                     try
                     {
@@ -101,7 +97,6 @@ namespace ToDoList.Services
             }
             else
             {
-                Model.ItemID = id;
                 Model.IsFinished = true;
                 Model.EndedDate = DateTime.Now;
 
