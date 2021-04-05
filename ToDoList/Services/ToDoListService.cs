@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
+using ToDoList.Models;
 using ToDoList.Repositories;
 
 namespace ToDoList.Services
@@ -27,9 +28,17 @@ namespace ToDoList.Services
         {
             return await _toDo.GetToDoById(id);
         }
-        public async Task<ToDoListEntity> Create(ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> Create(CreateTodoItemModel toDodb)
         {
-            return await _toDo.CreateToDoItem(toDodb);
+            ToDoListEntity dbModel = new ToDoListEntity()
+            {
+                CreatedDate = DateTime.Now,
+                IsFinished = false,
+                ItemName = toDodb.ItemName,
+                EndedDate= null
+            };
+
+            return await _toDo.CreateToDoItem(dbModel);
         }
 
 

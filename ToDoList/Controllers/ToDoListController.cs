@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
+using ToDoList.Models;
 using ToDoList.Repositories;
 using ToDoList.Services;
 
@@ -46,8 +48,9 @@ namespace ToDoList.Controllers
 
 
         [HttpPost]
-        public async Task<ToDoListEntity> PostToDodb(ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> PostToDodb(CreateTodoItemModel toDodb)
         {
+ 
             return await _service.Create(toDodb);
         }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Repositories;
 
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    partial class ToDoListContextModelSnapshot : ModelSnapshot
+    [Migration("20210405102345_createdate")]
+    partial class createdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,14 +31,13 @@ namespace ToDoList.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("EndedDate")
+                    b.Property<DateTime>("EndedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsFinished")
                         .HasColumnType("bit");
 
                     b.Property<string>("ItemName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ItemID");
