@@ -22,15 +22,15 @@ namespace ToDoList.Controllers
 
         [HttpGet]
 
-        public async Task<ActionResult<IEnumerable<ToDoListEntity>>> GetLists()
+        public async Task<IEnumerable<ToDoListEntity>> GetLists()
         {
             var ToDo= await _service.GetListAsync();
-            return Ok(ToDo);
+            return ToDo;
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ToDoListEntity>> GetListItemById(int id)
+        public async Task<ToDoListEntity> GetListItemById(int id)
         {
             return await _service.GetById(id);
         }
@@ -39,14 +39,14 @@ namespace ToDoList.Controllers
 
         [HttpPut("{id}")]
         public async Task UpdateListItem(int id, ToDoListEntity toDodb)
-        {
+        { 
              await _service.Update(id, toDodb);
         }
 
 
 
         [HttpPost]
-        public async Task<ActionResult<ToDoListEntity>> PostToDodb(ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> PostToDodb(ToDoListEntity toDodb)
         {
             return await _service.Create(toDodb);
         }
