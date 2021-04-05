@@ -52,7 +52,7 @@ namespace ToDoList.Services
             if (id == toDodb.ItemID)
                 try
                 {
-                    await _toDo.EditToDoById(id, toDodb); 
+                    await _toDo.EditToDoById(toDodb); 
                 }
                 catch (Exception e)
                 {
