@@ -40,7 +40,7 @@ namespace ToDoList.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task UpdateListItem( int id,UpdateTodoItemModel toDodb)
+        public async Task UpdateListItem( int id, ToDoListEntity toDodb)
         { 
              await _service.Update(id, toDodb);
         }
@@ -48,7 +48,7 @@ namespace ToDoList.Controllers
         [HttpPut]
         public async Task UpdateListItemStatus(int id, ToDoListEntity toDodb)
         {
-            await _service.Update(id, toDodb);
+            await _service.UpdateStatus(id, toDodb);
         }
 
 

@@ -55,25 +55,24 @@ namespace ToDoList.Services
         }
 
 
-        public async Task Update(int id, UpdateTodoItemModel toDodb)
+        public async Task Update(int id, ToDoListEntity toDodb)
         {
-            ToDoListEntity dbModel = new ToDoListEntity()
-            {
-                ItemID = id ,
-                CreatedDate = DateTime.Now,
-                IsFinished = false,
-                ItemName = toDodb.ItemName,
-                EndedDate = null
-            };
 
-            if (id == dbModel.ItemID)
+            toDodb.ItemID = id;
+            toDodb.CreatedDate = DateTime.Now;
+            toDodb.IsFinished = false;
+            toDodb.ItemName = toDodb.ItemName;
+            toDodb.EndedDate = null;
+      
+
+            if (id == toDodb.ItemID)
                 try
                 {
-                    await _toDo.EditToDoById(dbModel); 
+                    await _toDo.EditToDoById(toDodb); 
                 }
                 catch (Exception e)
                 {
-                    if (id != dbModel.ItemID)
+                    if (id != toDodb.ItemID)
                         Console.WriteLine("IOException source: {0}", id);
                     throw;
                 }   
@@ -81,7 +80,7 @@ namespace ToDoList.Services
 
         }
 
-        public async Task Update(int id, ToDoListEntity toDodb)
+        public async Task UpdateStatus(int id, ToDoListEntity toDodb)
         {
             toDodb.ItemID = id;
             toDodb.IsFinished = true;

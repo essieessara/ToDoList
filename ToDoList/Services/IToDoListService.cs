@@ -11,7 +11,7 @@ namespace ToDoList.Services
         Task DeleteAsync(int id);
         Task<ToDoListEntity> GetById(int id);
         Task<List<ToDoListEntity>> GetListAsync();
-        Task Update(int id, UpdateTodoItemModel toDodb);
         Task Update(int id, ToDoListEntity toDodb);
+        Task UpdateStatus(int id, ToDoListEntity toDodb);
     }
 }
