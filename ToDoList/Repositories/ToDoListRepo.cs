@@ -43,39 +43,18 @@ namespace ToDoList.Repositories
 
         public async Task DeleteToDoById(int id)
         {
-            var toDo = await _context.Lists.FindAsync(id);
-            if (toDo != null)
-            {
+                var toDo = await _context.Lists.FindAsync(id);
                 _context.Lists.Remove(toDo);
                 await _context.SaveChangesAsync();
-            }
+            
         }
 
-        private bool ToDodbExists(int id)
-        {
-            return _context.Lists.Any(e => e.ItemID == id);
-        }
-
-        public async Task EditToDoById(int id, ToDoListEntity toDodb)
+        public async Task EditToDoById(ToDoListEntity toDodb)
         {
 
-            if (id == toDodb.ItemID)
-                try
-                {
                     _context.Entry(toDodb).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
-                }
 
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (ToDodbExists(id))
-                    {
-                        throw;
-                    }
-    
-                }
-
-           
         }
     }
 }

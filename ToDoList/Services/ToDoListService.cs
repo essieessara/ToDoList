@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,20 +27,41 @@ namespace ToDoList.Services
         {
             return await _toDo.GetToDoById(id);
         }
-
-        public async Task Update(int id, ToDoListEntity toDodb)
-        {
-             await _toDo.EditToDoById(id, toDodb);
-        }
-
         public async Task<ToDoListEntity> Create(ToDoListEntity toDodb)
         {
             return await _toDo.CreateToDoItem(toDodb);
         }
 
+
+
         public async Task DeleteAsync(int id)
         {
-            await _toDo.DeleteToDoById(id);
+            var objectTovalidate = await _toDo.GetToDoById(id);
+            if (objectTovalidate != null)
+            {
+                await _toDo.DeleteToDoById(id);
+            }
+            
+
+        }
+
+
+        public async Task Update(int id, ToDoListEntity toDodb)
+        {
+
+            if (id == toDodb.ItemID)
+                try
+                {
+                    await _toDo.EditToDoById(id, toDodb); 
+                }
+                catch (Exception e)
+                {
+                    if (id != toDodb.ItemID)
+                        Console.WriteLine("IOException source: {0}", id);
+                    throw;
+                }   
+
+
         }
 
     }
