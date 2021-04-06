@@ -90,40 +90,42 @@ namespace ToDoList.Services
         public async Task<ToDoListEntity> Create(string name, CreateTodoItemModel toDodb)
         {
             var dbItemname = await GetByName(name);
-             ToDoListEntity dbModel = new ToDoListEntity()
+            ToDoListEntity dbModel = new ToDoListEntity()
             {
                 CreatedDate = DateTime.Now,
                 IsFinished = false,
                 ItemName = toDodb.ItemName,
-                EndedDate= null
+                EndedDate = null
             };
-           
+
             try
             {
-                if (dbItemname == null)
-                {
-                    var todoNewItem = await _toDo.CreateToDoItem(dbModel);
-                    return todoNewItem;
+                if (toDodb != null)
+                { 
+                    if (dbItemname == null)
+                    {
+                        var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+                        return todoNewItem;
+                    }
+                    //else if (dbItemname.ItemName != dbModel.ItemName )
+                    //{
+
+                    //    {
+
+                    //        var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+                    //        return todoNewItem;
+
+                    //    }
+
+                    // throw new ToDoAlreadyExistsException();
+                    //}
                 }
-                else
-                {
-
-                        if (dbItemname.ItemName != dbModel.ItemName)
-                        {
-                            if (toDodb != null)
-                            {
-
-                                var todoNewItem = await _toDo.CreateToDoItem(dbModel);
-                                return todoNewItem;
-
-                            }
 
 
-                        }
-                }
-              
-               
+
                 throw new ToDoAlreadyExistsException();
+
+
 
             }
 
@@ -134,7 +136,7 @@ namespace ToDoList.Services
 
 
 
-
+        
 
         }
 
