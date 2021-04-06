@@ -2,8 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 using ToDoList.Database;
+using ToDoList.Exceptions;
 using ToDoList.Models;
 using ToDoList.Repositories;
 
@@ -21,12 +25,44 @@ namespace ToDoList.Services
 
         public async Task<List<ToDoListEntity>> GetListAsync()
         {
-            return await _toDo.GetAllToDoList();
+            var todoList = await _toDo.GetAllToDoList();
+            try
+            {
+                if (todoList != null)
+                {
+  
+                        return todoList;
+                }
+   
+                return null;
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
         }
 
         public async Task<ToDoListEntity> GetById(int id)
         {
-            return await _toDo.GetToDoById(id);
+            var todoListItem = await _toDo.GetToDoById(id);
+            try
+            {
+                if (todoListItem != null)
+                {
+
+                        return todoListItem;
+        
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+           
+
         }
         public async Task<ToDoListEntity> Create(CreateTodoItemModel toDodb)
         {
@@ -37,8 +73,22 @@ namespace ToDoList.Services
                 ItemName = toDodb.ItemName,
                 EndedDate= null
             };
+            var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+            try
+            {
+                if (todoNewItem != null)
+                {
 
-            return await _toDo.CreateToDoItem(dbModel);
+                        return todoNewItem;
+
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
         }
 
 
@@ -46,73 +96,105 @@ namespace ToDoList.Services
         public async Task DeleteAsync(int id)
         {
             var objectTovalidate = await _toDo.GetToDoById(id);
-            if (objectTovalidate != null)
+            try
             {
-                await _toDo.DeleteToDoById(id);
+                if (objectTovalidate != null)
+                {
+                    if (objectTovalidate.ItemID == id) { 
+                    
+                        await _toDo.DeleteToDoById(id);
+                    }
+                    else
+                    {
+                        throw new ToDoNotFoundException();
+                    }
+                 
+
+                }
+                else
+                {
+                    throw new ToDoNotFoundException();
+                }
+
+
             }
-            
+        
+            catch (Exception)
+            {
+                throw ;
+            }
 
         }
-
-
         public async Task Update(int id, UpdateTodoItemNameModel toDodb)
         {
             ToDoListEntity Model = await GetById(id);
-       
-            if (Model.IsFinished != false)
+            try
             {
-                Console.WriteLine("Can not Update");
+                if (Model.IsFinished != false)
+                {
+                    Console.WriteLine("Can not Update");
 
-            }
-            else
-            {
-                
-                Model.ItemName = toDodb.ItemName;
-               
-                if (id == Model.ItemID)
-                    try
+                }
+                else
+                {
+
+                    Model.ItemName = toDodb.ItemName;
+
+                    if (id == Model.ItemID)
                     {
                         await _toDo.EditToDoById(Model);
                     }
-                    catch (Exception e)
+                    else
                     {
-                        if (id != Model.ItemID)
-                            Console.WriteLine("IOException source: {0}", id);
-                        throw;
+                        throw new ToDoNotFoundException();
                     }
 
 
+
+                }
             }
+            catch (Exception)
+            {
+                throw;
+            }
+            
 
 
         }
-
         public async Task UpdateStatus(int id, UpdateTodoItemStatusModel toDodb)
         {
             ToDoListEntity Model = await GetById(id);
-            if (Model.IsFinished != false)
+            try
             {
-                Console.WriteLine("Can not Update");
+                if (Model.IsFinished != false)
+                {
+                    Console.WriteLine("Can not Update");
 
-            }
-            else
-            {
-                Model.IsFinished = true;
-                Model.EndedDate = DateTime.Now;
+                }
+                else
+                {
+                    Model.IsFinished = true;
+                    Model.EndedDate = DateTime.Now;
 
-                if (id == Model.ItemID)
-                    try
+                    if (id == Model.ItemID)
                     {
                         await _toDo.EditToDoById(Model);
                     }
-                    catch (Exception e)
+
+                    else
                     {
-                        if (id != Model.ItemID)
-                            Console.WriteLine("IOException source: {0}", id);
-                        throw;
+                        throw new ToDoNotFoundException();
                     }
 
+
+
+                }
             }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
         }
 
     }

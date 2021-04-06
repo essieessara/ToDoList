@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
+using ToDoList.Exceptions;
 using ToDoList.Models;
 using ToDoList.Repositories;
 using ToDoList.Services;
@@ -26,44 +27,101 @@ namespace ToDoList.Controllers
 
         public async Task<IEnumerable<ToDoListEntity>> GetLists()
         {
-            var ToDo= await _service.GetListAsync();
-            return ToDo;
+            try 
+            {
+                var ToDo = await _service.GetListAsync();
+                return ToDo;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
         }
 
 
         [HttpGet("GetListItem/{id}")]
         public async Task<ToDoListEntity> GetLists(int id)
         {
-            return await _service.GetById(id);
+            try
+            {
+                return await _service.GetById(id);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
 
 
         [HttpPut("UpdateToDoItem/{id}")]
         public async Task UpdateListItem( int id, UpdateTodoItemNameModel toDodb)
-        { 
-             await _service.Update(id, toDodb);
+        {
+            try
+            {
+                await _service.Update(id, toDodb);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            
         }
 
         [HttpPut("EndToDoItem/{id}")]
         public async Task UpdateListItemStatus(int id, UpdateTodoItemStatusModel toDodb)
         {
-            await _service.UpdateStatus(id, toDodb);
+            try
+            {
+                await _service.UpdateStatus(id, toDodb);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            
         }
 
 
         [HttpPost("CreateToDo")]
         public async Task<ToDoListEntity> PostToDodb(CreateTodoItemModel toDodb)
         {
- 
-            return await _service.Create(toDodb);
+            try
+            {
+                return await _service.Create(toDodb);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+
+            
         }
 
 
         [HttpDelete("DeleteToDo/{id}")]
-        public async Task DeleteToDodb(int id)
+        public async Task<ActionResult> DeleteToDodb(int id)
         {
-            await _service.DeleteAsync(id);
+            try
+            {
+                await _service.DeleteAsync(id);
+                return Ok();
+            }
+            catch(ToDoExceptions e)
+            {
+                return NotFound( new ResponseError(e.Errors));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            
         }
 
     }
