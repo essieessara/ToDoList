@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LanguageExt;
+using LanguageExt.ClassInstances.Pred;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ using ToDoList.Database;
 using ToDoList.Exceptions;
 using ToDoList.Models;
 using ToDoList.Repositories;
+
 
 namespace ToDoList.Services
 {
@@ -37,7 +40,7 @@ namespace ToDoList.Services
                 return null;
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -57,38 +60,82 @@ namespace ToDoList.Services
                 }
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
            
 
         }
-        public async Task<ToDoListEntity> Create(CreateTodoItemModel toDodb)
+        public async Task<ToDoListEntity> GetByName(string name)
         {
-            ToDoListEntity dbModel = new ToDoListEntity()
+            var todoListItem = await _toDo.GetToDoByName(name);
+            try
+            {
+                if (todoListItem != null)
+                {
+
+                    return todoListItem;
+
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+        }
+        public async Task<ToDoListEntity> Create(string name, CreateTodoItemModel toDodb)
+        {
+            var dbItemname = await GetByName(name);
+             ToDoListEntity dbModel = new ToDoListEntity()
             {
                 CreatedDate = DateTime.Now,
                 IsFinished = false,
                 ItemName = toDodb.ItemName,
                 EndedDate= null
             };
-            var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+           
             try
             {
-                if (todoNewItem != null)
+                if (dbItemname == null)
+                {
+                    var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+                    return todoNewItem;
+                }
+                else
                 {
 
-                        return todoNewItem;
+                        if (dbItemname.ItemName != dbModel.ItemName)
+                        {
+                            if (toDodb != null)
+                            {
 
+                                var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+                                return todoNewItem;
+
+                            }
+
+
+                        }
                 }
-                return null;
+              
+               
+                throw new ToDoAlreadyExistsException();
+
             }
-            catch (Exception e)
+
+            catch (Exception)
             {
                 throw;
             }
-            
+
+
+
+
+
         }
 
 
@@ -190,7 +237,7 @@ namespace ToDoList.Services
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

@@ -11,5 +11,6 @@ namespace ToDoList.Repositories
         Task EditToDoById(ToDoListEntity toDodb);
         Task<List<ToDoListEntity>> GetAllToDoList();
         Task<ToDoListEntity> GetToDoById(int id);
+        Task<ToDoListEntity> GetToDoByName(string name);
     }
 }

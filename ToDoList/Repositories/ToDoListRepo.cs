@@ -31,7 +31,13 @@ namespace ToDoList.Repositories
             return toDoList;
         }
 
-       
+        public async Task<ToDoListEntity> GetToDoByName(string name)
+        {
+            var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemName == name);
+
+            return toDoList;
+        }
+
 
         public async Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb)
         {

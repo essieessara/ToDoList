@@ -32,7 +32,7 @@ namespace ToDoList.Controllers
                 var ToDo = await _service.GetListAsync();
                 return ToDo;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -47,7 +47,7 @@ namespace ToDoList.Controllers
             {
                 return await _service.GetById(id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -63,7 +63,7 @@ namespace ToDoList.Controllers
             {
                 await _service.Update(id, toDodb);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -78,7 +78,7 @@ namespace ToDoList.Controllers
             {
                 await _service.UpdateStatus(id, toDodb);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }
@@ -88,15 +88,19 @@ namespace ToDoList.Controllers
 
 
         [HttpPost("CreateToDo")]
-        public async Task<ToDoListEntity> PostToDodb(CreateTodoItemModel toDodb)
+        public async Task<ActionResult<ToDoListEntity>> PostToDodb(CreateTodoItemModel toDodb)
         {
             try
             {
-                return await _service.Create(toDodb);
+                return Ok(await _service.Create(toDodb.ItemName,toDodb));
+            }
+            catch (ToDoExceptions e)
+            {
+                return NotFound(new ResponseError(e.Errors));
             }
             catch (Exception e)
             {
-                throw;
+                return BadRequest(e.Message);
             }
 
 
