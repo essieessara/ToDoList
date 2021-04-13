@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
-using ToDoList.Repositories;
 
 namespace ToDoList.Repositories
 {
 
-    public class ToDoListRepo:IToDoListRepo
+    public class ToDoListRepo : IToDoListRepo
     {
         private readonly ToDoListContext _context;
 
@@ -23,7 +20,7 @@ namespace ToDoList.Repositories
             return await _context.Lists.ToListAsync();
         }
 
-    
+
         public async Task<ToDoListEntity> GetToDoById(int id)
         {
             var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
@@ -41,25 +38,25 @@ namespace ToDoList.Repositories
 
         public async Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb)
         {
-             _context.Lists.Add(toDodb);
-             await _context.SaveChangesAsync();
+            _context.Lists.Add(toDodb);
+            await _context.SaveChangesAsync();
 
-            return toDodb ;
+            return toDodb;
         }
 
         public async Task DeleteToDoById(int id)
         {
-                var toDo = await _context.Lists.FindAsync(id);
-                _context.Lists.Remove(toDo);
-                await _context.SaveChangesAsync();
-            
+            var toDo = await _context.Lists.FindAsync(id);
+            _context.Lists.Remove(toDo);
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task EditToDoById(ToDoListEntity toDodb)
         {
 
-                    _context.Entry(toDodb).State = EntityState.Modified;
-                    await _context.SaveChangesAsync();
+            _context.Entry(toDodb).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
         }
     }

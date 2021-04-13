@@ -1,13 +1,6 @@
-﻿using LanguageExt;
-using LanguageExt.ClassInstances.Pred;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 using ToDoList.Database;
 using ToDoList.Exceptions;
 using ToDoList.Models;
@@ -33,10 +26,10 @@ namespace ToDoList.Services
             {
                 if (todoList != null)
                 {
-  
-                        return todoList;
+
+                    return todoList;
                 }
-   
+
                 return null;
 
             }
@@ -44,7 +37,7 @@ namespace ToDoList.Services
             {
                 throw;
             }
-            
+
         }
 
         public async Task<ToDoListEntity> GetById(int id)
@@ -55,8 +48,8 @@ namespace ToDoList.Services
                 if (todoListItem != null)
                 {
 
-                        return todoListItem;
-        
+                    return todoListItem;
+
                 }
                 return null;
             }
@@ -64,7 +57,7 @@ namespace ToDoList.Services
             {
                 throw;
             }
-           
+
 
         }
         public async Task<ToDoListEntity> GetByName(string name)
@@ -101,7 +94,7 @@ namespace ToDoList.Services
             try
             {
                 if (toDodb != null)
-                { 
+                {
                     if (dbItemname == null)
                     {
                         var todoNewItem = await _toDo.CreateToDoItem(dbModel);
@@ -136,7 +129,7 @@ namespace ToDoList.Services
 
 
 
-        
+
 
         }
 
@@ -149,15 +142,16 @@ namespace ToDoList.Services
             {
                 if (objectTovalidate != null)
                 {
-                    if (objectTovalidate.ItemID == id) { 
-                    
+                    if (objectTovalidate.ItemID == id)
+                    {
+
                         await _toDo.DeleteToDoById(id);
                     }
                     else
                     {
                         throw new ToDoNotFoundException();
                     }
-                 
+
 
                 }
                 else
@@ -167,10 +161,10 @@ namespace ToDoList.Services
 
 
             }
-        
+
             catch (Exception)
             {
-                throw ;
+                throw;
             }
 
         }
@@ -206,7 +200,7 @@ namespace ToDoList.Services
             {
                 throw;
             }
-            
+
 
 
         }
@@ -243,7 +237,7 @@ namespace ToDoList.Services
             {
                 throw;
             }
-            
+
         }
 
     }

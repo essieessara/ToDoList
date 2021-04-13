@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions;
 using ToDoList.Models;
-using ToDoList.Repositories;
 using ToDoList.Services;
 
 namespace ToDoList.Controllers
@@ -27,7 +24,7 @@ namespace ToDoList.Controllers
 
         public async Task<IEnumerable<ToDoListEntity>> GetLists()
         {
-            try 
+            try
             {
                 var ToDo = await _service.GetListAsync();
                 return ToDo;
@@ -36,7 +33,7 @@ namespace ToDoList.Controllers
             {
                 throw;
             }
-            
+
         }
 
 
@@ -57,7 +54,7 @@ namespace ToDoList.Controllers
 
 
         [HttpPut("UpdateToDoItem/{id}")]
-        public async Task UpdateListItem( int id, UpdateTodoItemNameModel toDodb)
+        public async Task UpdateListItem(int id, UpdateTodoItemNameModel toDodb)
         {
             try
             {
@@ -68,7 +65,7 @@ namespace ToDoList.Controllers
                 throw;
             }
 
-            
+
         }
 
         [HttpPut("EndToDoItem/{id}")]
@@ -83,7 +80,7 @@ namespace ToDoList.Controllers
                 throw;
             }
 
-            
+
         }
 
 
@@ -92,7 +89,7 @@ namespace ToDoList.Controllers
         {
             try
             {
-                return Ok(await _service.Create(toDodb.ItemName,toDodb));
+                return Ok(await _service.Create(toDodb.ItemName, toDodb));
             }
             catch (ToDoExceptions e)
             {
@@ -104,7 +101,7 @@ namespace ToDoList.Controllers
             }
 
 
-            
+
         }
 
 
@@ -116,16 +113,16 @@ namespace ToDoList.Controllers
                 await _service.DeleteAsync(id);
                 return Ok();
             }
-            catch(ToDoExceptions e)
+            catch (ToDoExceptions e)
             {
-                return NotFound( new ResponseError(e.Errors));
+                return NotFound(new ResponseError(e.Errors));
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
 
-            
+
         }
 
     }

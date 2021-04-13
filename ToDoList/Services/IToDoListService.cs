@@ -7,7 +7,7 @@ namespace ToDoList.Services
 {
     public interface IToDoListService
     {
-        Task<ToDoListEntity> Create(string name,CreateTodoItemModel toDodb);
+        Task<ToDoListEntity> Create(string name, CreateTodoItemModel toDodb);
         Task DeleteAsync(int id);
         Task<ToDoListEntity> GetById(int id);
         Task<List<ToDoListEntity>> GetListAsync();
