@@ -51,7 +51,7 @@ namespace ToDoList.Controllers
         {
             try
             {
-                await _service.UpdateAsync(toDodb.ItemID, toDodb);
+                await _service.UpdateAsync(toDodb);
                 return Ok();
             }
             catch (Exception e)
@@ -62,11 +62,11 @@ namespace ToDoList.Controllers
 
         }
         [HttpPut("EndToDoItem/{id}")]
-        public async Task<ActionResult<ToDoListEntity>> UpdateListItemStatusAsync(int id, UpdateTodoItemStatusModel toDodb)
+        public async Task<ActionResult<ToDoListEntity>> UpdateListItemStatusAsync(int id)
         {
             try
             {
-                await _service.UpdateStatusAsync(id, toDodb);
+                await _service.UpdateStatusAsync(id);
                 return Ok();
             }
             catch (Exception e)
@@ -81,7 +81,7 @@ namespace ToDoList.Controllers
         {
             try
             {
-                return Ok(await _service.CreateAsync(toDodb.ItemName, toDodb));
+                return Ok(await _service.CreateAsync(toDodb));
             }
             catch (ToDoExceptions e)
             {
