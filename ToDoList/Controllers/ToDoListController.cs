@@ -16,80 +16,72 @@ namespace ToDoList.Controllers
         private readonly IToDoListService _service;
 
         public ToDoListController(IToDoListService service)
-        {
-            _service = service;
-        }
+            => _service = service;
+        
 
         [HttpGet("GetLists")]
-
-        public async Task<IEnumerable<ToDoListEntity>> GetLists()
+        public async Task<ActionResult<IEnumerable<ToDoListEntity>>> GetListsAsync()
         {
             try
             {
                 var ToDo = await _service.GetListAsync();
-                return ToDo;
+                return Ok(ToDo);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                return BadRequest(e.Message);
             }
 
         }
-
-
         [HttpGet("GetListItem/{id}")]
-        public async Task<ToDoListEntity> GetLists(int id)
+        public async Task<ActionResult<ToDoListEntity>> GetListsAsync(int id)
         {
             try
-            {
-                return await _service.GetById(id);
+            { 
+                return Ok(await _service.GetByIdAsync(id));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                return BadRequest(e.Message);
             }
 
         }
-
-
-
         [HttpPut("UpdateToDoItem/{id}")]
-        public async Task UpdateListItem(int id, UpdateTodoItemNameModel toDodb)
+        public async Task<ActionResult<ToDoListEntity>> UpdateListItemAsync( UpdateTodoItemNameModel toDodb)
         {
             try
             {
-                await _service.Update(id, toDodb);
+                await _service.UpdateAsync(toDodb.ItemID, toDodb);
+                return Ok();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                return BadRequest(e.Message);
             }
 
 
         }
-
         [HttpPut("EndToDoItem/{id}")]
-        public async Task UpdateListItemStatus(int id, UpdateTodoItemStatusModel toDodb)
+        public async Task<ActionResult<ToDoListEntity>> UpdateListItemStatusAsync(int id, UpdateTodoItemStatusModel toDodb)
         {
             try
             {
-                await _service.UpdateStatus(id, toDodb);
+                await _service.UpdateStatusAsync(id, toDodb);
+                return Ok();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                return BadRequest(e.Message);
             }
 
 
         }
-
-
         [HttpPost("CreateToDo")]
-        public async Task<ActionResult<ToDoListEntity>> PostToDodb(CreateTodoItemModel toDodb)
+        public async Task<ActionResult<ToDoListEntity>> PostToDodbAsync(CreateTodoItemModel toDodb)
         {
             try
             {
-                return Ok(await _service.Create(toDodb.ItemName, toDodb));
+                return Ok(await _service.CreateAsync(toDodb.ItemName, toDodb));
             }
             catch (ToDoExceptions e)
             {
@@ -103,10 +95,8 @@ namespace ToDoList.Controllers
 
 
         }
-
-
         [HttpDelete("DeleteToDo/{id}")]
-        public async Task<ActionResult> DeleteToDodb(int id)
+        public async Task<ActionResult> DeleteToDodbAsync(int id)
         {
             try
             {

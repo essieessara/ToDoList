@@ -15,43 +15,28 @@ namespace ToDoList.Services
         private readonly IToDoListRepo _toDo;
 
         public ToDoListService(IToDoListRepo ToDo)
-        {
-            _toDo = ToDo;
-        }
+             =>_toDo = ToDo;
+        
 
         public async Task<List<ToDoListEntity>> GetListAsync()
         {
-            var todoList = await _toDo.GetAllToDoList();
             try
             {
-                if (todoList != null)
-                {
-
-                    return todoList;
-                }
-
-                return null;
-
+                var todoList = await _toDo.GetAllToDoListASync();
+                return ReturnValue(todoList);
             }
             catch (Exception)
-            {
+            { 
                 throw;
             }
 
         }
-
-        public async Task<ToDoListEntity> GetById(int id)
+        public async Task<ToDoListEntity> GetByIdAsync(int id)
         {
-            var todoListItem = await _toDo.GetToDoById(id);
             try
             {
-                if (todoListItem != null)
-                {
-
-                    return todoListItem;
-
-                }
-                return null;
+                var todoListItem = await _toDo.GetToDoByIdAsync(id);
+                return todoListItem;
             }
             catch (Exception)
             {
@@ -62,16 +47,10 @@ namespace ToDoList.Services
         }
         public async Task<ToDoListEntity> GetByName(string name)
         {
-            var todoListItem = await _toDo.GetToDoByName(name);
             try
             {
-                if (todoListItem != null)
-                {
-
-                    return todoListItem;
-
-                }
-                return null;
+                var todoListItem = await _toDo.GetToDoByNameAsync(name);
+                return ReturnValue(todoListItem);
             }
             catch (Exception)
             {
@@ -80,41 +59,26 @@ namespace ToDoList.Services
 
 
         }
-        public async Task<ToDoListEntity> Create(string name, CreateTodoItemModel toDodb)
+        public async Task<ToDoListEntity> CreateAsync( CreateTodoItemModel toDodb)
         {
-            var dbItemname = await GetByName(name);
-            ToDoListEntity dbModel = new ToDoListEntity()
-            {
-                CreatedDate = DateTime.Now,
-                IsFinished = false,
-                ItemName = toDodb.ItemName,
-                EndedDate = null
-            };
-
+            
             try
             {
+                var dbExistingModel = await GetByName(toDodb.ItemName);
+                ToDoListEntity dbCreateModel = new ToDoListEntity()
+                {
+                    CreatedDate = DateTime.Now,
+                    IsFinished = false,
+                    ItemName = toDodb.ItemName,
+                    EndedDate = null
+                };
+
                 if (toDodb != null)
                 {
-                    if (dbItemname == null)
-                    {
-                        var todoNewItem = await _toDo.CreateToDoItem(dbModel);
+                        var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
                         return todoNewItem;
-                    }
-                    //else if (dbItemname.ItemName != dbModel.ItemName )
-                    //{
-
-                    //    {
-
-                    //        var todoNewItem = await _toDo.CreateToDoItem(dbModel);
-                    //        return todoNewItem;
-
-                    //    }
-
-                    // throw new ToDoAlreadyExistsException();
-                    //}
+ 
                 }
-
-
 
                 throw new ToDoAlreadyExistsException();
 
@@ -132,34 +96,19 @@ namespace ToDoList.Services
 
 
         }
-
-
-
         public async Task DeleteAsync(int id)
         {
-            var objectTovalidate = await _toDo.GetToDoById(id);
             try
             {
+                var objectTovalidate = await _toDo.GetToDoByIdAsync(id);
                 if (objectTovalidate != null)
                 {
-                    if (objectTovalidate.ItemID == id)
-                    {
-
-                        await _toDo.DeleteToDoById(id);
-                    }
-                    else
-                    {
-                        throw new ToDoNotFoundException();
-                    }
-
-
+                        await _toDo.DeleteToDoByIdAsync(id);                  
                 }
                 else
                 {
                     throw new ToDoNotFoundException();
                 }
-
-
             }
 
             catch (Exception)
@@ -168,11 +117,11 @@ namespace ToDoList.Services
             }
 
         }
-        public async Task Update(int id, UpdateTodoItemNameModel toDodb)
-        {
-            ToDoListEntity Model = await GetById(id);
+        public async Task UpdateAsync(UpdateTodoItemNameModel toDodb)
+        {   
             try
             {
+                ToDoListEntity Model = await GetByIdAsync(toDodb.ItemID);
                 if (Model.IsFinished != false)
                 {
                     Console.WriteLine("Can not Update");
@@ -180,33 +129,21 @@ namespace ToDoList.Services
                 }
                 else
                 {
-
                     Model.ItemName = toDodb.ItemName;
-
-                    if (id == Model.ItemID)
-                    {
-                        await _toDo.EditToDoById(Model);
-                    }
-                    else
-                    {
-                        throw new ToDoNotFoundException();
-                    }
-
-
-
+                    await _toDo.EditToDoByIdAsync(Model);
                 }
             }
             catch (Exception)
             {
-                throw;
+                throw new ToDoNotFoundException();
             }
 
 
 
         }
-        public async Task UpdateStatus(int id, UpdateTodoItemStatusModel toDodb)
+        public async Task UpdateStatusAsync(int id)
         {
-            ToDoListEntity Model = await GetById(id);
+            ToDoListEntity Model = await GetByIdAsync(id);
             try
             {
                 if (Model.IsFinished != false)
@@ -218,26 +155,19 @@ namespace ToDoList.Services
                 {
                     Model.IsFinished = true;
                     Model.EndedDate = DateTime.Now;
-
-                    if (id == Model.ItemID)
-                    {
-                        await _toDo.EditToDoById(Model);
-                    }
-
-                    else
-                    {
-                        throw new ToDoNotFoundException();
-                    }
-
-
-
+                    await _toDo.EditToDoByIdAsync(Model);
                 }
             }
             catch (Exception)
             {
-                throw;
+                throw new ToDoNotFoundException();
             }
 
+        }
+
+        private T ReturnValue<T>(T model) 
+        { 
+                return model; 
         }
 
     }

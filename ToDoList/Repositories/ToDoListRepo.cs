@@ -11,24 +11,23 @@ namespace ToDoList.Repositories
         private readonly ToDoListContext _context;
 
         public ToDoListRepo(ToDoListContext context)
-        {
-            _context = context;
-        }
+        => _context = context;
+        
 
-        public async Task<List<ToDoListEntity>> GetAllToDoList()
+        public async Task<List<ToDoListEntity>> GetAllToDoListASync()
         {
             return await _context.Lists.ToListAsync();
         }
 
 
-        public async Task<ToDoListEntity> GetToDoById(int id)
+        public async Task<ToDoListEntity> GetToDoByIdAsync(int id)
         {
             var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
 
             return toDoList;
         }
 
-        public async Task<ToDoListEntity> GetToDoByName(string name)
+        public async Task<ToDoListEntity> GetToDoByNameAsync(string name)
         {
             var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemName == name);
 
@@ -36,7 +35,7 @@ namespace ToDoList.Repositories
         }
 
 
-        public async Task<ToDoListEntity> CreateToDoItem(ToDoListEntity toDodb)
+        public async Task<ToDoListEntity> CreateToDoItemAsync(ToDoListEntity toDodb)
         {
             _context.Lists.Add(toDodb);
             await _context.SaveChangesAsync();
@@ -44,7 +43,7 @@ namespace ToDoList.Repositories
             return toDodb;
         }
 
-        public async Task DeleteToDoById(int id)
+        public async Task DeleteToDoByIdAsync(int id)
         {
             var toDo = await _context.Lists.FindAsync(id);
             _context.Lists.Remove(toDo);
@@ -52,7 +51,7 @@ namespace ToDoList.Repositories
 
         }
 
-        public async Task EditToDoById(ToDoListEntity toDodb)
+        public async Task EditToDoByIdAsync(ToDoListEntity toDodb)
         {
 
             _context.Entry(toDodb).State = EntityState.Modified;

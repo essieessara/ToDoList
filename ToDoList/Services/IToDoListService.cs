@@ -7,11 +7,11 @@ namespace ToDoList.Services
 {
     public interface IToDoListService
     {
-        Task<ToDoListEntity> Create(string name, CreateTodoItemModel toDodb);
+        Task<ToDoListEntity> CreateAsync( CreateTodoItemModel toDodb);
         Task DeleteAsync(int id);
-        Task<ToDoListEntity> GetById(int id);
+        Task<ToDoListEntity> GetByIdAsync(int id);
         Task<List<ToDoListEntity>> GetListAsync();
-        Task Update(int id, UpdateTodoItemNameModel toDodb);
-        Task UpdateStatus(int id, UpdateTodoItemStatusModel toDodb);
+        Task UpdateAsync( UpdateTodoItemNameModel toDodb);
+        Task UpdateStatusAsync(int id);
     }
 }
