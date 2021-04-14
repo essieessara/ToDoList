@@ -48,18 +48,17 @@ namespace ToDoList.Services
                      ItemName = toDodb.ItemName,
                      EndedDate = null
                  };
-                 if (dbExistingModel != null) 
+                 if (toDodb != null)
                  {
-                     if (dbExistingModel.ItemName != dbCreateModel.ItemName)
+                     if (dbExistingModel == null)
                      {
                          var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
                          return todoNewItem;
-
-                         
                      }
                      throw new ToDoAlreadyExistsException();
+
                  }
-                throw new ToDoValueIsNullException();
+                 throw new ToDoValueIsNullException();
 
              });
         public  Task DeleteAsync(int id)
