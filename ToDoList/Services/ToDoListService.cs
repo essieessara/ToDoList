@@ -28,8 +28,15 @@ namespace ToDoList.Services
         public async Task<ToDoListEntity> GetByIdAsync(int id)
             => await TryCatch(async () =>
             {
-                    var todoListItem = await _toDo.GetToDoByIdAsync(id);
+                var todoListItem = await _toDo.GetToDoByIdAsync(id);
+                if(todoListItem != null)
+                {
                     return todoListItem;
+                }
+                else
+                {
+                    throw new ToDoNotFoundException();
+                }
             });
         public async Task<ToDoListEntity> GetByNameAsync(string name)
              => await TryCatch(async () =>

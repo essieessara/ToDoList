@@ -44,6 +44,10 @@ namespace ToDoList.Controllers
             {
                 return NotFound(new ResponseError(e.Errors));
             }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
         }
         [HttpPut("UpdateToDoItem/{id}")]
