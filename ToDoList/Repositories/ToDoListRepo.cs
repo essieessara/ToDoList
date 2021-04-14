@@ -15,24 +15,19 @@ namespace ToDoList.Repositories
         
 
         public async Task<List<ToDoListEntity>> GetAllToDoListASync()
-        {
-            return await _context.Lists.ToListAsync();
-        }
+            =>await _context.Lists.ToListAsync();
+        
 
 
         public async Task<ToDoListEntity> GetToDoByIdAsync(int id)
-        {
-            var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
+            => await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
 
-            return toDoList;
-        }
+           
 
         public async Task<ToDoListEntity> GetToDoByNameAsync(string name)
-        {
-            var toDoList = await _context.Lists.FirstOrDefaultAsync(x => x.ItemName == name);
+            =>  await _context.Lists.FirstOrDefaultAsync(x => x.ItemName == name);
 
-            return toDoList;
-        }
+         
 
 
         public async Task<ToDoListEntity> CreateToDoItemAsync(ToDoListEntity toDodb)

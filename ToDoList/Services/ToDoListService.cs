@@ -9,24 +9,23 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Services
 {
-    public class ToDoListService : IToDoListService
+    public partial class ToDoListService : IToDoListService
     {
 
         private readonly IToDoListRepo _toDo;
-        private delegate Task Function();
-        private delegate Task<T> Function<T>();
+       
         public ToDoListService(IToDoListRepo ToDo)
              =>_toDo = ToDo;
 
 
-        public async Task<List<ToDoListEntity>> GetListAsync()
-             => await TryCatch(async () =>
+        public  Task<List<ToDoListEntity>> GetListAsync()
+             =>  TryCatch(async () =>
               {
                  var todoList = await _toDo.GetAllToDoListASync();
                  return todoList;
              });
-        public async Task<ToDoListEntity> GetByIdAsync(int id)
-            => await TryCatch(async () =>
+        public  Task<ToDoListEntity> GetByIdAsync(int id)
+            =>  TryCatch(async () =>
             {
                 var todoListItem = await _toDo.GetToDoByIdAsync(id);
                 if(todoListItem != null)
@@ -37,15 +36,9 @@ namespace ToDoList.Services
                 {
                     throw new ToDoNotFoundException();
                 }
-            });
-        public async Task<ToDoListEntity> GetByNameAsync(string name)
-             => await TryCatch(async () =>
-             {
-                 var todoListItem = await _toDo.GetToDoByNameAsync(name);
-                 return todoListItem;
-             });
-        public async Task<ToDoListEntity> CreateAsync(CreateTodoItemModel toDodb)
-             => await TryCatch(async () =>
+            });      
+        public  Task<ToDoListEntity> CreateAsync(CreateTodoItemModel toDodb)
+             =>  TryCatch(async () =>
              {
                  var dbExistingModel = await GetByNameAsync(toDodb.ItemName);
                  ToDoListEntity dbCreateModel = new ToDoListEntity()
@@ -69,8 +62,8 @@ namespace ToDoList.Services
                 throw new ToDoValueIsNullException();
 
              });
-        public async Task DeleteAsync(int id)
-             => await TryCatch(async () =>
+        public  Task DeleteAsync(int id)
+             =>  TryCatch(async () =>
              {
                      var objectTovalidate = await _toDo.GetToDoByIdAsync(id);
                      if (objectTovalidate != null)
@@ -82,10 +75,10 @@ namespace ToDoList.Services
                          throw new ToDoNotFoundException();
                      }
              });
-        public async Task UpdateToDoNameAsync(int id, UpdateTodoItemNameModel toDo)
-             => await TryCatch(async () =>
+        public  Task UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
+             =>  TryCatch(async () =>
              {
-                 ToDoListEntity dbUpdateModel = await GetByIdAsync(id);
+                 ToDoListEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
 
 
                  if (dbUpdateModel != null)
@@ -104,8 +97,8 @@ namespace ToDoList.Services
                      throw new ToDoNotFoundException();
 
              });
-        public async Task UpdateStatusAsync(int id)
-             => await TryCatch(async () =>
+        public  Task UpdateStatusAsync(int id)
+             =>  TryCatch(async () =>
              {
                  
                  ToDoListEntity Model = await GetByIdAsync(id);
@@ -127,29 +120,14 @@ namespace ToDoList.Services
 
              });
 
-        private async Task TryCatch(Function model)
-        {
-            try
-            {
-                await model();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        private async Task<T> TryCatch<T>(Function<T> model)
-        {
-            try
-            {
-                return await model();
-            }
-            catch (Exception)
-            {
-                throw;
 
-            }
-        }
+        private async Task<ToDoListEntity> GetByNameAsync(string name)
+             => await TryCatch(async () =>
+             {
+                 var todoListItem = await _toDo.GetToDoByNameAsync(name);
+                 return todoListItem;
+             });
+
     }
 
 }
