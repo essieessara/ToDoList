@@ -40,24 +40,29 @@ namespace ToDoList.Controllers
             { 
                 return Ok(await _service.GetByIdAsync(id));
             }
+            catch (ToDoExceptions e)
+            {
+                return NotFound(new ResponseError(e.Errors));
+            }
+
+        }
+        [HttpPut("UpdateToDoItem/{id}")]
+        public async Task<ActionResult<ToDoListEntity>> UpdateListItemAsync(int id,UpdateTodoItemNameModel toDodb)
+        {
+            try
+            {
+                await _service.UpdateToDoNameAsync(id,toDodb);
+                return Ok();
+            }
+            catch (ToDoExceptions e)
+            {
+                return NotFound(new ResponseError(e.Errors));
+            }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
 
-        }
-        [HttpPut("UpdateToDoItem/{id}")]
-        public async Task<ActionResult<ToDoListEntity>> UpdateListItemAsync( UpdateTodoItemNameModel toDodb)
-        {
-            try
-            {
-                await _service.UpdateAsync(toDodb);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
 
 
         }
@@ -68,6 +73,10 @@ namespace ToDoList.Controllers
             {
                 await _service.UpdateStatusAsync(id);
                 return Ok();
+            }
+            catch (ToDoExceptions e)
+            {
+                return NotFound(new ResponseError(e.Errors));
             }
             catch (Exception e)
             {
