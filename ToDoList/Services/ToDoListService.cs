@@ -103,6 +103,7 @@ namespace ToDoList.Services
                  ToDoListEntity Model = await GetByIdAsync(id);
 
                  if (Model != null)
+                 {
                      if (Model.IsFinished == false)
                      {
                          Model.IsFinished = true;
@@ -113,10 +114,9 @@ namespace ToDoList.Services
                      {
                          throw new CanNotUpdateException();
                      }
-
-                 throw new ToDoNotFoundException();
-
-
+                 }
+                 else
+                     throw new ToDoNotFoundException();
              });
 
 
