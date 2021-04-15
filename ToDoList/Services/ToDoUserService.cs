@@ -75,7 +75,7 @@ namespace ToDoList.Services
 
              });
 
-        public Task UpdateToDoUserNameAsync(UpdateTodoUserModel User)
+        public Task UpdateToDoUserAsync(UpdateTodoUserModel User)
              => TryCatch(async () =>
              {
                  ToDoUsersEntity dbUpdateModel = await GetUserByIdAsync(User.UserID);
