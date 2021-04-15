@@ -11,15 +11,13 @@ using ToDoList.Services;
 
 namespace ToDoList.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ToDoUserController : ToDoControllerBase
     {
-        [Route("api/[controller]")]
-        [ApiController]
-        public class ToDoListController : ToDoControllerBase
-        {
             private readonly IToDoUserService _service;
 
-            public ToDoListController(IToDoUserService service)
+            public ToDoUserController(IToDoUserService service)
                 => _service = service;
 
 
@@ -57,6 +55,6 @@ namespace ToDoList.Controllers
                       return Ok();
                   });
 
-        }
+        
     }
 }
