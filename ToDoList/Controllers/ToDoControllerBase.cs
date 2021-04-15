@@ -7,7 +7,7 @@ using ToDoList.Exceptions;
 
 namespace ToDoList.Controllers
 {
-    public class ToDoListControllerBase : ControllerBase
+    public class ToDoControllerBase : ControllerBase
     {
         protected delegate Task<ActionResult> Func();
         protected delegate Task<ActionResult<T>> Func<T>();

@@ -9,20 +9,20 @@ using ToDoList.Repositories;
 
 namespace ToDoList.Services
 {
-    public partial class ToDoUserService 
+    public partial class ToDoUserService : IToDoUserService
     {
         private readonly IToDoUsersRepo _user;
 
         public ToDoUserService(IToDoUsersRepo User)
           => _user = User;
 
-        public Task<List<ToDoUsersEntity>> GetListAsync()
+        public Task<List<ToDoUsersEntity>> GetUserListAsync()
              => TryCatch(async () =>
              {
                  var todoUserList = await _user.GetAllToDoUsersListASync();
                  return todoUserList;
              });
-        public Task<ToDoUsersEntity> GetByIdAsync(int id)
+        public Task<ToDoUsersEntity> GetUserByIdAsync(int id)
             => TryCatch(async () =>
             {
                 var todoListUser = await _user.GetToDoUserByIdAsync(id);
@@ -35,7 +35,7 @@ namespace ToDoList.Services
                     throw new ToDoUserNotFoundException();
                 }
             });
-        public Task DeleteAsync(int id)
+        public Task DeleteUserAccountAsync(int id)
             => TryCatch(async () =>
             {
                 var objectTovalidate = await _user.GetToDoUserByIdAsync(id);
@@ -75,28 +75,25 @@ namespace ToDoList.Services
 
              });
 
-        //public Task UpdateToDoUserNameAsync(UpdateTodoItemNameModel toDo)
-        //     => TryCatch(async () =>
-        //     {
-        //         ToDoListEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
+        public Task UpdateToDoUserNameAsync(UpdateTodoUserModel User)
+             => TryCatch(async () =>
+             {
+                 ToDoUsersEntity dbUpdateModel = await GetUserByIdAsync(User.UserID);
 
 
-        //         if (dbUpdateModel != null)
-        //         {
-        //             if (dbUpdateModel.IsFinished == false)
-        //             {
-        //                 dbUpdateModel.ItemName = toDo.ItemName;
-        //                 await _toDo.EditToDoByIdAsync(dbUpdateModel);
-        //             }
-        //             else
-        //             {
-        //                 throw new CanNotUpdateException();
-        //             }
-        //         }
-        //         else
-        //             throw new ToDoNotFoundException();
+                 if (dbUpdateModel != null)
+                 {
+                     dbUpdateModel.UserID = User.UserID;
+                     dbUpdateModel.FirstName = User.FirstName;
+                     dbUpdateModel.LastName = User.LastName;
+                     dbUpdateModel.Username = User.Username;
+                     dbUpdateModel.Password = User.Password;
+                     await _user.EditToDoUserByIdAsync(dbUpdateModel);
+                 }
+                 else
+                     throw new ToDoUserNotFoundException();
 
-        //     });
+             });
 
         private async Task<ToDoUsersEntity> GetByUsernameAsync(string name)
            => await TryCatch(async () =>
