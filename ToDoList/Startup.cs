@@ -35,6 +35,9 @@ namespace ToDoList
 
             services.AddScoped<IToDoListRepo, ToDoListRepo>();
             services.AddScoped<IToDoListService, ToDoListService>();
+            services.AddScoped<IToDoUsersRepo, ToDoUsersRepo>();
+            services.AddScoped<IToDoUserService, ToDoUserService>();
+
 
         }
 
