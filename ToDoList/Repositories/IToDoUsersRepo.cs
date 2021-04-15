@@ -11,5 +11,6 @@ namespace ToDoList.Repositories
         Task EditToDoUserByIdAsync(ToDoUsersEntity toDoUser);
         Task<List<ToDoUsersEntity>> GetAllToDoUsersListASync();
         Task<ToDoUsersEntity> GetToDoUserByIdAsync(int id);
+        Task<ToDoUsersEntity> GetToDoUserByUsernameAsync(string name);
     }
 }

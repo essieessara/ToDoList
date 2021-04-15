@@ -12,16 +12,16 @@ namespace ToDoList.Repositories
 
         public ToDoListRepo(ToDoListContext context)
         => _context = context;
-        
+
 
         public async Task<List<ToDoListEntity>> GetAllToDoListASync()
-            =>await _context.Lists.ToListAsync();
+            => await _context.Lists.ToListAsync();
 
         public async Task<ToDoListEntity> GetToDoByIdAsync(int id)
             => await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
 
         public async Task<ToDoListEntity> GetToDoByNameAsync(string name)
-            =>  await _context.Lists.FirstOrDefaultAsync(x => x.ItemName == name);
+            => await _context.Lists.FirstOrDefaultAsync(x => x.ItemName == name);
 
         public async Task<ToDoListEntity> CreateToDoItemAsync(ToDoListEntity toDodb)
         {
