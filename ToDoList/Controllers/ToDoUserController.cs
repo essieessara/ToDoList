@@ -9,6 +9,7 @@ using ToDoList.Models;
 using ToDoList.Services;
 
 
+
 namespace ToDoList.Controllers
 {
     [Route("api/[controller]")]
@@ -22,33 +23,32 @@ namespace ToDoList.Controllers
 
 
             [HttpGet("GetUsers")]
-            public Task<ActionResult<IEnumerable<ToDoUsersEntity>>> GetListsAsync()
+            public Task<ActionResult<IEnumerable<ToDoUsersEntity>>> GetUsersListsAsync()
                 => TryCatch<IEnumerable<ToDoUsersEntity>>(async () => {
-                    var ToDo = await _service.GetUserListAsync();
-                    return Ok(ToDo);
+                    var User = await _service.GetUserListAsync();
+                    return Ok(User);
 
                 });
             [HttpGet("GetUserById/{id}")]
-            public Task<ActionResult<ToDoUsersEntity>> GetListsAsync(int id)
+            public Task<ActionResult<ToDoUsersEntity>> GetUserListsAsync(int id)
                 => TryCatch<ToDoUsersEntity>(async () => {
-                    var output = await _service.GetUserByIdAsync(id);
-                    return Ok(output);
+                    return Ok(await _service.GetUserByIdAsync(id));
                 });
             [HttpPut("UpdateToDoUser")]
-            public Task<ActionResult> UpdateListItemAsync(UpdateTodoUserModel User)
+            public Task<ActionResult> UpdateUserInfoAsync(UpdateTodoUserModel User)
                 => TryCatch(async () => {
                     await _service.UpdateToDoUserAsync(User);
                     return Ok();
                 });
            
             [HttpPost("RegisterUser")]
-            public Task<ActionResult<ToDoUsersEntity>> PostToDodbAsync(RegisterToDoUser User)
+            public Task<ActionResult<ToDoUsersEntity>> RegisterUserAsync(RegisterToDoUser User)
                    => TryCatch<ToDoUsersEntity>(async () =>
                    {
                        return Ok(await _service.RegisterUserAsync(User));
                    });
             [HttpDelete("DeleteUserAccount/{id}")]
-            public Task<ActionResult> DeleteToDodbAsync(int id)
+            public Task<ActionResult> DeleteToDoUserAsync(int id)
                   => TryCatch(async () =>
                   {
                       await _service.DeleteUserAccountAsync(id);
