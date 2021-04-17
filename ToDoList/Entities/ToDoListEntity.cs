@@ -14,5 +14,6 @@ namespace ToDoList.Database
         public bool IsFinished { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? EndedDate { get; set; }
+        public virtual ToDoUsersEntity Users { get; set; }
     }
 }
