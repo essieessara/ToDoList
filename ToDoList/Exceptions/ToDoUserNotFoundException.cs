@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Exceptions
 {
-    public class ToDoUserNotFoundException : ToDoUsersExceptions
+    public class ToDoUserNotFoundException : ToDoExceptions
     {
         public ToDoUserNotFoundException()
         {
