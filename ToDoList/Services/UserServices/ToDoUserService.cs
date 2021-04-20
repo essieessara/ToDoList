@@ -35,7 +35,12 @@ namespace ToDoList.Services.UserServices
                 if (todoListUser != null)
                 {
                     var output = new UserDataResponseModel()
-                    { FirstName = todoListUser.FirstName, LastName = todoListUser.LastName };
+                    { 
+                        FirstName = todoListUser.FirstName, 
+                        LastName = todoListUser.LastName, 
+                        Username = todoListUser.Username,
+                        UserID = todoListUser.UserID
+                    };
                     todoListUser.Lists = (ICollection<ToDoItemtEntity>)await _itemService.GetUserByIdAsync(id);
 
                     output.ToDoLists = todoListUser.Lists.Select(x => new ToDoItemResponseModel
