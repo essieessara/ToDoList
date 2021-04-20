@@ -8,7 +8,6 @@ using Microsoft.OpenApi.Models;
 using ToDoList.Repositories;
 using ToDoList.Repositories.ToDoItemRepos;
 using ToDoList.Repositories.UserRepos;
-using ToDoList.Services;
 using ToDoList.Services.ToDoServices;
 using ToDoList.Services.UserServices;
 

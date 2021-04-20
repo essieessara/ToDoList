@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
-using ToDoList.Exceptions;
+using ToDoList.Exceptions.UserExceptions;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.UserModels;
 using ToDoList.Repositories.UserRepos;
 using ToDoList.Services.ToDoServices;
-using ToDoList.Services.UserServices;
 
 namespace ToDoList.Services.UserServices
 {
@@ -22,7 +20,7 @@ namespace ToDoList.Services.UserServices
             _repo = User;
             _itemService = itemService;
         }
-          
+
 
         public Task<List<UserEntity>> GetUserListAsync()
              => TryCatch(async () =>
@@ -98,7 +96,7 @@ namespace ToDoList.Services.UserServices
         public Task UpdateToDoUserAsync(UpdateUserModel User)
              => TryCatch(async () =>
              {
-                 UserEntity dbUpdateModel = await  _repo.GetToDoUserByIdAsync(User.UserID);
+                 UserEntity dbUpdateModel = await _repo.GetToDoUserByIdAsync(User.UserID);
 
 
                  if (dbUpdateModel != null)

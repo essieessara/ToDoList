@@ -18,18 +18,18 @@ namespace ToDoList.Repositories
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+
             builder.Entity<ToDoItemtEntity>()
                 .HasOne(x => x.User)
                 .WithMany(x => x.Lists)
                 .HasForeignKey(x => x.UserID);
 
 
-          
+
 
         }
 
-      
+
     }
 
 }
