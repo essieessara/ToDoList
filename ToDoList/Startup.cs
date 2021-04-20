@@ -6,7 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ToDoList.Repositories;
+using ToDoList.Repositories.ToDoItemRepos;
+using ToDoList.Repositories.UserRepos;
 using ToDoList.Services;
+using ToDoList.Services.ToDoServices;
+using ToDoList.Services.UserServices;
 
 namespace ToDoList
 {
@@ -33,10 +37,10 @@ namespace ToDoList
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList", Version = "v1" });
             });
 
-            services.AddScoped<IToDoListRepo, ToDoListRepo>();
-            services.AddScoped<IToDoListService, ToDoListService>();
-            services.AddScoped<IToDoUsersRepo, ToDoUsersRepo>();
-            services.AddScoped<IToDoUserService, ToDoUserService>();
+            services.AddScoped<IToDoItemRepo, ToDoItemRepo>();
+            services.AddScoped<IToDoItemService, ToDoItemService>();
+            services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IUserService, UserService>();
 
 
         }
