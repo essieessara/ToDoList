@@ -13,10 +13,12 @@ namespace ToDoList.Services
     {
 
         private readonly IToDoListRepo _toDo;
-       
-        public ToDoListService(IToDoListRepo ToDo)
-             =>_toDo = ToDo;
-
+        private readonly IToDoUsersRepo _user;
+        public ToDoListService(IToDoListRepo ToDo, IToDoUsersRepo User)
+        {
+           _toDo = ToDo;
+           _user = User;
+        }
 
         public  Task<List<ToDoListEntity>> GetListAsync()
              =>  TryCatch(async () =>
@@ -41,24 +43,31 @@ namespace ToDoList.Services
              =>  TryCatch(async () =>
              {
                  var dbExistingModel = await GetByNameAsync(toDodb.ItemName);
+                 var user = await _user.GetToDoUserByIdAsync(toDodb.UserID);
+
                  ToDoListEntity dbCreateModel = new ToDoListEntity()
                  {
                      CreatedDate = DateTime.Now,
                      IsFinished = false,
                      ItemName = toDodb.ItemName,
-                     EndedDate = null
+                     EndedDate = null,
+                     Users = user
                  };
-                 if (toDodb != null)
+                 if(user != null)
                  {
-                     if (dbExistingModel == null)
+                     if (toDodb != null)
                      {
-                         var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
-                         return todoNewItem;
-                     }
-                     throw new ToDoAlreadyExistsException();
+                         if (dbExistingModel == null)
+                         {
+                             var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
+                             return todoNewItem;
+                         }
+                         throw new ToDoAlreadyExistsException();
 
+                     }
+                     throw new ToDoValueIsNullException();
                  }
-                 throw new ToDoValueIsNullException();
+                 throw new ToDoUserNotFoundException();
 
              });
         public  Task DeleteAsync(int id)
