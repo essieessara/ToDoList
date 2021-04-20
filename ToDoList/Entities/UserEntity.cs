@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ToDoList.Database
@@ -21,5 +22,6 @@ namespace ToDoList.Database
         public string Password { get; set; }
 
         public virtual ICollection<ToDoItemtEntity> Lists { get; set; }
+
     }
 }

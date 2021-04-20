@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
 using ToDoList.Exceptions.UserExceptions;
+using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Repositories.ToDoItemRepos;
 using ToDoList.Repositories.UserRepos;
@@ -53,7 +54,7 @@ namespace ToDoList.Services.ToDoServices
                    throw new ToDoNotFoundException();
                }
            });
-        public Task<ToDoItemtEntity> CreateAsync(CreateTodoItemModel toDodb)
+        public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
              => TryCatch(async () =>
             {
                 var dbExistingModel = await GetByNameAsync(toDodb.ItemName);
@@ -73,8 +74,29 @@ namespace ToDoList.Services.ToDoServices
                     {
                         if (dbExistingModel == null)
                         {
-                            var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
-                            return todoNewItem;
+                            await _toDo.CreateToDoItemAsync(dbCreateModel);
+                            //var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
+                            //return todoNewItem;
+
+                            var output = new ToDoItemResponseModel()
+                            {
+                                ItemID = dbCreateModel.ItemID,
+                                ItemName = dbCreateModel.ItemName,
+                                CreatedDate = dbCreateModel.CreatedDate,
+                                EndedDate = dbCreateModel.EndedDate,
+                                IsFinished = dbCreateModel.IsFinished
+                            };
+
+                            dbCreateModel.User = await _user.GetToDoUserByIdAsync(user.UserID);
+                            output.UserData = new UserDataResponseModel()
+                            {
+                                UserID = user.UserID,
+                                FirstName = user.FirstName,
+                                LastName = user.LastName,
+                                Username = user.Username,
+                                ToDoLists = null
+                            };
+                            return output;
                         }
                         throw new ToDoAlreadyExistsException();
 

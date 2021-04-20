@@ -10,5 +10,7 @@ namespace ToDoList.Models.ResponseModels
         public bool IsFinished { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? EndedDate { get; set; }
+
+        public  UserDataResponseModel UserData { get; set; }
     }
 }

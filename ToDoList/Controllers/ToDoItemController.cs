@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoList.Database;
+using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Services.ToDoServices;
 
@@ -47,8 +48,8 @@ namespace ToDoList.Controllers
                  return Ok();
              });
         [HttpPost("CreateToDo")]
-        public Task<ActionResult<ToDoItemtEntity>> PostToDodbAsync(CreateTodoItemModel toDodb)
-               => TryCatch<ToDoItemtEntity>(async () =>
+        public Task<ActionResult<ToDoItemResponseModel>> PostToDodbAsync(CreateTodoItemModel toDodb)
+               => TryCatch<ToDoItemResponseModel>(async () =>
               {
                   return Ok(await _service.CreateAsync(toDodb));
               });

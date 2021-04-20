@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ToDoList.Models.ResponseModels
 {
@@ -17,6 +18,8 @@ namespace ToDoList.Models.ResponseModels
 
         public string Username { get; set; }
 
-        public virtual List<ToDoItemResponseModel> ToDoLists { get; set; } = new();
+
+        [JsonProperty(NullValueHandling= NullValueHandling.Ignore)]
+        public virtual ICollection<ToDoItemResponseModel> ToDoLists { get; set; }
     }
 }
