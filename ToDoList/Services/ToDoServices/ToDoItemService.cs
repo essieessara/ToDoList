@@ -75,8 +75,6 @@ namespace ToDoList.Services.ToDoServices
                         if (dbExistingModel == null)
                         {
                             await _toDo.CreateToDoItemAsync(dbCreateModel);
-                            //var todoNewItem = await _toDo.CreateToDoItemAsync(dbCreateModel);
-                            //return todoNewItem;
 
                             var output = new ToDoItemResponseModel()
                             {
@@ -93,8 +91,7 @@ namespace ToDoList.Services.ToDoServices
                                 UserID = user.UserID,
                                 FirstName = user.FirstName,
                                 LastName = user.LastName,
-                                Username = user.Username,
-                                ToDoLists = null
+                                Username = user.Username
                             };
                             return output;
                         }
