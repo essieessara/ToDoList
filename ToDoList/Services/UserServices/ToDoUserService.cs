@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
@@ -64,6 +65,12 @@ namespace ToDoList.Services.UserServices
                 var objectTovalidate = await _repo.GetToDoUserByIdAsync(id);
                 if (objectTovalidate != null)
                 {
+                    objectTovalidate.Lists = await _itemService.GetUserByIdAsync(id);
+                    var ToDosToRemove = objectTovalidate.Lists.Where(x => x.UserID == id).ToList();
+                    foreach (var ToDo in ToDosToRemove)
+                    {
+                        objectTovalidate.Lists.Remove(ToDo);
+                    }
                     await _repo.DeleteToDoUserByIdAsync(id);
                 }
                 else

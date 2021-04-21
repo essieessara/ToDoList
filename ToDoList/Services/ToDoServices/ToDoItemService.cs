@@ -66,36 +66,38 @@ namespace ToDoList.Services.ToDoServices
                     IsFinished = false,
                     ItemName = toDodb.ItemName,
                     EndedDate = null,
-                    User = user
+                    User = user,
+                    UserID = toDodb.UserID 
                 };
                 if (user != null)
                 {
                     if (toDodb != null)
                     {
-                        if (dbExistingModel == null)
-                        {
-                            await _toDo.CreateToDoItemAsync(dbCreateModel);
+                             if (dbExistingModel == null)
+                             {
+                                await _toDo.CreateToDoItemAsync(dbCreateModel);
 
-                            var output = new ToDoItemResponseModel()
-                            {
-                                ItemID = dbCreateModel.ItemID,
-                                ItemName = dbCreateModel.ItemName,
-                                CreatedDate = dbCreateModel.CreatedDate,
-                                EndedDate = dbCreateModel.EndedDate,
-                                IsFinished = dbCreateModel.IsFinished
-                            };
+                                var output = new ToDoItemResponseModel()
+                                {
+                                    ItemID = dbCreateModel.ItemID,
+                                    ItemName = dbCreateModel.ItemName,
+                                    CreatedDate = dbCreateModel.CreatedDate,
+                                    EndedDate = dbCreateModel.EndedDate,
+                                    IsFinished = dbCreateModel.IsFinished
+                                };
 
-                            dbCreateModel.User = await _user.GetToDoUserByIdAsync(user.UserID);
-                            output.UserData = new UserDataResponseModel()
-                            {
-                                UserID = user.UserID,
-                                FirstName = user.FirstName,
-                                LastName = user.LastName,
-                                Username = user.Username
-                            };
-                            return output;
-                        }
-                        throw new ToDoAlreadyExistsException();
+                                dbCreateModel.User = await _user.GetToDoUserByIdAsync(user.UserID);
+                                output.UserData = new UserDataResponseModel()
+                                {
+                                    UserID = user.UserID,
+                                    FirstName = user.FirstName,
+                                    LastName = user.LastName,
+                                    Username = user.Username
+                                };
+                                return output;
+                             }
+                            
+                            throw new ToDoAlreadyExistsException();
 
                     }
                     throw new ToDoValueIsNullException();
