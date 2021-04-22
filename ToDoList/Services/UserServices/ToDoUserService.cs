@@ -66,10 +66,11 @@ namespace ToDoList.Services.UserServices
                 if (objectTovalidate != null)
                 {
                     objectTovalidate.Lists = await _itemService.GetUserByIdAsync(id);
-                    var ToDosToRemove = objectTovalidate.Lists.Where(x => x.UserID == id).ToList();
-                    foreach (var ToDo in ToDosToRemove)
+                   // var ToDosToRemove = objectTovalidate.Lists.Where(x => x.UserID == id).ToList();
+                    foreach (var ToDo in objectTovalidate.Lists)
                     {
-                        objectTovalidate.Lists.Remove(ToDo);
+                        // objectTovalidate.Lists.Remove(ToDo);
+                        await _itemService.DeleteAsync(ToDo.ItemID);
                     }
                     await _repo.DeleteToDoUserByIdAsync(id);
                 }

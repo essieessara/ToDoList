@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
 using ToDoList.Exceptions.UserExceptions;
+using ToDoList.Mapper;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Repositories.ToDoItemRepos;
@@ -17,10 +18,12 @@ namespace ToDoList.Services.ToDoServices
 
         private readonly IToDoItemRepo _toDo;
         private readonly IUserRepo _user;
+        private readonly ToDoItemMapper _mapper;
         public ToDoItemService(IToDoItemRepo ToDo, IUserRepo User)
         {
             _toDo = ToDo;
             _user = User;
+            _mapper = new();
         }
 
         public Task<List<ToDoItemtEntity>> GetListAsync()
@@ -58,58 +61,23 @@ namespace ToDoList.Services.ToDoServices
         public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
              => TryCatch(async () =>
              {
+                 // declare ur virables
+                 // validate your data
+                 // do whats nessasary
 
-                var user = await _user.GetToDoUserByIdAsync(toDodb.UserID);
+                 UserEntity user = await _user.GetToDoUserByIdAsync(toDodb.UserID);
+                 ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb, user);
+                 await ValidateCreateToDoItem(toDodb, user);
 
-                ToDoItemtEntity dbCreateModel = new ToDoItemtEntity()
-                {
-                    CreatedDate = DateTime.Now,
-                    IsFinished = false,
-                    ItemName = toDodb.ItemName,
-                    EndedDate = null,
-                    User = user,
-                    UserID = toDodb.UserID 
-                };
-               if (user != null)
-               {
-                 if (toDodb != null)
-                 {
-                    user.Lists = await GetUserByIdAsync(toDodb.UserID);
-                    var existToDoOFUser = user.Lists
-                        .Where(x => x.UserID == toDodb.UserID && x.ItemName == toDodb.ItemName).ToList();
+                 await _toDo.CreateToDoItemAsync(dbCreateModel);
+     
+                 dbCreateModel.User = await _user.GetToDoUserByIdAsync(user.UserID);
+                 var output = _mapper.Map(dbCreateModel, user);
+                 return output;
 
-                    if ( existToDoOFUser.Count == 0)
-                    {
-                                await _toDo.CreateToDoItemAsync(dbCreateModel);
+               
 
-                                var output = new ToDoItemResponseModel()
-                                {
-                                    ItemID = dbCreateModel.ItemID,
-                                    ItemName = dbCreateModel.ItemName,
-                                    CreatedDate = dbCreateModel.CreatedDate,
-                                    EndedDate = dbCreateModel.EndedDate,
-                                    IsFinished = dbCreateModel.IsFinished
-                                };
-
-                                dbCreateModel.User = await _user.GetToDoUserByIdAsync(user.UserID);
-                                output.UserData = new UserDataResponseModel()
-                                {
-                                    UserID = user.UserID,
-                                    FirstName = user.FirstName,
-                                    LastName = user.LastName,
-                                    Username = user.Username
-                                };
-                                return output;
-                    }
-
-                    throw new ToDoAlreadyExistsException();
-   
-                 }
-                    throw new ToDoValueIsNullException();
-               }
-                throw new UserNotFoundException();
-
-            });
+             });
         public Task DeleteAsync(int id)
              => TryCatch(async () =>
             {
@@ -168,6 +136,20 @@ namespace ToDoList.Services.ToDoServices
                     throw new ToDoNotFoundException();
             });
 
+
+        private async Task ValidateCreateToDoItem(CreateTodoItemModel model, UserEntity user)
+        {
+            if (user is null) { throw new UserNotFoundException(); }
+            if (model is null) { throw new ToDoValueIsNullException(); }
+
+            user.Lists = await GetUserByIdAsync(model.UserID);
+            var existToDoOFUser = user.Lists
+                .Where(x => x.ItemName == model.ItemName).ToList();
+            if (existToDoOFUser.Count > 0)
+            {
+                throw new ToDoAlreadyExistsException();
+            }
+        }
 
     }
 
