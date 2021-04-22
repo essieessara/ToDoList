@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
@@ -57,7 +58,7 @@ namespace ToDoList.Services.ToDoServices
         public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
              => TryCatch(async () =>
             {
-                var dbExistingModel = await GetByNameAsync(toDodb.ItemName);
+                //var dbExistingModel = await GetByNameAsync(toDodb.ItemName);
                 var user = await _user.GetToDoUserByIdAsync(toDodb.UserID);
 
                 ToDoItemtEntity dbCreateModel = new ToDoItemtEntity()
@@ -69,12 +70,15 @@ namespace ToDoList.Services.ToDoServices
                     User = user,
                     UserID = toDodb.UserID 
                 };
-                if (user != null)
-                {
-                    if (toDodb != null)
+               if (user != null)
+               {
+                 if (toDodb != null)
+                 {
+                    user.Lists = await GetUserByIdAsync(toDodb.UserID);
+                    var existToDoOFUser = user.Lists.Where(x => x.UserID == toDodb.UserID && x.ItemName == toDodb.ItemName).ToList();
+
+                    if ( existToDoOFUser.Count == 0)
                     {
-                             if (dbExistingModel == null)
-                             {
                                 await _toDo.CreateToDoItemAsync(dbCreateModel);
 
                                 var output = new ToDoItemResponseModel()
@@ -95,13 +99,13 @@ namespace ToDoList.Services.ToDoServices
                                     Username = user.Username
                                 };
                                 return output;
-                             }
-                            
-                            throw new ToDoAlreadyExistsException();
-
                     }
+
+                    throw new ToDoAlreadyExistsException();
+   
+                 }
                     throw new ToDoValueIsNullException();
-                }
+               }
                 throw new UserNotFoundException();
 
             });
@@ -164,12 +168,12 @@ namespace ToDoList.Services.ToDoServices
             });
 
 
-        private async Task<ToDoItemtEntity> GetByNameAsync(string name)
-             => await TryCatch(async () =>
-             {
-                 var todoListItem = await _toDo.GetToDoByNameAsync(name);
-                 return todoListItem;
-             });
+        //private async Task<ToDoItemtEntity> GetByNameAsync(string name)
+        //     => await TryCatch(async () =>
+        //     {
+        //         var todoListItem = await _toDo.GetToDoByNameAsync(name);
+        //         return todoListItem;
+        //     });
 
     }
 
