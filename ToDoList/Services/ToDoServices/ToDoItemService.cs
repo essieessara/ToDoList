@@ -57,8 +57,8 @@ namespace ToDoList.Services.ToDoServices
            });
         public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
              => TryCatch(async () =>
-            {
-                //var dbExistingModel = await GetByNameAsync(toDodb.ItemName);
+             {
+
                 var user = await _user.GetToDoUserByIdAsync(toDodb.UserID);
 
                 ToDoItemtEntity dbCreateModel = new ToDoItemtEntity()
@@ -167,14 +167,6 @@ namespace ToDoList.Services.ToDoServices
                 else
                     throw new ToDoNotFoundException();
             });
-
-
-        //private async Task<ToDoItemtEntity> GetByNameAsync(string name)
-        //     => await TryCatch(async () =>
-        //     {
-        //         var todoListItem = await _toDo.GetToDoByNameAsync(name);
-        //         return todoListItem;
-        //     });
 
     }
 
