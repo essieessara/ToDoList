@@ -75,7 +75,8 @@ namespace ToDoList.Services.ToDoServices
                  if (toDodb != null)
                  {
                     user.Lists = await GetUserByIdAsync(toDodb.UserID);
-                    var existToDoOFUser = user.Lists.Where(x => x.UserID == toDodb.UserID && x.ItemName == toDodb.ItemName).ToList();
+                    var existToDoOFUser = user.Lists
+                        .Where(x => x.UserID == toDodb.UserID && x.ItemName == toDodb.ItemName).ToList();
 
                     if ( existToDoOFUser.Count == 0)
                     {
