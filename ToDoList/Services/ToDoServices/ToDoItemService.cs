@@ -10,18 +10,19 @@ using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Repositories.ToDoItemRepos;
 using ToDoList.Repositories.UserRepos;
+using ToDoList.Services.UserServices;
 
 namespace ToDoList.Services.ToDoServices
 {
     public partial class ToDoItemService : IToDoItemService
     {
 
-        private readonly IToDoItemRepo _toDo;
-        private readonly IUserRepo _user;
+        private readonly IToDoItemRepo _repo;
+        private readonly IUserService _user;
         private readonly ToDoItemMapper _mapper;
-        public ToDoItemService(IToDoItemRepo ToDo, IUserRepo User)
+        public ToDoItemService(IToDoItemRepo ToDo, IUserService User)
         {
-            _toDo = ToDo;
+            _repo = ToDo;
             _user = User;
             _mapper = new();
         }
@@ -29,50 +30,34 @@ namespace ToDoList.Services.ToDoServices
         public Task<List<ToDoItemtEntity>> GetListAsync()
              => TryCatch(async () =>
              {
-                 var todoList = await _toDo.GetAllToDoListASync();
+                 var todoList = await _repo.GetAllToDoListASync();
                  return todoList;
              });
         public Task<ToDoItemtEntity> GetByIdAsync(int id)
             => TryCatch(async () =>
            {
-               var todoListItem = await _toDo.GetToDoByIdAsync(id);
-               if (todoListItem != null)
-               {
-                   return todoListItem;
-               }
-               else
-               {
-                   throw new ToDoNotFoundException();
-               }
-           });
-        public Task<List<ToDoItemtEntity>> GetUserByIdAsync(int id)
-            => TryCatch(async () =>
-           {
-               var todoListUser = await _toDo.GetToDoUserByIdAsync(id);
-               if (todoListUser != null)
-               {
-                   return todoListUser;
-               }
-               else
-               {
-                   throw new ToDoNotFoundException();
-               }
+               var todoListItem = await _repo.GetToDoByIdAsync(id);
+
+               ValidateGetByID(todoListItem);
+               return todoListItem;
+
            });
         public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
              => TryCatch(async () =>
              {
-                 // declare ur virables
+                 // declare ur variables
                  // validate your data
                  // do whats nessasary
 
-                 UserEntity user = await _user.GetToDoUserByIdAsync(toDodb.UserID);
-                 ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb, user);
+                 UserDataResponseModel user = await _user.GetUserByIdAsync(toDodb.UserID);
+                 ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);
                  await ValidateCreateToDoItem(toDodb, user);
 
-                 await _toDo.CreateToDoItemAsync(dbCreateModel);
+                 await _repo.CreateToDoItemAsync(dbCreateModel);
      
-                 dbCreateModel.User = await _user.GetToDoUserByIdAsync(user.UserID);
-                 var output = _mapper.Map(dbCreateModel, user);
+               //  dbCreateModel.User = await _user.GetUserByIdAsync(user.UserID);
+                 var output = _mapper.Map(dbCreateModel);
+                 output.UserData = user;
                  return output;
 
                
@@ -81,36 +66,20 @@ namespace ToDoList.Services.ToDoServices
         public Task DeleteAsync(int id)
              => TryCatch(async () =>
             {
-                var objectTovalidate = await _toDo.GetToDoByIdAsync(id);
-                if (objectTovalidate != null)
-                {
-                    await _toDo.DeleteToDoByIdAsync(id);
-                }
-                else
-                {
-                    throw new ToDoNotFoundException();
-                }
+                ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id);
+                ValidateDelete(objectTovalidate);
+                await _repo.DeleteToDoByIdAsync(id);
             });
         public Task UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
             {
                 ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
 
+                ValidateUpdateName(dbUpdateModel);
 
-                if (dbUpdateModel != null)
-                {
-                    if (dbUpdateModel.IsFinished == false)
-                    {
-                        dbUpdateModel.ItemName = toDo.ItemName;
-                        await _toDo.EditToDoByIdAsync(dbUpdateModel);
-                    }
-                    else
-                    {
-                        throw new CanNotUpdateToDoException();
-                    }
-                }
-                else
-                    throw new ToDoNotFoundException();
+                dbUpdateModel.ItemName = toDo.ItemName;
+                await _repo.EditToDoByIdAsync(dbUpdateModel);
+                   
 
             });
         public Task UpdateStatusAsync(int id)
@@ -119,38 +88,15 @@ namespace ToDoList.Services.ToDoServices
 
                 ToDoItemtEntity Model = await GetByIdAsync(id);
 
-                if (Model != null)
-                {
-                    if (Model.IsFinished == false)
-                    {
-                        Model.IsFinished = true;
-                        Model.EndedDate = DateTime.Now;
-                        await _toDo.EditToDoByIdAsync(Model);
-                    }
-                    else
-                    {
-                        throw new CanNotUpdateToDoException();
-                    }
-                }
-                else
-                    throw new ToDoNotFoundException();
+                ValidateUpdateStatus(Model);
+
+                 Model.IsFinished = true;
+                 Model.EndedDate = DateTime.Now;
+                 await _repo.EditToDoByIdAsync(Model);
+                   
             });
-
-
-        private async Task ValidateCreateToDoItem(CreateTodoItemModel model, UserEntity user)
-        {
-            if (user is null) { throw new UserNotFoundException(); }
-            if (model is null) { throw new ToDoValueIsNullException(); }
-
-            user.Lists = await GetUserByIdAsync(model.UserID);
-            var existToDoOFUser = user.Lists
-                .Where(x => x.ItemName == model.ItemName).ToList();
-            if (existToDoOFUser.Count > 0)
-            {
-                throw new ToDoAlreadyExistsException();
-            }
-        }
 
     }
 
+   
 }

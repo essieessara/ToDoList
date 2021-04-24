@@ -15,7 +15,7 @@ namespace ToDoList.Repositories.UserRepos
         public async Task<List<UserEntity>> GetAllToDoUsersListASync()
             => await _context.Users.ToListAsync();
 
-        public async Task<UserEntity> GetToDoUserByIdAsync(int id)
+        public async Task<UserEntity> GetUserByIdAsync(int id)
             => await _context.Users.FirstOrDefaultAsync(x => x.UserID == id);
         public async Task<UserEntity> GetToDoUserByUsernameAsync(string name)
            => await _context.Users.FirstOrDefaultAsync(x => x.Username == name);
