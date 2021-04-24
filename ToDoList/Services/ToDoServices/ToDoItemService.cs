@@ -49,7 +49,7 @@ namespace ToDoList.Services.ToDoServices
                  // validate your data
                  // do whats nessasary
 
-                 UserDataResponseModel user = await _user.GetUserByIdAsync(toDodb.UserID);
+                 var user = await _user.GetUserByIdAsync(toDodb.UserID);
                  ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);
                  await ValidateCreateToDoItem(toDodb, user);
 

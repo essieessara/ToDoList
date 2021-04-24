@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using ToDoList.Repositories;
 using ToDoList.Repositories.ToDoItemRepos;
 using ToDoList.Repositories.UserRepos;
+using ToDoList.Services.AccountMangmentService;
 using ToDoList.Services.ToDoServices;
 using ToDoList.Services.UserServices;
 
@@ -36,12 +37,12 @@ namespace ToDoList
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList", Version = "v1" });
             });
 
+
             services.AddScoped<IToDoItemRepo, ToDoItemRepo>();
             services.AddScoped<IToDoItemService, ToDoItemService>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IUserService, UserService>();
-
-
+            services.AddScoped<IAccountManagmentService, AccountManagmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

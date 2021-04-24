@@ -9,7 +9,8 @@ namespace ToDoList.Models.UserModels
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        public string NewPassword { get; set; }
+        [Compare("NewPassword")]
+        public string ConfirmNewPassword { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Models.UserModels;
+using ToDoList.Services.AccountMangmentService;
 using ToDoList.Services.UserServices;
 
 namespace ToDoList.Controllers
@@ -12,10 +13,13 @@ namespace ToDoList.Controllers
     public class UserController : ToDoControllerBase
     {
         private readonly IUserService _service;
+        private readonly IAccountManagmentService _account;
 
-        public UserController(IUserService service)
-            => _service = service;
-
+        public UserController(IUserService service , IAccountManagmentService account)
+        {
+            _service = service;
+            _account = account;
+        }
 
         [HttpGet("GetUsers")]
         public Task<ActionResult<IEnumerable<UserEntity>>> GetUsersListsAsync()
@@ -49,7 +53,7 @@ namespace ToDoList.Controllers
         public Task<ActionResult> DeleteToDoUserAsync(int id)
               => TryCatch(async () =>
               {
-                  await _service.DeleteUserAccountAsync(id);
+                  await _account.DeleteUserAccountAsync(id);
                   return Ok();
               });
 

@@ -12,7 +12,7 @@ namespace ToDoList.Repositories.ToDoItemRepos
         private readonly ToDoListContext _context;
 
         public ToDoItemRepo(ToDoListContext context)
-        => _context = context;
+            => _context = context;
 
 
         public async Task<List<ToDoItemtEntity>> GetAllToDoListASync()

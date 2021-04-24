@@ -16,13 +16,13 @@ namespace ToDoList.Services.UserServices
     public partial class UserService : IUserService
     {
         private readonly IUserRepo _repo;
-        private readonly IToDoItemService _itemService;
+       // private readonly IToDoItemService _itemService;
         private readonly UserMapper _mapper;
 
-        public UserService(IUserRepo User, IToDoItemService itemService)
+        public UserService(IUserRepo User)
         {
             _repo = User;
-            _itemService = itemService;
+          //  _itemService = itemService;
             _mapper = new();
         }
 
@@ -60,16 +60,9 @@ namespace ToDoList.Services.UserServices
             => TryCatch(async () =>
             {
                 var objectTovalidate = await _repo.GetUserByIdAsync(id);
-
                 ValidateDeleteUserById(objectTovalidate);
-                 objectTovalidate.Lists = (ICollection<ToDoItemtEntity>)await _repo.GetUserByIdAsync(id);
-                  
-                    foreach (var ToDo in objectTovalidate.Lists)
-                    {
-                        await _itemService.DeleteAsync(ToDo.ItemID);
-                    }
-                    await _repo.DeleteToDoUserByIdAsync(id);
-                
+                await _repo.DeleteToDoUserByIdAsync(id);
+
             });
 
         public Task<UserEntity> RegisterUserAsync(RegisterUser toDoUser)
@@ -100,7 +93,7 @@ namespace ToDoList.Services.UserServices
 
                  ValidateUpdatePass(dbUpdateModel, User);
 
-                 dbUpdateModel.Password = User.Password;
+                 dbUpdateModel.Password = User.NewPassword;
                 
              });
 
@@ -111,6 +104,6 @@ namespace ToDoList.Services.UserServices
                return todoListItem;
            });
 
-
+       
     }
 }
