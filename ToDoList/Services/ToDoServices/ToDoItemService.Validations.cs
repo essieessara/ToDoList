@@ -22,10 +22,20 @@ namespace ToDoList.Services.ToDoServices
             if (model is null) { throw new ToDoNotFoundException(); }
         }
 
-        private void ValidateUpdateName(ToDoItemtEntity model)
+        private async Task ValidateUpdateNameAsync(ToDoItemtEntity model, UpdateTodoItemNameModel modelToBeUpdated)
         {
             if (model is null) { throw new ToDoNotFoundException(); }
             if (model.IsFinished == true) { throw new CanNotUpdateToDoException(); }
+            var toDoList = await GetListOfUserByIdAsync(model.UserID);
+            if (toDoList is not null)
+            {
+
+                int countExisits = toDoList.Count(x => x.ItemName == modelToBeUpdated.ItemName);
+                if (countExisits > 0)
+                {
+                    throw new ToDoAlreadyExistsException();
+                }
+            }
         }
 
         private void ValidateUpdateStatus(ToDoItemtEntity model)

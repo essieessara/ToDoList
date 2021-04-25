@@ -59,15 +59,10 @@ namespace ToDoList.Services.ToDoServices
              => TryCatch(async () =>
              {
 
-                 //var user = await _user.GetUserByIdAsync(toDodb.UserID);
                  ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);
-                 //await ValidateCreateToDoItem(toDodb, user);
                  await _repo.CreateToDoItemAsync(dbCreateModel);    
                  var output = _mapper.Map(dbCreateModel);
-                 //output.UserData = user;
                  return output;
-
-               
 
              });
         public Task DeleteAsync(int id)
@@ -79,10 +74,9 @@ namespace ToDoList.Services.ToDoServices
             });
         public Task UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
-            {
-                ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
-
-                ValidateUpdateName(dbUpdateModel);
+             {
+                 ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
+                await ValidateUpdateNameAsync(dbUpdateModel,toDo);
 
                 dbUpdateModel.ItemName = toDo.ItemName;
                 await _repo.EditToDoByIdAsync(dbUpdateModel);
