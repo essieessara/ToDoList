@@ -17,7 +17,7 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         public async Task<List<ToDoItemtEntity>> GetAllToDoListASync()
             => await _context.Lists.ToListAsync();
-
+       
         public async Task<ToDoItemtEntity> GetToDoByIdAsync(int id)
             => await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
         public async Task<List<ToDoItemtEntity>> GetToDoUserByIdAsync(int id)

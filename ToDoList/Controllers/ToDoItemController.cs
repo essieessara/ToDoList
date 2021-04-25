@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
+using ToDoList.Services.DataManagementService;
 using ToDoList.Services.ToDoServices;
 
 namespace ToDoList.Controllers
@@ -13,10 +14,12 @@ namespace ToDoList.Controllers
     public class ToDoItemController : ToDoControllerBase
     {
         private readonly IToDoItemService _service;
-
-        public ToDoItemController(IToDoItemService service)
-            => _service = service;
-
+        private readonly IDataManagementService _data;
+        public ToDoItemController(IToDoItemService service, IDataManagementService data)
+        {
+            _service = service;
+            _data = data;
+        }
 
         [HttpGet("GetLists")]
         public Task<ActionResult<IEnumerable<ToDoItemtEntity>>> GetListsAsync()
@@ -51,7 +54,7 @@ namespace ToDoList.Controllers
         public Task<ActionResult<ToDoItemResponseModel>> PostToDodbAsync(CreateTodoItemModel toDodb)
                => TryCatch<ToDoItemResponseModel>(async () =>
               {
-                  return Ok(await _service.CreateAsync(toDodb));
+                  return Ok(await _data.CreateAsync(toDodb));
               });
         [HttpDelete("DeleteToDo/{id}")]
         public Task<ActionResult> DeleteToDodbAsync(int id)

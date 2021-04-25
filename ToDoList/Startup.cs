@@ -9,6 +9,7 @@ using ToDoList.Repositories;
 using ToDoList.Repositories.ToDoItemRepos;
 using ToDoList.Repositories.UserRepos;
 using ToDoList.Services.AccountMangmentService;
+using ToDoList.Services.DataManagementService;
 using ToDoList.Services.ToDoServices;
 using ToDoList.Services.UserServices;
 
@@ -43,6 +44,7 @@ namespace ToDoList
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountManagmentService, AccountManagmentService>();
+            services.AddScoped<IDataManagementService, DataManagementService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

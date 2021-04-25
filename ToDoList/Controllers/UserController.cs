@@ -33,7 +33,7 @@ namespace ToDoList.Controllers
         public Task<ActionResult<UserEntity>> GetUserListsAsync(int id)
             => TryCatch<UserEntity>(async () =>
             {
-                return Ok(await _service.GetUserByIdAsync(id));
+                return Ok(await _account.GetUserByIdAsync(id));
             });
         [HttpPut("UpdateToDoUser")]
         public Task<ActionResult> UpdateUserInfoAsync(UpdateUserModel User)

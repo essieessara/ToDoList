@@ -16,13 +16,11 @@ namespace ToDoList.Services.UserServices
     public partial class UserService : IUserService
     {
         private readonly IUserRepo _repo;
-       // private readonly IToDoItemService _itemService;
         private readonly UserMapper _mapper;
 
         public UserService(IUserRepo User)
         {
             _repo = User;
-          //  _itemService = itemService;
             _mapper = new();
         }
 
@@ -36,15 +34,15 @@ namespace ToDoList.Services.UserServices
         public Task<UserDataResponseModel> GetUserByIdAsync(int id)
             => TryCatch(async () =>
             {
-                UserEntity todoListUser = await _repo.GetUserByIdAsync(id);
+                    UserEntity todoListUser = await _repo.GetUserByIdAsync(id);
 
                     ValidateGetUserById(todoListUser);
 
                     var output = _mapper.Map(todoListUser);
 
-                    todoListUser.Lists = (ICollection<ToDoItemtEntity>)await _repo.GetUserByIdAsync(id);
+                    //todoListUser.Lists = await _repo.GetUserByIdAsync(id);
 
-                    output.ToDoLists = todoListUser.Lists.Select(x => new ToDoItemResponseModel
+                    output.ToDoLists = todoListUser.Lists?.Select(x => new ToDoItemResponseModel
                     {
                         CreatedDate = x.CreatedDate,
                         EndedDate = x.EndedDate,
@@ -94,7 +92,7 @@ namespace ToDoList.Services.UserServices
                  ValidateUpdatePass(dbUpdateModel, User);
 
                  dbUpdateModel.Password = User.NewPassword;
-                
+                 await _repo.EditToDoUserByIdAsync(dbUpdateModel);
              });
 
         private async Task<UserEntity> GetByUsernameAsync(string name)

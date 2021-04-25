@@ -16,18 +16,6 @@ namespace ToDoList.Services.ToDoServices
         {
             if (model is null) { throw new ToDoNotFoundException(); }
         }
-        private async Task ValidateCreateToDoItem(CreateTodoItemModel model, UserDataResponseModel user)
-        {
-            if (user is null) { throw new UserNotFoundException(); }
-            if (model is null) { throw new ToDoValueIsNullException(); }
-
-            var userList = (ICollection<ToDoItemtEntity>) await _user.GetUserByIdAsync(model.UserID);
-            int countExisits = userList.Count(x => x.ItemName == model.ItemName);
-            if (countExisits > 0)
-            {
-                throw new ToDoAlreadyExistsException();
-            }
-        }
 
         private void ValidateDelete(ToDoItemtEntity model)
         {
@@ -44,6 +32,11 @@ namespace ToDoList.Services.ToDoServices
         {
             if (model is null) { throw new ToDoNotFoundException(); }
             if (model.IsFinished == true) { throw new CanNotUpdateToDoException(); }
+        }
+
+        private void ValidateGetListOfUserByID(List<ToDoItemtEntity> model)
+        {
+            if (model is null) { throw new ToDoNotFoundException(); }
         }
     }
 }
