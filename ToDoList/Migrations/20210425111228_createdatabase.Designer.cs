@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Repositories;
@@ -9,36 +10,39 @@ using ToDoList.Repositories;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    [Migration("20210420112259_removeuserid")]
-    partial class removeuserid
+    [Migration("20210425111228_createdatabase")]
+    partial class createdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ToDoList.Database.ToDoListEntity", b =>
+            modelBuilder.Entity("ToDoList.Database.ToDoItemtEntity", b =>
                 {
                     b.Property<int>("ItemID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EndedDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsFinished")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("INTEGER");
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
 
                     b.HasKey("ItemID");
 
@@ -47,43 +51,46 @@ namespace ToDoList.Migrations
                     b.ToTable("Lists");
                 });
 
-            modelBuilder.Entity("ToDoList.Database.ToDoUsersEntity", b =>
+            modelBuilder.Entity("ToDoList.Database.UserEntity", b =>
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ToDoList.Database.ToDoListEntity", b =>
+            modelBuilder.Entity("ToDoList.Database.ToDoItemtEntity", b =>
                 {
-                    b.HasOne("ToDoList.Database.ToDoUsersEntity", "User")
+                    b.HasOne("ToDoList.Database.UserEntity", "User")
                         .WithMany("Lists")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ToDoList.Database.ToDoUsersEntity", b =>
+            modelBuilder.Entity("ToDoList.Database.UserEntity", b =>
                 {
                     b.Navigation("Lists");
                 });

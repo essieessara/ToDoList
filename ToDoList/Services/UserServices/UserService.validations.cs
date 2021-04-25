@@ -33,8 +33,9 @@ namespace ToDoList.Services.UserServices
          }
         private void ValidateUpdatePass(UserEntity Entity , UpdateUserModel model)
         {
-            if (Entity.Password is null && Entity.Password != model.Password && model.NewPassword != model.ConfirmNewPassword)
-            { throw new CanNotUpdateUserException(); }
+            if (Entity.Password is null ) { throw new CanNotUpdateUserException(); }
+            if (Entity.Password != model.Password) { throw new CanNotUpdateUserException(); }
+            if (model.NewPassword != model.ConfirmNewPassword) { throw new CanNotUpdateUserException(); }
         }
     }
 }

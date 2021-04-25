@@ -87,8 +87,7 @@ namespace ToDoList.Services.UserServices
                 dbUpdateModel.FirstName = User.FirstName;
                 dbUpdateModel.LastName = User.LastName;
                 dbUpdateModel.Username = User.Username; 
-                await _repo.EditToDoUserByIdAsync(dbUpdateModel);
-
+               
                  ValidateUpdatePass(dbUpdateModel, User);
 
                  dbUpdateModel.Password = User.NewPassword;
