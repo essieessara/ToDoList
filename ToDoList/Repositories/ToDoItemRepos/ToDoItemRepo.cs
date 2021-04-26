@@ -41,11 +41,12 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         }
 
-        public async Task EditToDoByIdAsync(ToDoItemtEntity toDodb)
+        public async Task<ToDoItemtEntity> EditToDoByIdAsync(ToDoItemtEntity toDodb)
         {
 
             _context.Entry(toDodb).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return toDodb;
 
         }
 

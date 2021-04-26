@@ -72,18 +72,18 @@ namespace ToDoList.Services.ToDoServices
                 ValidateDelete(objectTovalidate);
                 await _repo.DeleteToDoByIdAsync(id);
             });
-        public Task UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
+        public Task<ToDoItemtEntity> UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
              {
                  ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
                  await ValidateUpdateNameAsync(dbUpdateModel, toDo);
 
                  dbUpdateModel.ItemName = toDo.ItemName;
-                 await _repo.EditToDoByIdAsync(dbUpdateModel);
-
+                 var output = await _repo.EditToDoByIdAsync(dbUpdateModel);
+                 return output;
 
              });
-        public Task UpdateStatusAsync(int id)
+        public Task <ToDoItemtEntity> UpdateStatusAsync(int id)
              => TryCatch(async () =>
              {
 
@@ -93,9 +93,9 @@ namespace ToDoList.Services.ToDoServices
 
                 Model.IsFinished = true;
                 Model.EndedDate = DateTime.Now;
-                await _repo.EditToDoByIdAsync(Model);
-
-            });
+                var output = await _repo.EditToDoByIdAsync(Model);
+                return output;
+             });
 
     }
 

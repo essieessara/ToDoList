@@ -40,15 +40,15 @@ namespace ToDoList.Controllers
         public Task<ActionResult> UpdateListItemAsync(UpdateTodoItemNameModel toDodb)
             => TryCatch(async () =>
             {
-                await _service.UpdateToDoNameAsync(toDodb);
-                return Ok();
+                var Item =await _service.UpdateToDoNameAsync(toDodb);
+                return Ok(Item);
             });
         [HttpPut("EndToDoItem/{id}")]
         public Task<ActionResult> UpdateListItemStatusAsync(int id)
              => TryCatch(async () =>
              {
-                 await _service.UpdateStatusAsync(id);
-                 return Ok();
+                 var Item = await _service.UpdateStatusAsync(id);
+                 return Ok(Item);
              });
         [HttpPost("CreateToDo")]
         public Task<ActionResult<ToDoItemResponseModel>> PostToDodbAsync(CreateTodoItemModel toDodb)

@@ -46,8 +46,8 @@ namespace ToDoList.Repositories.UserRepos
             //var sql = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Username = @Username, Password = @Password where UserID = @UserID";
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            var result = await connection.ExecuteAsync(sql, toDoUser);
-            var output = await GetUserByIdAsync(result);
+            await connection.ExecuteAsync(sql, toDoUser);
+            var output = await GetUserByIdAsync(toDoUser.UserID);
             return output;
         } 
 

@@ -41,13 +41,17 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         }
 
-        public async Task EditToDoByIdAsync(ToDoItemtEntity toDodb)
+        public async Task<ToDoItemtEntity> EditToDoByIdAsync(ToDoItemtEntity toDodb)
         {
-            var sql = "UPDATE Lists SET ItemName = @ItemName, IsFinished = @IsFinished, CreatedDate = @CreatedDate, UserID = @UserID, EndedDate = @EndedDate where ItemID = @ItemID";
+            string sql = @"
+            UPDATE Lists SET ItemName = @ItemName, IsFinished = @IsFinished, CreatedDate = @CreatedDate, UserID = @UserID, EndedDate = @EndedDate where ItemID = @ItemID;
+            SELECT CAST(SCOPE_IDENTITY() as int)";
+            //var sql = "UPDATE Lists SET ItemName = @ItemName, IsFinished = @IsFinished, CreatedDate = @CreatedDate, UserID = @UserID, EndedDate = @EndedDate where ItemID = @ItemID";
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
             await connection.ExecuteAsync(sql, toDodb);
-
+            var output = await GetToDoByIdAsync(toDodb.ItemID);
+            return output;
         }
 
         public async Task<List<ToDoItemtEntity>> GetAllToDoListASync()
