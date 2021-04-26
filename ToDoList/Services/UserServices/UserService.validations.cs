@@ -29,8 +29,13 @@ namespace ToDoList.Services.UserServices
 
          private void ValidateUpdate(UserEntity model)
          {
-            if(model is null) { throw new CanNotUpdateUserException(); }
+            if (model is null) { throw new CanNotUpdateUserException(); }
          }
+        private void ValidateUpdateUsername(UserEntity model)
+        {
+            if (model != null) { throw new UserAlreadyExistsException(); }
+        }
+
         private void ValidateUpdatePass(UserEntity Entity , UpdateUserModel model)
         {
             if (Entity.Password is null ) { throw new CanNotUpdateUserException(); }

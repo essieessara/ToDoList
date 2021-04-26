@@ -34,23 +34,23 @@ namespace ToDoList.Services.UserServices
         public Task<UserDataResponseModel> GetUserByIdAsync(int id)
             => TryCatch(async () =>
             {
-                    UserEntity todoListUser = await _repo.GetUserByIdAsync(id);
+                UserEntity todoListUser = await _repo.GetUserByIdAsync(id);
 
-                    ValidateGetUserById(todoListUser);
+                ValidateGetUserById(todoListUser);
 
-                    var output = _mapper.Map(todoListUser);
+                var output = _mapper.Map(todoListUser);
 
-                    //todoListUser.Lists = await _repo.GetUserByIdAsync(id);
+                //todoListUser.Lists = await _repo.GetUserByIdAsync(id);
 
-                    output.ToDoLists = todoListUser.Lists?.Select(x => new ToDoItemResponseModel
-                    {
-                        CreatedDate = x.CreatedDate,
-                        EndedDate = x.EndedDate,
-                        IsFinished = x.IsFinished,
-                        ItemID = x.ItemID,
-                        ItemName = x.ItemName
-                    }).ToList();
-                    return output;
+                output.ToDoLists = todoListUser.Lists?.Select(x => new ToDoItemResponseModel
+                {
+                    CreatedDate = x.CreatedDate,
+                    EndedDate = x.EndedDate,
+                    IsFinished = x.IsFinished,
+                    ItemID = x.ItemID,
+                    ItemName = x.ItemName
+                }).ToList();
+                return output;
 
             });
 
@@ -67,12 +67,12 @@ namespace ToDoList.Services.UserServices
              => TryCatch(async () =>
              {
                  var dbExistingModel = await GetByUsernameAsync(toDoUser.Username);
-                     UserEntity dbCreateUser = _mapper.Map(toDoUser);
+                 UserEntity dbCreateUser = _mapper.Map(toDoUser);
 
                  ValidateRegister(toDoUser, dbExistingModel);
 
                  var todoNewUser = await _repo.CreateToDoUserAsync(dbCreateUser);
-                  return todoNewUser;
+                 return todoNewUser;
 
              });
 
@@ -80,18 +80,23 @@ namespace ToDoList.Services.UserServices
              => TryCatch(async () =>
              {
                  UserEntity dbUpdateModel = await _repo.GetUserByIdAsync(User.UserID);
+                 var dbExistingModel = await GetByUsernameAsync(User.Username);
 
                  ValidateUpdate(dbUpdateModel);
 
-                dbUpdateModel.UserID = User.UserID;
-                dbUpdateModel.FirstName = User.FirstName;
-                dbUpdateModel.LastName = User.LastName;
-                dbUpdateModel.Username = User.Username; 
-               
+                 dbUpdateModel.UserID = User.UserID;
+                 dbUpdateModel.FirstName = User.FirstName;
+                 dbUpdateModel.LastName = User.LastName;
+
+                 ValidateUpdateUsername(dbExistingModel);
+
+                 dbUpdateModel.Username = User.Username;
+
                  ValidateUpdatePass(dbUpdateModel, User);
 
                  dbUpdateModel.Password = User.NewPassword;
                  await _repo.EditToDoUserByIdAsync(dbUpdateModel);
+
              });
 
         private async Task<UserEntity> GetByUsernameAsync(string name)
@@ -101,6 +106,6 @@ namespace ToDoList.Services.UserServices
                return todoListItem;
            });
 
-       
+
     }
 }

@@ -21,13 +21,13 @@ namespace ToDoList.Services.ToDoServices
         private readonly IToDoItemRepo _repo;
         private readonly IUserService _user;
         private readonly ToDoItemMapper _mapper;
- 
-        public ToDoItemService(IToDoItemRepo ToDo, IUserService User )
+
+        public ToDoItemService(IToDoItemRepo ToDo, IUserService User)
         {
             _repo = ToDo;
             _user = User;
             _mapper = new();
-   
+
         }
 
         public Task<List<ToDoItemtEntity>> GetListAsync()
@@ -60,8 +60,8 @@ namespace ToDoList.Services.ToDoServices
              {
 
                  ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);
-                 await _repo.CreateToDoItemAsync(dbCreateModel);    
-                 var output = _mapper.Map(dbCreateModel);
+                 var result = await _repo.CreateToDoItemAsync(dbCreateModel);
+                 var output = _mapper.Map(result);
                  return output;
 
              });
@@ -76,28 +76,28 @@ namespace ToDoList.Services.ToDoServices
              => TryCatch(async () =>
              {
                  ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
-                await ValidateUpdateNameAsync(dbUpdateModel,toDo);
+                 await ValidateUpdateNameAsync(dbUpdateModel, toDo);
 
-                dbUpdateModel.ItemName = toDo.ItemName;
-                await _repo.EditToDoByIdAsync(dbUpdateModel);
-                   
+                 dbUpdateModel.ItemName = toDo.ItemName;
+                 await _repo.EditToDoByIdAsync(dbUpdateModel);
 
-            });
+
+             });
         public Task UpdateStatusAsync(int id)
              => TryCatch(async () =>
-            {
+             {
 
                 ToDoItemtEntity Model = await GetByIdAsync(id);
 
                 ValidateUpdateStatus(Model);
 
-                 Model.IsFinished = true;
-                 Model.EndedDate = DateTime.Now;
-                 await _repo.EditToDoByIdAsync(Model);
-                   
+                Model.IsFinished = true;
+                Model.EndedDate = DateTime.Now;
+                await _repo.EditToDoByIdAsync(Model);
+
             });
 
     }
 
-   
+
 }
