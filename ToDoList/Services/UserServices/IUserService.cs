@@ -12,6 +12,6 @@ namespace ToDoList.Services.UserServices
         Task<UserDataResponseModel> GetUserByIdAsync(int id);
         Task<List<UserEntity>> GetUserListAsync();
         Task<UserEntity> RegisterUserAsync(RegisterUser toDoUser);
-        Task UpdateToDoUserAsync(UpdateUserModel User);
+        Task<UserEntity> UpdateToDoUserAsync(UpdateUserModel User);
     }
 }

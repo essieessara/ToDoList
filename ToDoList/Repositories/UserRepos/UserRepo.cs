@@ -34,10 +34,11 @@ namespace ToDoList.Repositories.UserRepos
             await _context.SaveChangesAsync();
         }
 
-        public async Task EditToDoUserByIdAsync(UserEntity toDoUser)
+        public async Task<UserEntity> EditToDoUserByIdAsync(UserEntity toDoUser)
         {
             _context.Entry(toDoUser).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return toDoUser;
         }
 
     }

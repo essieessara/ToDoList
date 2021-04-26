@@ -39,8 +39,8 @@ namespace ToDoList.Controllers
         public Task<ActionResult> UpdateUserInfoAsync(UpdateUserModel User)
             => TryCatch(async () =>
             {
-                await _service.UpdateToDoUserAsync(User);
-                return Ok();
+                var user = await _service.UpdateToDoUserAsync(User);
+                return Ok(user);
             });
 
         [HttpPost("RegisterUser")]

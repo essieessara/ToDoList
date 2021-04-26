@@ -8,7 +8,7 @@ namespace ToDoList.Repositories.UserRepos
     {
         Task<UserEntity> CreateToDoUserAsync(UserEntity toDoUser);
         Task DeleteToDoUserByIdAsync(int id);
-        Task EditToDoUserByIdAsync(UserEntity toDoUser);
+        Task<UserEntity> EditToDoUserByIdAsync(UserEntity toDoUser);
         Task<List<UserEntity>> GetAllToDoUsersListASync();
         Task<UserEntity> GetUserByIdAsync(int id);
         Task<UserEntity> GetToDoUserByUsernameAsync(string name);

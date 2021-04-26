@@ -76,7 +76,7 @@ namespace ToDoList.Services.UserServices
 
              });
 
-        public Task UpdateToDoUserAsync(UpdateUserModel User)
+        public Task<UserEntity> UpdateToDoUserAsync(UpdateUserModel User)
              => TryCatch(async () =>
              {
                  UserEntity dbUpdateModel = await _repo.GetUserByIdAsync(User.UserID);
@@ -95,7 +95,9 @@ namespace ToDoList.Services.UserServices
                  ValidateUpdatePass(dbUpdateModel, User);
 
                  dbUpdateModel.Password = User.NewPassword;
-                 await _repo.EditToDoUserByIdAsync(dbUpdateModel);
+
+                 var UpdatedUser = await _repo.EditToDoUserByIdAsync(dbUpdateModel);
+                 return UpdatedUser;
 
              });
 

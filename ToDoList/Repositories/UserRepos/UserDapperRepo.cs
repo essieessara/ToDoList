@@ -38,13 +38,18 @@ namespace ToDoList.Repositories.UserRepos
             await connection.ExecuteAsync(sql, new { Id = id });
         }
 
-        public async Task EditToDoUserByIdAsync(UserEntity toDoUser)
+        public async Task<UserEntity> EditToDoUserByIdAsync(UserEntity toDoUser)
         {
-            var sql = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Username = @Username, Password = @Password where UserID = @UserID";
+            string sql = @"UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Username = @Username, Password = @Password where UserID = @UserID ;
+            SELECT CAST(SCOPE_IDENTITY() as int)";
+
+            //var sql = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, Username = @Username, Password = @Password where UserID = @UserID";
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            await connection.ExecuteAsync(sql, toDoUser);
-        }
+            var result = await connection.ExecuteAsync(sql, toDoUser);
+            var output = await GetUserByIdAsync(result);
+            return output;
+        } 
 
         public async Task<List<UserEntity>> GetAllToDoUsersListASync()
         {
