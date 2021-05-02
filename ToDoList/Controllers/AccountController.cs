@@ -30,12 +30,19 @@ namespace ToDoList.Controllers
               {
                   return Ok(await _service.RegisterUserAsync(User));
               });
-        [HttpGet("Login")]
+        [HttpPost("Login")]
         public Task<ActionResult<UserEntity>> LoginUserAsync(LoginUserModel User)
               => TryCatch<UserEntity>(async () =>
               {
                   return Ok(await _service.LoginUserAsync(User));
               });
+        [HttpPut("ResetPassword")]
+        public Task<ActionResult> ResetPassword(ResetPasswordModel User)
+            => TryCatch(async () =>
+            {
+                var user = await _service.ResetPasswordAsync(User);
+                return Ok(user);
+            });
 
         [HttpPost]
         public async Task<ActionResult> Logout()

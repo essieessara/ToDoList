@@ -50,7 +50,7 @@ namespace ToDoList.Services.UserServices
         }
         private void ValidateUpdatePass(UserEntity Entity, ResetPasswordModel model)
         {
-            if (Entity.Password is null) { throw new CanNotUpdateUserException(); }
+            if (Entity is null) { throw new CanNotUpdateUserException(); }
             if (Entity.Password != model.Password) { throw new CanNotUpdateUserException(); }
             if (model.NewPassword != model.ConfirmNewPassword) { throw new CanNotUpdateUserException(); }
         }

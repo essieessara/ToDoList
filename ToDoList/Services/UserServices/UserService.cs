@@ -116,7 +116,6 @@ namespace ToDoList.Services.UserServices
      => TryCatch(async () =>
      {
          UserEntity dbUpdateModel = await _repo.GetToDoUserByUsernameAsync(User.Username);
-         var dbExistingModel = await GetByUsernameAsync(User.Username);
 
          ValidateUpdatePass(dbUpdateModel, User);
 
