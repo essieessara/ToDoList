@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using ToDoList.Repositories;
 using ToDoList.Repositories.ToDoItemRepos;
 using ToDoList.Repositories.UserRepos;
@@ -38,6 +41,23 @@ namespace ToDoList
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoList", Version = "v1" });
             });
 
+            services.AddAuthentication(options=> {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options=> {
+                string key = Configuration.GetSection("Token:Key").Value;
+                byte[] keybyte = Encoding.ASCII.GetBytes(key);
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false, ValidateAudience = false,
+                    RequireExpirationTime  = true, ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(keybyte),
+                    ValidateIssuerSigningKey = true
+                };
+            
+            
+            });
 
             services.AddScoped<IToDoItemRepo, ToDoItemDapperRepo>();
             services.AddScoped<IToDoItemService, ToDoItemService>();
