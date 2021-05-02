@@ -21,12 +21,21 @@ namespace ToDoList.Mapper
             };
         }
 
-        public UserEntity Map(RegisterUser model)
+        public UserEntity Map(RegisterUserModel model)
         {
             return new UserEntity
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                Username = model.Username,
+                Password = model.Password
+            };
+        }
+
+        public UserEntity Map(LoginUserModel model)
+        {
+            return new UserEntity
+            {
                 Username = model.Username,
                 Password = model.Password
             };

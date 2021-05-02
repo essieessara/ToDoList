@@ -2,7 +2,7 @@
 
 namespace ToDoList.Models.UserModels
 {
-    public class RegisterUser
+    public class RegisterUserModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

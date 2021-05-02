@@ -63,7 +63,7 @@ namespace ToDoList.Services.UserServices
 
             });
 
-        public Task<UserEntity> RegisterUserAsync(RegisterUser toDoUser)
+        public Task<UserEntity> RegisterUserAsync(RegisterUserModel toDoUser)
              => TryCatch(async () =>
              {
                  var dbExistingModel = await GetByUsernameAsync(toDoUser.Username);
@@ -73,6 +73,18 @@ namespace ToDoList.Services.UserServices
 
                  var todoNewUser = await _repo.CreateToDoUserAsync(dbCreateUser);
                  return todoNewUser;
+
+             });
+        public Task<UserEntity> LoginUserAsync(LoginUserModel toDoUser)
+             => TryCatch(async () =>
+             {
+                 var dbExistingModel = await GetByUsernameAsync(toDoUser.Username);
+                 UserEntity User = _mapper.Map(toDoUser);
+
+                 ValidateLogin(toDoUser , dbExistingModel);
+
+                 var todoUser = await _repo.GetToDoUserByUsernameAsync(User.Username);
+                 return todoUser;
 
              });
 
@@ -100,7 +112,20 @@ namespace ToDoList.Services.UserServices
                  return UpdatedUser;
 
              });
+        public Task<UserEntity> ResetPasswordAsync(ResetPasswordModel User)
+     => TryCatch(async () =>
+     {
+         UserEntity dbUpdateModel = await _repo.GetToDoUserByUsernameAsync(User.Username);
+         var dbExistingModel = await GetByUsernameAsync(User.Username);
 
+         ValidateUpdatePass(dbUpdateModel, User);
+
+         dbUpdateModel.Password = User.NewPassword;
+
+         var UpdatedUser = await _repo.EditToDoUserByIdAsync(dbUpdateModel);
+         return UpdatedUser;
+
+     });
         private async Task<UserEntity> GetByUsernameAsync(string name)
            => await TryCatch(async () =>
            {
@@ -108,6 +133,9 @@ namespace ToDoList.Services.UserServices
                return todoListItem;
            });
 
-
+        public Task SignOutAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

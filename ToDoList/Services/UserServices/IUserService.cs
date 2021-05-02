@@ -11,7 +11,10 @@ namespace ToDoList.Services.UserServices
         Task DeleteUserAccountAsync(int id);
         Task<UserDataResponseModel> GetUserByIdAsync(int id);
         Task<List<UserEntity>> GetUserListAsync();
-        Task<UserEntity> RegisterUserAsync(RegisterUser toDoUser);
+        Task<UserEntity> RegisterUserAsync(RegisterUserModel toDoUser);
         Task<UserEntity> UpdateToDoUserAsync(UpdateUserModel User);
+        Task<UserEntity> LoginUserAsync(LoginUserModel toDoUser);
+        Task<UserEntity> ResetPasswordAsync(ResetPasswordModel User);
+        Task SignOutAsync();
     }
 }

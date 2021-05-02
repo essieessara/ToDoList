@@ -44,7 +44,7 @@ namespace ToDoList.Controllers
             });
 
         [HttpPost("RegisterUser")]
-        public Task<ActionResult<UserEntity>> RegisterUserAsync(RegisterUser User)
+        public Task<ActionResult<UserEntity>> RegisterUserAsync(RegisterUserModel User)
                => TryCatch<UserEntity>(async () =>
                {
                    return Ok(await _service.RegisterUserAsync(User));
