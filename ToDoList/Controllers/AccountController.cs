@@ -11,7 +11,7 @@ using ToDoList.Services.UserServices;
 
 namespace ToDoList.Controllers
 {
-    [Route("api/Accounts")]
+    [Route("api/Account")]
     [ApiController]
     public class AccountController : ToDoControllerBase
     {
@@ -44,7 +44,7 @@ namespace ToDoList.Controllers
                 return Ok(user);
             });
 
-        [HttpPost]
+        [HttpPost("Logout")]
         public async Task<ActionResult> Logout()
         {
             await _service.SignOutAsync();
