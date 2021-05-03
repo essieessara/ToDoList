@@ -10,7 +10,7 @@ namespace ToDoList.Repositories.ToDoItemRepos
         Task DeleteToDoByIdAsync(int id);
         Task<ToDoItemtEntity> EditToDoByIdAsync(ToDoItemtEntity toDodb);
         Task<List<ToDoItemtEntity>> GetAllToDoListASync();
-        Task<ToDoItemtEntity> GetToDoByIdAsync(int id);
+        Task<ToDoItemtEntity> GetToDoByIdAsync(int id , int uid);
         Task<ToDoItemtEntity> GetToDoByNameAsync(string name);
         Task<List<ToDoItemtEntity>> GetToDoUserByIdAsync(int id);
     }

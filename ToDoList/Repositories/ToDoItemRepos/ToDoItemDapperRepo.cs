@@ -20,14 +20,18 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         public async Task<ToDoItemtEntity> CreateToDoItemAsync(ToDoItemtEntity toDodb)
         {
-            //var sql = "Insert into Lists (ItemName,IsFinished,CreatedDate,UserID,EndedDate) VALUES (@ItemName,@IsFinished,@CreatedDate,@UserID,@EndedDate)";
-            string sql = @"
-            Insert into Lists (ItemName,IsFinished,CreatedDate,UserID,EndedDate) VALUES (@ItemName,@IsFinished,@CreatedDate,@UserID,@EndedDate);
-            SELECT CAST(SCOPE_IDENTITY() as int)";
+            string sql = "Insert into Lists (ItemID,ItemName,IsFinished,CreatedDate,UserID,EndedDate) VALUES (@ItemID,@ItemName,@IsFinished,@CreatedDate,@UserID,@EndedDate)";
+            var sql1 = "SELECT * FROM Lists WHERE ItemID = @Id";
+            var sql2 = "SELECT * FROM Lists WHERE UserID = @Uid";
+            //string sql = @"
+            //Insert into Lists (ItemID,ItemName,IsFinished,CreatedDate,UserID,EndedDate) VALUES (@ItemID,@ItemName,@IsFinished,@CreatedDate,@UserID,@EndedDate);
+            //SELECT /*CAST( SCOPE_IDENTITY() as int*/ ItemID from Lists/*)*/";
 
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            var result = await connection.QueryFirstAsync<int>(sql, toDodb);
-            var output = await GetToDoByIdAsync(result);
+            await connection.ExecuteAsync(sql, toDodb);
+            var result = await connection.QueryFirstOrDefaultAsync<int>(sql1, new { Id = toDodb.ItemID/*, Uid = toDodb.UserID*/ });
+            var result1 = await connection.QueryFirstOrDefaultAsync<int>(sql2, new { Uid = toDodb.UserID /*, Id = toDodb.ItemID*/ });
+            var output = await GetToDoByIdAsync(result,result1);
             return output;
 
         }
@@ -50,7 +54,7 @@ namespace ToDoList.Repositories.ToDoItemRepos
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
             await connection.ExecuteAsync(sql, toDodb);
-            var output = await GetToDoByIdAsync(toDodb.ItemID);
+            var output = await GetToDoByIdAsync(toDodb.ItemID , toDodb.UserID);
             return output;
         }
 
@@ -64,12 +68,12 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         }
 
-        public async Task<ToDoItemtEntity> GetToDoByIdAsync(int id)
+        public async Task<ToDoItemtEntity> GetToDoByIdAsync(int id , int uid)
         {
-            var sql = "SELECT * FROM Lists WHERE ItemID = @Id";
+            var sql = "SELECT * FROM Lists WHERE ItemID = @Id and UserID = @Uid";
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            var result = await connection.QuerySingleOrDefaultAsync<ToDoItemtEntity>(sql, new { Id = id });
+            var result = await connection.QuerySingleOrDefaultAsync<ToDoItemtEntity>(sql, new { Id = id ,Uid = uid });
             return result;
 
         }

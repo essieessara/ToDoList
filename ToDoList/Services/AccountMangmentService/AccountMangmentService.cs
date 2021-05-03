@@ -31,7 +31,7 @@ namespace ToDoList.Services.AccountMangmentService
 
                 foreach (var ToDo in todoList)
                 {
-                    await _itemService.DeleteAsync(ToDo.ItemID);
+                    await _itemService.DeleteAsync(ToDo.ItemID , ToDo.UserID);
                 }
                 await _userService.DeleteUserAccountAsync(id);
 

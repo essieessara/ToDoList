@@ -15,6 +15,7 @@ namespace ToDoList.Mapper
         {
             return new ToDoItemtEntity
             {
+                ItemID = model.ItemID,
                 CreatedDate = DateTime.Now,
                 IsFinished = false,
                 ItemName = model.ItemName,

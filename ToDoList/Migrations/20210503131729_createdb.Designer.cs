@@ -10,8 +10,8 @@ using ToDoList.Repositories;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ToDoListContext))]
-    [Migration("20210425111228_createdatabase")]
-    partial class createdatabase
+    [Migration("20210503131729_createdb")]
+    partial class createdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,9 +24,10 @@ namespace ToDoList.Migrations
             modelBuilder.Entity("ToDoList.Database.ToDoItemtEntity", b =>
                 {
                     b.Property<int>("ItemID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -41,10 +42,7 @@ namespace ToDoList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemID");
+                    b.HasKey("ItemID", "UserID");
 
                     b.HasIndex("UserID");
 

@@ -36,10 +36,10 @@ namespace ToDoList.Services.ToDoServices
                  var todoList = await _repo.GetAllToDoListASync();
                  return todoList;
              });
-        public Task<ToDoItemtEntity> GetByIdAsync(int id)
+        public Task<ToDoItemtEntity> GetByIdAsync(int id , int uid)
             => TryCatch(async () =>
            {
-               var todoListItem = await _repo.GetToDoByIdAsync(id);
+               var todoListItem = await _repo.GetToDoByIdAsync(id , uid);
 
                ValidateGetByID(todoListItem);
                return todoListItem;
@@ -65,17 +65,17 @@ namespace ToDoList.Services.ToDoServices
                  return output;
 
              });
-        public Task DeleteAsync(int id)
+        public Task DeleteAsync(int id , int uid)
              => TryCatch(async () =>
             {
-                ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id);
+                ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id , uid);
                 ValidateDelete(objectTovalidate);
                 await _repo.DeleteToDoByIdAsync(id);
             });
         public Task<ToDoItemtEntity> UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
              {
-                 ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
+                 ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID , toDo.UserID);
                  await ValidateUpdateNameAsync(dbUpdateModel, toDo);
 
                  dbUpdateModel.ItemName = toDo.ItemName;
@@ -83,11 +83,11 @@ namespace ToDoList.Services.ToDoServices
                  return output;
 
              });
-        public Task <ToDoItemtEntity> UpdateStatusAsync(int id)
+        public Task <ToDoItemtEntity> UpdateStatusAsync(int id , int uid)
              => TryCatch(async () =>
              {
 
-                ToDoItemtEntity Model = await GetByIdAsync(id);
+                ToDoItemtEntity Model = await GetByIdAsync(id , uid);
 
                 ValidateUpdateStatus(Model);
 

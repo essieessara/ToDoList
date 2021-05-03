@@ -22,14 +22,15 @@ namespace ToDoList.Services.UserServices
         }
         private void ValidateRegister(RegisterUserModel model, UserEntity Entity)
         {
-            if (model is null) { throw new UserValueIsNullException(); }
+            if (model is null) { throw new UserValueIsIncorrectOrNullException(); }
             if (Entity != null) { throw new UserAlreadyExistsException(); }
             if (model.Password != model.ConfirmPassword) { throw new PasswordDoesNotMatchException(); }
         }
         private void ValidateLogin(LoginUserModel model, UserEntity Entity)
         {
-            if (model is null) { throw new UserValueIsNullException(); }
-            if(model.Password is null) { throw new PasswordIsNullException(); }
+            if (Entity is null) { throw new UserValueIsIncorrectOrNullException(); }
+            if (model is null) { throw new UserValueIsIncorrectOrNullException(); }
+            if (model.Password is null) { throw new PasswordIsNullException(); }
             if (model.Password != Entity.Password) { throw new PasswordIsNullException(); }
         }
 

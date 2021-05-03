@@ -17,9 +17,12 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         public async Task<List<ToDoItemtEntity>> GetAllToDoListASync()
             => await _context.Lists.ToListAsync();
-       
-        public async Task<ToDoItemtEntity> GetToDoByIdAsync(int id)
-            => await _context.Lists.FirstOrDefaultAsync(x => x.ItemID == id);
+
+        public async Task<ToDoItemtEntity> GetToDoByIdAsync(int id, int uid)
+        { 
+            var todo = await _context.Lists.FirstOrDefaultAsync(x=>x.ItemID == id && x.UserID == uid);
+            return todo;
+        }
         public async Task<List<ToDoItemtEntity>> GetToDoUserByIdAsync(int id)
            => await _context.Lists.Where(x => x.UserID == id).ToListAsync();
         public async Task<ToDoItemtEntity> GetToDoByNameAsync(string name)

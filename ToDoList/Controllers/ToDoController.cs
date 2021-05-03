@@ -29,10 +29,10 @@ namespace ToDoList.Controllers
 
                     });
         [HttpGet("GetMytodo/{id}")]
-        public Task<ActionResult<ToDoItemtEntity>> GetListsAsync(int id)
+        public Task<ActionResult<ToDoItemtEntity>> GetListsAsync(int id , int uid)
            => TryCatch<ToDoItemtEntity>(async () =>
            {
-               var output = await _service.GetByIdAsync(id);
+               var output = await _service.GetByIdAsync(id , uid);
                return Ok(output);
            });
         [HttpPut("ChangeName")]
@@ -43,10 +43,10 @@ namespace ToDoList.Controllers
                 return Ok(Item);
             });
         [HttpPut("MarkAsCompleted/{id}")]
-        public Task<ActionResult> UpdateListItemStatusAsync(int id)
+        public Task<ActionResult> UpdateListItemStatusAsync(int id , int uid)
              => TryCatch(async () =>
              {
-                 var Item = await _service.UpdateStatusAsync(id);
+                 var Item = await _service.UpdateStatusAsync(id , uid);
                  return Ok(Item);
              });
         [HttpPost("CreateToDo")]
@@ -56,10 +56,10 @@ namespace ToDoList.Controllers
                    return Ok(await _data.CreateAsync(toDodb));
                });
         [HttpDelete("DeleteToDo/{id}")]
-        public Task<ActionResult> DeleteToDodbAsync(int id)
+        public Task<ActionResult> DeleteToDodbAsync(int id , int uid)
                  => TryCatch(async () =>
                  {
-                     await _service.DeleteAsync(id);
+                     await _service.DeleteAsync(id , uid);
                      return Ok();
                  });
 

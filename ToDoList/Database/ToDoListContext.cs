@@ -24,6 +24,9 @@ namespace ToDoList.Repositories
                 .WithMany(x => x.Lists)
                 .HasForeignKey(x => x.UserID);
 
+            builder.Entity<ToDoItemtEntity>().HasKey(x => new { x.ItemID, x.UserID });
+
+
 
 
 

@@ -15,6 +15,7 @@ namespace ToDoList.Database
         public DateTime CreatedDate { get; set; }
         public DateTime? EndedDate { get; set; }
         public UserEntity User { get; set; }
+        [Key]
         public int UserID { get; set; }
 
     }
