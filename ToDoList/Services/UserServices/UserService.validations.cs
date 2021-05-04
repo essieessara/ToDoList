@@ -30,8 +30,8 @@ namespace ToDoList.Services.UserServices
         {
             if (Entity is null) { throw new UserValueIsIncorrectOrNullException(); }
             if (model is null) { throw new UserValueIsIncorrectOrNullException(); }
-            if (model.Password is null) { throw new PasswordIsNullException(); }
-            if (model.Password != Entity.Password) { throw new PasswordIsNullException(); }
+            if (model.Password is null) { throw new PasswordIsIncorrectOrNullException(); }
+            if (model.Password != Entity.Password) { throw new PasswordIsIncorrectOrNullException(); }
         }
 
         private void ValidateUpdate(UserEntity model)

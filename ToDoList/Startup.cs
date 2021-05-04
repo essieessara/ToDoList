@@ -46,7 +46,7 @@ namespace ToDoList
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options=> {
-                string key = Configuration.GetSection("Token:Key").Value;
+                string key = Configuration.GetSection("AuthToken:Key").Value;
                 byte[] keybyte = Encoding.ASCII.GetBytes(key);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -80,7 +80,7 @@ namespace ToDoList
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

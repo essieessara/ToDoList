@@ -1,15 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
-using ToDoList.Exceptions.UserExceptions;
 using ToDoList.Mapper;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.UserModels;
 using ToDoList.Repositories.UserRepos;
-using ToDoList.Services.ToDoServices;
 
 namespace ToDoList.Services.UserServices
 {
@@ -17,13 +15,13 @@ namespace ToDoList.Services.UserServices
     {
         private readonly IUserRepo _repo;
         private readonly UserMapper _mapper;
-
+      
         public UserService(IUserRepo User)
         {
             _repo = User;
             _mapper = new();
+           
         }
-
 
         public Task<List<UserEntity>> GetUserListAsync()
              => TryCatch(async () =>
@@ -53,7 +51,6 @@ namespace ToDoList.Services.UserServices
                 return output;
 
             });
-
         public Task DeleteUserAccountAsync(int id)
             => TryCatch(async () =>
             {
@@ -62,7 +59,6 @@ namespace ToDoList.Services.UserServices
                 await _repo.DeleteToDoUserByIdAsync(id);
 
             });
-
         public Task<UserEntity> RegisterUserAsync(RegisterUserModel toDoUser)
              => TryCatch(async () =>
              {
@@ -75,19 +71,19 @@ namespace ToDoList.Services.UserServices
                  return todoNewUser;
 
              });
-        public Task<UserEntity> LoginUserAsync(LoginUserModel toDoUser)
+        public Task<UserEntity> CheckUserAsync(LoginUserModel toDoUser)
              => TryCatch(async () =>
              {
                  var dbExistingModel = await GetByUsernameAsync(toDoUser.Username);
                  UserEntity User = _mapper.Map(toDoUser);
 
-                 ValidateLogin(toDoUser , dbExistingModel);
+                 ValidateLogin(toDoUser, dbExistingModel);
 
                  var todoUser = await _repo.GetToDoUserByUsernameAsync(User.Username);
+                
                  return todoUser;
 
              });
-
         public Task<UserEntity> UpdateToDoUserAsync(UpdateUserModel User)
              => TryCatch(async () =>
              {
@@ -113,25 +109,25 @@ namespace ToDoList.Services.UserServices
 
              });
         public Task<UserEntity> ResetPasswordAsync(ResetPasswordModel User)
-     => TryCatch(async () =>
-     {
-         UserEntity dbUpdateModel = await _repo.GetToDoUserByUsernameAsync(User.Username);
+            => TryCatch(async () =>
+            {
+                UserEntity dbUpdateModel = await _repo.GetToDoUserByUsernameAsync(User.Username);
 
-         ValidateUpdatePass(dbUpdateModel, User);
+                ValidateUpdatePass(dbUpdateModel, User);
 
-         dbUpdateModel.Password = User.NewPassword;
+                dbUpdateModel.Password = User.NewPassword;
 
-         var UpdatedUser = await _repo.EditToDoUserByIdAsync(dbUpdateModel);
-         return UpdatedUser;
+                var UpdatedUser = await _repo.EditToDoUserByIdAsync(dbUpdateModel);
+                return UpdatedUser;
 
-     });
+            });
+
         private async Task<UserEntity> GetByUsernameAsync(string name)
            => await TryCatch(async () =>
            {
                var todoListItem = await _repo.GetToDoUserByUsernameAsync(name);
                return todoListItem;
            });
-
         public Task SignOutAsync()
         {
             throw new NotImplementedException();

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Exceptions.UserExceptions
 {
-    public class PasswordIsNullException : ToDoExceptions
+    public class PasswordIsIncorrectOrNullException : ToDoExceptions
     {
-        public PasswordIsNullException()
+        public PasswordIsIncorrectOrNullException()
         {
             Errors.Add("Make sure you entered a valid password");
         }
