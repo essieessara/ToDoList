@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.Database;
 
-namespace ToDoList.Repositories
+namespace ToDoList.DatabaseContext
 {
     public class ToDoListContext : DbContext
     {
