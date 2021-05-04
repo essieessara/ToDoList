@@ -7,7 +7,7 @@ namespace ToDoList.Repositories.ToDoItemRepos
     public interface IToDoItemRepo
     {
         Task<ToDoItemtEntity> CreateToDoItemAsync(ToDoItemtEntity toDodb);
-        Task DeleteToDoByIdAsync(int id);
+        Task DeleteToDoByIdAsync(int id , int uid);
         Task<ToDoItemtEntity> EditToDoByIdAsync(ToDoItemtEntity toDodb);
         Task<List<ToDoItemtEntity>> GetAllToDoListASync();
         Task<ToDoItemtEntity> GetToDoByIdAsync(int id , int uid);

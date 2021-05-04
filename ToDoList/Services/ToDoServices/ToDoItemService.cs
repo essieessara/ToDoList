@@ -70,7 +70,7 @@ namespace ToDoList.Services.ToDoServices
             {
                 ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id , uid);
                 ValidateDelete(objectTovalidate);
-                await _repo.DeleteToDoByIdAsync(id);
+                await _repo.DeleteToDoByIdAsync(id , uid);
             });
         public Task<ToDoItemtEntity> UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>

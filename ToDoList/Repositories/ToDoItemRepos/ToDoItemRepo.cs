@@ -36,7 +36,7 @@ namespace ToDoList.Repositories.ToDoItemRepos
             return toDodb;
         }
 
-        public async Task DeleteToDoByIdAsync(int id)
+        public async Task DeleteToDoByIdAsync(int id , int uid)
         {
             var toDo = await _context.Lists.FindAsync(id);
             _context.Lists.Remove(toDo);
