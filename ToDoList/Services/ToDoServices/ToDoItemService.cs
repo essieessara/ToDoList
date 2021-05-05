@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
-using ToDoList.Exceptions.ToDoItemExceptions;
-using ToDoList.Exceptions.UserExceptions;
 using ToDoList.Mapper;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Repositories.ToDoItemRepos;
-using ToDoList.Repositories.UserRepos;
-using ToDoList.Services.AccountMangmentService;
 using ToDoList.Services.UserServices;
 
 namespace ToDoList.Services.ToDoServices
@@ -19,14 +17,17 @@ namespace ToDoList.Services.ToDoServices
     {
 
         private readonly IToDoItemRepo _repo;
-        private readonly IUserService _user;
+        private readonly IUserService _userServ;
         private readonly ToDoItemMapper _mapper;
+        private readonly ClaimsPrincipal _loggedUser;
 
-        public ToDoItemService(IToDoItemRepo ToDo, IUserService User)
+        public ToDoItemService(IToDoItemRepo ToDo,
+            IUserService User , IHttpContextAccessor contextAccessor )
         {
             _repo = ToDo;
-            _user = User;
+            _userServ = User;
             _mapper = new();
+            _loggedUser = contextAccessor.HttpContext.User;
 
         }
 
@@ -36,19 +37,20 @@ namespace ToDoList.Services.ToDoServices
                  var todoList = await _repo.GetAllToDoListASync();
                  return todoList;
              });
-        public Task<ToDoItemtEntity> GetByIdAsync(int id , int uid)
+        public Task<ToDoItemtEntity> GetByIdAsync(int id)
             => TryCatch(async () =>
-           {
-               var todoListItem = await _repo.GetToDoByIdAsync(id , uid);
+            {
+               var todoListItem = await _repo.GetToDoByIdAsync(id, loginUser());
 
                ValidateGetByID(todoListItem);
                return todoListItem;
 
            });
-        public Task<List<ToDoItemtEntity>> GetUserToDoListByIdAsync(int id)
+        public Task<List<ToDoItemtEntity>> GetUserToDoListByIdAsync()
          => TryCatch(async () =>
          {
-             var todoListUser = await _repo.GetToDoUserByIdAsync(id);
+
+             var todoListUser = await _repo.GetToDoUserByIdAsync(loginUser());
 
              ValidateGetListOfUserByID(todoListUser);
 
@@ -60,22 +62,23 @@ namespace ToDoList.Services.ToDoServices
              {
 
                  ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);
+                 dbCreateModel.UserID = loginUser();
                  var result = await _repo.CreateToDoItemAsync(dbCreateModel);
                  var output = _mapper.Map(result);
                  return output;
 
              });
-        public Task DeleteAsync(int id , int uid)
+        public Task DeleteAsync(int id)
              => TryCatch(async () =>
-            {
-                ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id , uid);
+             {
+                ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id, loginUser());
                 ValidateDelete(objectTovalidate);
-                await _repo.DeleteToDoByIdAsync(id , uid);
+                await _repo.DeleteToDoByIdAsync(id);
             });
         public Task<ToDoItemtEntity> UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
              {
-                 ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID , toDo.UserID);
+                 ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
                  await ValidateUpdateNameAsync(dbUpdateModel, toDo);
 
                  dbUpdateModel.ItemName = toDo.ItemName;
@@ -83,19 +86,33 @@ namespace ToDoList.Services.ToDoServices
                  return output;
 
              });
-        public Task <ToDoItemtEntity> UpdateStatusAsync(int id , int uid)
+        public Task<ToDoItemtEntity> UpdateStatusAsync(int id)
              => TryCatch(async () =>
              {
 
-                ToDoItemtEntity Model = await GetByIdAsync(id , uid);
+                 ToDoItemtEntity Model = await GetByIdAsync(id);
 
-                ValidateUpdateStatus(Model);
+                 ValidateUpdateStatus(Model);
 
-                Model.IsFinished = true;
-                Model.EndedDate = DateTime.Now;
-                var output = await _repo.EditToDoByIdAsync(Model);
-                return output;
+                 Model.IsFinished = true;
+                 Model.EndedDate = DateTime.Now;
+                 var output = await _repo.EditToDoByIdAsync(Model);
+                 return output;
              });
+
+        private Claim Login()
+        {
+            Validateauthentication();
+            Claim userClaim = _loggedUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+            ValidateLogin(userClaim);
+            return userClaim;
+        }
+
+        private int loginUser()
+        {
+            int userId = Convert.ToInt32(Login().Value);
+            return userId;
+        }
 
     }
 

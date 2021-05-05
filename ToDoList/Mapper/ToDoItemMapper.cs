@@ -20,7 +20,7 @@ namespace ToDoList.Mapper
                 IsFinished = false,
                 ItemName = model.ItemName,
                 EndedDate = null,
-                UserID = model.UserID
+               // UserID = model.UserID
             };
         }
        

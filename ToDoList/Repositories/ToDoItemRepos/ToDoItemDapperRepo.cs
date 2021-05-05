@@ -36,12 +36,12 @@ namespace ToDoList.Repositories.ToDoItemRepos
 
         }
 
-        public async Task DeleteToDoByIdAsync(int id , int uid)
+        public async Task DeleteToDoByIdAsync(int id)
         {
-            var sql = "DELETE FROM Lists WHERE ItemID = @Id and UserID = @Uid";
+            var sql = "DELETE FROM Lists WHERE ItemID = @Id";
             using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-            await connection.ExecuteAsync(sql, new { Id = id, Uid = uid });
+            await connection.ExecuteAsync(sql, new { Id = id});
 
         }
 

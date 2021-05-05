@@ -24,7 +24,8 @@ namespace ToDoList.Services.AccountMangmentService
         private readonly string _tokenKey;
         private readonly int _tokenExpireDays;
 
-        public AccountManagmentService(IUserService userService, IToDoItemService itemService, IConfiguration configuration)
+        public AccountManagmentService(IUserService userService,
+            IToDoItemService itemService, IConfiguration configuration)
         {
             _userService = userService;
             _itemService = itemService;
@@ -38,11 +39,11 @@ namespace ToDoList.Services.AccountMangmentService
             => TryCatch(async () =>
             {
 
-                var todoList = await _itemService.GetUserToDoListByIdAsync(id);
+                var todoList = await _itemService.GetUserToDoListByIdAsync();
 
                 foreach (var ToDo in todoList)
                 {
-                    await _itemService.DeleteAsync(ToDo.ItemID , ToDo.UserID);
+                    await _itemService.DeleteAsync(ToDo.ItemID);
                 }
                 await _userService.DeleteUserAccountAsync(id);
 

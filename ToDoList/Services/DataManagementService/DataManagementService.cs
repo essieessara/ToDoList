@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
@@ -19,18 +21,21 @@ namespace ToDoList.Services.DataManagementService
         private readonly IAccountManagmentService _account;
         private readonly IToDoItemService _itemService;
         private readonly ToDoItemMapper _mapper;
+        private readonly ClaimsPrincipal _loggedUser;
 
-
-        public DataManagementService(IAccountManagmentService account, IToDoItemService itemService)
+        public DataManagementService(IAccountManagmentService account, IToDoItemService itemService, 
+            IHttpContextAccessor contextAccessor)
         {
             _account = account;
             _itemService = itemService;
             _mapper = new();
+            _loggedUser = contextAccessor.HttpContext.User;
         }
         public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
             => TryCatch(async () =>
             {
-                var user = await _account.GetUserByIdAsync(toDodb.UserID);
+                int userId = Convert.ToInt32(Login().Value);
+                var user = await _account.GetUserByIdAsync(userId);
                 ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);
                 await ValidateCreateToDoItem(toDodb, user);
 
@@ -43,7 +48,7 @@ namespace ToDoList.Services.DataManagementService
             if (user is null) { throw new UserNotFoundException(); }
             if (model is null) { throw new ToDoValueIsNullException(); }
 
-            var toDoList = await _itemService.GetUserToDoListByIdAsync(model.UserID);
+            var toDoList = await _itemService.GetUserToDoListByIdAsync();
             if (toDoList is not null)
             {
 
@@ -54,6 +59,22 @@ namespace ToDoList.Services.DataManagementService
                 }
             }
 
+        }
+        private Claim Login()
+        {
+            Validateauthentication();
+            Claim userClaim = _loggedUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+            ValidateLogin(userClaim);
+            return userClaim;
+        }
+
+        private void Validateauthentication()
+        {
+            if (!_loggedUser.Identity.IsAuthenticated) { throw new UserNotLoggedInException(); }
+        }
+        private void ValidateLogin(Claim claim)
+        {
+            if (claim is null) { throw new UserNotLoggedInException(); }
         }
     }
 }

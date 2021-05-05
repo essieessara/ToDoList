@@ -30,16 +30,16 @@ namespace ToDoList.Controllers
         public Task<ActionResult<IEnumerable<ToDoItemtEntity>>> GetUserToDoListByIdAsync()
                     => TryCatch<IEnumerable<ToDoItemtEntity>>(async () =>
                     {
-                        var userID = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
-                        var ToDo = await _service.GetUserToDoListByIdAsync(Convert.ToInt32(userID.Value));
+                       
+                        var ToDo = await _service.GetUserToDoListByIdAsync();
                         return Ok(ToDo);
 
                     });
         [HttpGet("GetMytodo/{id}")]
-        public Task<ActionResult<ToDoItemtEntity>> GetListsAsync(int id , int uid)
+        public Task<ActionResult<ToDoItemtEntity>> GetListsAsync(int id)
            => TryCatch<ToDoItemtEntity>(async () =>
            {
-               var output = await _service.GetByIdAsync(id , uid);
+               var output = await _service.GetByIdAsync(id);
                return Ok(output);
            });
         [HttpPut("ChangeName")]
@@ -50,10 +50,10 @@ namespace ToDoList.Controllers
                 return Ok(Item);
             });
         [HttpPut("MarkAsCompleted/{id}")]
-        public Task<ActionResult> UpdateListItemStatusAsync(int id , int uid)
+        public Task<ActionResult> UpdateListItemStatusAsync(int id)
              => TryCatch(async () =>
              {
-                 var Item = await _service.UpdateStatusAsync(id , uid);
+                 var Item = await _service.UpdateStatusAsync(id);
                  return Ok(Item);
              });
         [HttpPost("CreateToDo")]
@@ -63,10 +63,10 @@ namespace ToDoList.Controllers
                    return Ok(await _data.CreateAsync(toDodb));
                });
         [HttpDelete("DeleteToDo/{id}")]
-        public Task<ActionResult> DeleteToDodbAsync(int id , int uid)
+        public Task<ActionResult> DeleteToDodbAsync(int id)
                  => TryCatch(async () =>
                  {
-                     await _service.DeleteAsync(id , uid);
+                     await _service.DeleteAsync(id);
                      return Ok();
                  });
 

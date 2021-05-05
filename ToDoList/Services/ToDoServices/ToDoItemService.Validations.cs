@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
@@ -26,7 +27,7 @@ namespace ToDoList.Services.ToDoServices
         {
             if (model is null) { throw new ToDoNotFoundException(); }
             if (model.IsFinished == true) { throw new CanNotUpdateToDoException(); }
-            var toDoList = await GetUserToDoListByIdAsync(model.UserID);
+            var toDoList = await GetUserToDoListByIdAsync();
             if (toDoList is not null)
             {
 
@@ -47,6 +48,15 @@ namespace ToDoList.Services.ToDoServices
         private void ValidateGetListOfUserByID(List<ToDoItemtEntity> model)
         {
             if (model is null) { throw new ToDoNotFoundException(); }
+          
+        }
+        private void Validateauthentication()
+        {
+           if (! _loggedUser.Identity.IsAuthenticated) { throw new UserNotLoggedInException(); }
+        }
+        private void ValidateLogin(Claim claim)
+        {   
+            if (claim is null) { throw new UserNotLoggedInException(); }
         }
     }
 }
