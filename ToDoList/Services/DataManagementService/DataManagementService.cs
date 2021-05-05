@@ -43,7 +43,7 @@ namespace ToDoList.Services.DataManagementService
             if (user is null) { throw new UserNotFoundException(); }
             if (model is null) { throw new ToDoValueIsNullException(); }
 
-            var toDoList = await _itemService.GetListOfUserByIdAsync(model.UserID);
+            var toDoList = await _itemService.GetUserToDoListByIdAsync(model.UserID);
             if (toDoList is not null)
             {
 

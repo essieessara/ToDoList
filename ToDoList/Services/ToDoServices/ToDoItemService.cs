@@ -45,7 +45,7 @@ namespace ToDoList.Services.ToDoServices
                return todoListItem;
 
            });
-        public Task<List<ToDoItemtEntity>> GetListOfUserByIdAsync(int id)
+        public Task<List<ToDoItemtEntity>> GetUserToDoListByIdAsync(int id)
          => TryCatch(async () =>
          {
              var todoListUser = await _repo.GetToDoUserByIdAsync(id);

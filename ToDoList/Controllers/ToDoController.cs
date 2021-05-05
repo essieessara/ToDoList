@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
@@ -9,8 +14,9 @@ using ToDoList.Services.ToDoServices;
 
 namespace ToDoList.Controllers
 {
-    [Route("api/ToDo")]
+    [Authorize]
     [ApiController]
+    [Route("api/ToDo")]
     public class ToDoController : ToDoControllerBase
     {
         private readonly IToDoItemService _service;
@@ -21,10 +27,11 @@ namespace ToDoList.Controllers
             _data = data;
         }
         [HttpGet("GetAllMyTodo")]
-        public Task<ActionResult<IEnumerable<ToDoItemtEntity>>> GetListOfUserByIdAsync(int id)
+        public Task<ActionResult<IEnumerable<ToDoItemtEntity>>> GetUserToDoListByIdAsync()
                     => TryCatch<IEnumerable<ToDoItemtEntity>>(async () =>
                     {
-                        var ToDo = await _service.GetListOfUserByIdAsync(id);
+                        var userID = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+                        var ToDo = await _service.GetUserToDoListByIdAsync(Convert.ToInt32(userID.Value));
                         return Ok(ToDo);
 
                     });

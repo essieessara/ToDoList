@@ -38,7 +38,7 @@ namespace ToDoList.Services.AccountMangmentService
             => TryCatch(async () =>
             {
 
-                var todoList = await _itemService.GetListOfUserByIdAsync(id);
+                var todoList = await _itemService.GetUserToDoListByIdAsync(id);
 
                 foreach (var ToDo in todoList)
                 {
@@ -65,8 +65,8 @@ namespace ToDoList.Services.AccountMangmentService
                  tokenDescriptor.Expires = DateTime.Now.AddDays(_tokenExpireDays);
 
                  List<Claim> claims = new List<Claim>();
-                 claims.Add(new Claim(JwtRegisteredClaimNames.NameId, todoUser.UserID.ToString()));
-                 claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, todoUser.FullName));
+                 claims.Add(new Claim(ClaimTypes.Sid, todoUser.UserID.ToString()));
+                 claims.Add(new Claim(ClaimTypes.GivenName, todoUser.FullName));
 
                  tokenDescriptor.Subject = new ClaimsIdentity(claims);
 

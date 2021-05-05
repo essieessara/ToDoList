@@ -65,6 +65,7 @@ namespace ToDoList
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountManagmentService, AccountManagmentService>();
             services.AddScoped<IDataManagementService, DataManagementService>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

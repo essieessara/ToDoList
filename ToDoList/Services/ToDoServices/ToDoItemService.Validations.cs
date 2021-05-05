@@ -26,7 +26,7 @@ namespace ToDoList.Services.ToDoServices
         {
             if (model is null) { throw new ToDoNotFoundException(); }
             if (model.IsFinished == true) { throw new CanNotUpdateToDoException(); }
-            var toDoList = await GetListOfUserByIdAsync(model.UserID);
+            var toDoList = await GetUserToDoListByIdAsync(model.UserID);
             if (toDoList is not null)
             {
 
