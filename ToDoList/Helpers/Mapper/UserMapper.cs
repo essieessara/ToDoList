@@ -6,7 +6,7 @@ using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.UserModels;
 
-namespace ToDoList.Mapper
+namespace ToDoList.Helpers.Mapper
 {
     public class UserMapper
     {

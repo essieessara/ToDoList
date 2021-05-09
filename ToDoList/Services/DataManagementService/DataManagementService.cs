@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
 using ToDoList.Exceptions.UserExceptions;
-using ToDoList.Mapper;
+using ToDoList.Helpers.Mapper;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Services.AccountMangmentService;

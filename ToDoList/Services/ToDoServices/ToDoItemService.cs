@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
-using ToDoList.Mapper;
+using ToDoList.Helpers.Mapper;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Repositories.ToDoItemRepos;
@@ -105,7 +105,6 @@ namespace ToDoList.Services.ToDoServices
             ValidateLogin(userClaim);
             return userClaim;
         }
-
         private int loginUser()
         {
             int userId = Convert.ToInt32(Login().Value);

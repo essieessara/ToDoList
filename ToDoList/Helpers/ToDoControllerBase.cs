@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using ToDoList.Exceptions;
 
-namespace ToDoList.Controllers
+namespace ToDoList.Helpers
 {
     public class ToDoControllerBase : ControllerBase
     {

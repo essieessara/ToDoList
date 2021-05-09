@@ -6,7 +6,7 @@ using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 
-namespace ToDoList.Mapper
+namespace ToDoList.Helpers.Mapper
 {
     public class ToDoItemMapper
     {
@@ -20,11 +20,11 @@ namespace ToDoList.Mapper
                 IsFinished = false,
                 ItemName = model.ItemName,
                 EndedDate = null,
-               // UserID = model.UserID
+                // UserID = model.UserID
             };
         }
-       
-        
+
+
         public ToDoItemResponseModel Map(ToDoItemtEntity model)
         {
             return new ToDoItemResponseModel
@@ -36,6 +36,6 @@ namespace ToDoList.Mapper
                 IsFinished = model.IsFinished
             };
         }
-      
+
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
-using ToDoList.Mapper;
+using ToDoList.Helpers.Mapper;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Models.UserModels;
 using ToDoList.Repositories.UserRepos;
