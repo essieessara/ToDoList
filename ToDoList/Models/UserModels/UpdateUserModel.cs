@@ -4,7 +4,7 @@ namespace ToDoList.Models.UserModels
 {
     public class UpdateUserModel
     {
-        public int UserID { get; set; }
+        //public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }

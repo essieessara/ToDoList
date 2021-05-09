@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.UserExceptions;
@@ -54,6 +55,14 @@ namespace ToDoList.Services.UserServices
             if (Entity is null) { throw new CanNotUpdateUserException(); }
             if (Entity.Password != model.Password) { throw new CanNotUpdateUserException(); }
             if (model.NewPassword != model.ConfirmNewPassword) { throw new CanNotUpdateUserException(); }
+        }
+        private void Validateauthentication()
+        {
+            if (!_loggedUser.Identity.IsAuthenticated) { throw new UserNotLoggedInException(); }
+        }
+        private void ValidateLogin(Claim claim)
+        {
+            if (claim is null) { throw new UserNotLoggedInException(); }
         }
     }
 }

@@ -17,7 +17,6 @@ namespace ToDoList.Services.ToDoServices
     {
 
         private readonly IToDoItemRepo _repo;
-        private readonly IUserService _userServ;
         private readonly ToDoItemMapper _mapper;
         private readonly ClaimsPrincipal _loggedUser;
 
@@ -25,7 +24,6 @@ namespace ToDoList.Services.ToDoServices
             IUserService User , IHttpContextAccessor contextAccessor )
         {
             _repo = ToDo;
-            _userServ = User;
             _mapper = new();
             _loggedUser = contextAccessor.HttpContext.User;
 

@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Mapper;
@@ -15,12 +17,13 @@ namespace ToDoList.Services.UserServices
     {
         private readonly IUserRepo _repo;
         private readonly UserMapper _mapper;
-      
-        public UserService(IUserRepo User)
+        private readonly ClaimsPrincipal _loggedUser;
+
+        public UserService(IUserRepo User, IHttpContextAccessor contextAccessor)
         {
             _repo = User;
             _mapper = new();
-           
+            _loggedUser = contextAccessor.HttpContext.User;
         }
 
         public Task<List<UserEntity>> GetUserListAsync()
@@ -87,12 +90,17 @@ namespace ToDoList.Services.UserServices
         public Task<UserEntity> UpdateToDoUserAsync(UpdateUserModel User)
              => TryCatch(async () =>
              {
-                 UserEntity dbUpdateModel = await _repo.GetUserByIdAsync(User.UserID);
+                 Validateauthentication();
+                 Claim userClaim = _loggedUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid);
+                 ValidateLogin(userClaim);
+
+                 int userId = Convert.ToInt32(userClaim.Value);
+                 UserEntity dbUpdateModel = await _repo.GetUserByIdAsync(userId);
                  var dbExistingModel = await GetByUsernameAsync(User.Username);
 
                  ValidateUpdate(dbUpdateModel);
 
-                 dbUpdateModel.UserID = User.UserID;
+                 dbUpdateModel.UserID = userId;
                  dbUpdateModel.FirstName = User.FirstName;
                  dbUpdateModel.LastName = User.LastName;
 
@@ -111,7 +119,12 @@ namespace ToDoList.Services.UserServices
         public Task<UserEntity> ResetPasswordAsync(ResetPasswordModel User)
             => TryCatch(async () =>
             {
-                UserEntity dbUpdateModel = await _repo.GetToDoUserByUsernameAsync(User.Username);
+                Validateauthentication();
+                Claim userClaim = _loggedUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName);
+                ValidateLogin(userClaim);
+
+                string username = userClaim.Value;
+                UserEntity dbUpdateModel = await _repo.GetToDoUserByUsernameAsync(username);
 
                 ValidateUpdatePass(dbUpdateModel, User);
 
@@ -132,5 +145,7 @@ namespace ToDoList.Services.UserServices
         {
             throw new NotImplementedException();
         }
+        
+
     }
 }
