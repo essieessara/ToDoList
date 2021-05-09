@@ -32,6 +32,7 @@ namespace ToDoList.Services.DataManagementService
         public Task<ToDoItemResponseModel> CreateAsync(CreateTodoItemModel toDodb)
             => TryCatch(async () =>
             {
+                Validateauthentication();
                 int userId = Convert.ToInt32(Login().Value);
                 var user = await _account.GetUserByIdAsync(userId);
                 ToDoItemtEntity dbCreateModel = _mapper.Map(toDodb);

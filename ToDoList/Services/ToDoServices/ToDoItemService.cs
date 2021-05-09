@@ -38,6 +38,7 @@ namespace ToDoList.Services.ToDoServices
         public Task<ToDoItemtEntity> GetByIdAsync(int id)
             => TryCatch(async () =>
             {
+                Validateauthentication();
                 var todoListItem = await _repo.GetToDoByIdAsync(id, loginUser());
 
                 ValidateGetByID(todoListItem);
@@ -49,9 +50,7 @@ namespace ToDoList.Services.ToDoServices
          {
 
              var todoListUser = await _repo.GetToDoUserByIdAsync(loginUser());
-
              ValidateGetListOfUserByID(todoListUser);
-
              return todoListUser;
 
          });
@@ -69,6 +68,7 @@ namespace ToDoList.Services.ToDoServices
         public Task DeleteAsync(int id)
              => TryCatch(async () =>
              {
+                 Validateauthentication();
                  ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id, loginUser());
                  ValidateDelete(objectTovalidate);
                  await _repo.DeleteToDoByIdAsync(id);
@@ -76,6 +76,7 @@ namespace ToDoList.Services.ToDoServices
         public Task<ToDoItemtEntity> UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
              {
+                 Validateauthentication();
                  ToDoItemtEntity dbUpdateModel = await GetByIdAsync(toDo.ItemID);
                  await ValidateUpdateNameAsync(dbUpdateModel, toDo);
 
@@ -87,6 +88,7 @@ namespace ToDoList.Services.ToDoServices
         public Task<ToDoItemtEntity> UpdateStatusAsync(int id)
              => TryCatch(async () =>
              {
+                 Validateauthentication();
 
                  ToDoItemtEntity Model = await GetByIdAsync(id);
 

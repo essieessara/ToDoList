@@ -33,28 +33,21 @@ namespace ToDoList.Controllers
                   return Ok(await _service.RegisterUserAsync(User));
               });
         [HttpPost("Login")]
-        public Task<ActionResult<UserEntity>> LoginUserAsync(LoginUserModel User)
-              => TryCatch<UserEntity>(async () =>
+        public Task<ActionResult> LoginUserAsync(LoginUserModel User)
+              => TryCatch(async () =>
               {
                   return Ok(await _account.LoginUserAsync(User));
               });
-
-
         [Authorize]
         [HttpPut("ResetPassword")]
         public Task<ActionResult> ResetPassword(ResetPasswordModel model)
             => TryCatch(async () =>
             {
-                if (User.Identity.IsAuthenticated == true)
-                {
-                    var user = await _service.ResetPasswordAsync(model);
-                    return Ok(user);
-                }
-                throw new UserNotFoundException();
-            });
-
-        [HttpPost("Logout")]
+                var user = await _service.ResetPasswordAsync(model);
+                return Ok(user);
+            });  
         [Authorize]
+        [HttpPost("Logout")]
         public async Task<ActionResult> Logout()
         {
             await _service.SignOutAsync();
