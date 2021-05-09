@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace ToDoList.Repositories.UserRepos
             await connection.ExecuteAsync(sql, toDoUser);
             var output = await GetUserByIdAsync(toDoUser.UserID);
             return output;
-        } 
+        }
 
         public async Task<List<UserEntity>> GetAllToDoUsersListASync()
         {

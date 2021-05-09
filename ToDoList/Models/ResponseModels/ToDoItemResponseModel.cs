@@ -11,6 +11,6 @@ namespace ToDoList.Models.ResponseModels
         public DateTime CreatedDate { get; set; }
         public DateTime? EndedDate { get; set; }
 
-        public  UserDataResponseModel UserData { get; set; }
+        public UserDataResponseModel UserData { get; set; }
     }
 }

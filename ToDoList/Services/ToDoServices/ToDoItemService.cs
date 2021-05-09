@@ -21,7 +21,7 @@ namespace ToDoList.Services.ToDoServices
         private readonly ClaimsPrincipal _loggedUser;
 
         public ToDoItemService(IToDoItemRepo ToDo,
-            IUserService User , IHttpContextAccessor contextAccessor )
+            IUserService User, IHttpContextAccessor contextAccessor)
         {
             _repo = ToDo;
             _mapper = new();
@@ -38,12 +38,12 @@ namespace ToDoList.Services.ToDoServices
         public Task<ToDoItemtEntity> GetByIdAsync(int id)
             => TryCatch(async () =>
             {
-               var todoListItem = await _repo.GetToDoByIdAsync(id, loginUser());
+                var todoListItem = await _repo.GetToDoByIdAsync(id, loginUser());
 
-               ValidateGetByID(todoListItem);
-               return todoListItem;
+                ValidateGetByID(todoListItem);
+                return todoListItem;
 
-           });
+            });
         public Task<List<ToDoItemtEntity>> GetUserToDoListByIdAsync()
          => TryCatch(async () =>
          {
@@ -69,10 +69,10 @@ namespace ToDoList.Services.ToDoServices
         public Task DeleteAsync(int id)
              => TryCatch(async () =>
              {
-                ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id, loginUser());
-                ValidateDelete(objectTovalidate);
-                await _repo.DeleteToDoByIdAsync(id);
-            });
+                 ToDoItemtEntity objectTovalidate = await _repo.GetToDoByIdAsync(id, loginUser());
+                 ValidateDelete(objectTovalidate);
+                 await _repo.DeleteToDoByIdAsync(id);
+             });
         public Task<ToDoItemtEntity> UpdateToDoNameAsync(UpdateTodoItemNameModel toDo)
              => TryCatch(async () =>
              {

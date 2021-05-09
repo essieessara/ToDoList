@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,7 +11,6 @@ using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 using ToDoList.Services.AccountMangmentService;
 using ToDoList.Services.ToDoServices;
-using ToDoList.Services.UserServices;
 
 namespace ToDoList.Services.DataManagementService
 {
@@ -23,7 +21,7 @@ namespace ToDoList.Services.DataManagementService
         private readonly ToDoItemMapper _mapper;
         private readonly ClaimsPrincipal _loggedUser;
 
-        public DataManagementService(IAccountManagmentService account, IToDoItemService itemService, 
+        public DataManagementService(IAccountManagmentService account, IToDoItemService itemService,
             IHttpContextAccessor contextAccessor)
         {
             _account = account;

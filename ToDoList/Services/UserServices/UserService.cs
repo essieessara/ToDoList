@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +82,7 @@ namespace ToDoList.Services.UserServices
                  ValidateLogin(toDoUser, dbExistingModel);
 
                  var todoUser = await _repo.GetToDoUserByUsernameAsync(User.Username);
-                
+
                  return todoUser;
 
              });
@@ -145,7 +144,7 @@ namespace ToDoList.Services.UserServices
         {
             throw new NotImplementedException();
         }
-        
+
 
     }
 }

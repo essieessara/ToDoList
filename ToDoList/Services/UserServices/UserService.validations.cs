@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using ToDoList.Database;
 using ToDoList.Exceptions.UserExceptions;
-using ToDoList.Models.ResponseModels;
 using ToDoList.Models.UserModels;
 
 namespace ToDoList.Services.UserServices
@@ -36,17 +31,17 @@ namespace ToDoList.Services.UserServices
         }
 
         private void ValidateUpdate(UserEntity model)
-         {
+        {
             if (model is null) { throw new CanNotUpdateUserException(); }
-         }
+        }
         private void ValidateUpdateUsername(UserEntity model)
         {
             if (model != null) { throw new UserAlreadyExistsException(); }
         }
 
-        private void ValidateUpdatePass(UserEntity Entity , UpdateUserModel model)
+        private void ValidateUpdatePass(UserEntity Entity, UpdateUserModel model)
         {
-            if (Entity.Password is null ) { throw new CanNotUpdateUserException(); }
+            if (Entity.Password is null) { throw new CanNotUpdateUserException(); }
             if (Entity.Password != model.Password) { throw new CanNotUpdateUserException(); }
             if (model.NewPassword != model.ConfirmNewPassword) { throw new CanNotUpdateUserException(); }
         }

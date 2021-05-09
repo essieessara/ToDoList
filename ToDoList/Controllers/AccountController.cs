@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.UserExceptions;
@@ -16,20 +12,20 @@ namespace ToDoList.Controllers
 {
     [ApiController]
     [Route("api/Account")]
-    
-    
+
+
     public class AccountController : ToDoControllerBase
     {
 
         private readonly IUserService _service;
         private readonly IAccountManagmentService _account;
 
-        public AccountController(IUserService service , IAccountManagmentService account)
-        { 
+        public AccountController(IUserService service, IAccountManagmentService account)
+        {
             _service = service;
             _account = account;
         }
-        
+
         [HttpPost("Register")]
         public Task<ActionResult<UserEntity>> RegisterUserAsync(RegisterUserModel User)
               => TryCatch<UserEntity>(async () =>
@@ -45,7 +41,7 @@ namespace ToDoList.Controllers
 
 
         [Authorize]
-        [HttpPut("ResetPassword")] 
+        [HttpPut("ResetPassword")]
         public Task<ActionResult> ResetPassword(ResetPasswordModel model)
             => TryCatch(async () =>
             {

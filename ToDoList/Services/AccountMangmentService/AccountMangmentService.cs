@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
+using ToDoList.Models.UserModels;
 using ToDoList.Services.ToDoServices;
 using ToDoList.Services.UserServices;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
-using ToDoList.Models.UserModels;
-using Microsoft.Extensions.Configuration;
-using ToDoList.Exceptions.UserExceptions;
 
 namespace ToDoList.Services.AccountMangmentService
 {
@@ -29,7 +26,7 @@ namespace ToDoList.Services.AccountMangmentService
             _userService = userService;
             _itemService = itemService;
             _tokenKey = configuration.GetSection("AuthToken:Key").Value;
-           _tokenExpireDays = Convert.ToInt16(configuration.GetSection("AuthToken:ExpireDays").Value);
+            _tokenExpireDays = Convert.ToInt16(configuration.GetSection("AuthToken:ExpireDays").Value);
         }
 
 

@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Helpers;
@@ -31,7 +27,7 @@ namespace ToDoList.Controllers
         public Task<ActionResult<IEnumerable<ToDoItemtEntity>>> GetUserToDoListByIdAsync()
                     => TryCatch<IEnumerable<ToDoItemtEntity>>(async () =>
                     {
-                       
+
                         var ToDo = await _service.GetUserToDoListByIdAsync();
                         return Ok(ToDo);
 

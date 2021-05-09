@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ToDoList.Database;
 using ToDoList.Exceptions.ToDoItemExceptions;
 using ToDoList.Exceptions.UserExceptions;
-using ToDoList.Models.ResponseModels;
 using ToDoList.Models.ToDoItemsModels;
 
 namespace ToDoList.Services.ToDoServices
@@ -48,14 +46,14 @@ namespace ToDoList.Services.ToDoServices
         private void ValidateGetListOfUserByID(List<ToDoItemtEntity> model)
         {
             if (model is null) { throw new ToDoNotFoundException(); }
-          
+
         }
         private void Validateauthentication()
         {
-           if (! _loggedUser.Identity.IsAuthenticated) { throw new UserNotLoggedInException(); }
+            if (!_loggedUser.Identity.IsAuthenticated) { throw new UserNotLoggedInException(); }
         }
         private void ValidateLogin(Claim claim)
-        {   
+        {
             if (claim is null) { throw new UserNotLoggedInException(); }
         }
     }
