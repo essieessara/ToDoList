@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TodoList.Client.Services;
 
 namespace TodoList.Client
 {
@@ -19,6 +20,7 @@ namespace TodoList.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            builder.Services.AddScoped<IUserServices, UserServices>();
             await builder.Build().RunAsync();
         }
     }

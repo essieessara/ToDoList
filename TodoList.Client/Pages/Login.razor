@@ -1,30 +1,69 @@
 ﻿@page "/Login"
-@inherits LayoutComponentBase
+@using Newtonsoft.Json
+@using System.Security.Claims
 @inject HttpClient Http
+@inject TodoList.Client.Models.User User
 
-<div class="card">
-    <h4 class="card-header">Login</h4>
-    <div class="card-body">
-        <EditForm @*Model="@model" OnValidSubmit="OnValidSubmit" *@>
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <label>Username</label>
-                <InputText @*@bind-Value="model.Username"*@ class="form-control" />
-                    @*<ValidationMessage For="@(() => model.Username)" />*@
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <InputText @*@bind-Value="model.Password"*@ type="password" class="form-control" />
-                    @*<ValidationMessage For="@(() => model.Password)" />*@
-            </div>
-            <button @*disabled="@loading" *@ class="btn btn-primary">Login</button>
-            <NavLink href="account/register" class="btn btn-link">Register</NavLink>
-        </EditForm>
+
+<EditForm Model="@user" OnValidSubmit="@ValidateUser">
+    <div>
+        <br /><br /><br /><br /><br />
     </div>
-</div>
+    <div>
+        <h3 style="font-weight:bold; color:red">ToDo Login</h3>
+    </div>
+    <div>
+        <br />
+    </div>
+    <div class="col-12 row">
+        <input class="form-control col-12" @bind="user.Username" placeholder="email address" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
+    </div>
+    <br />
+    <div class="col-12 row">
+        <span class="col-12"></span>
+        <input type="submit" class="form-control col-6 btn btn-primary" value="Login" />
+        <a href="/signup" class="col-3">Sign up</a>
+    </div>
+    <br />
+    <div class="col-12 row" style="text-align:left; font-weight:bold">
+
+    </div>
+</EditForm>
 
 @code {
 
-  
+    public Models.User user;
+    protected override Task OnInitializedAsync()
+    {
+        user = new Models.User();
+        return base.OnInitializedAsync();
+    }
 
+    private async Task<bool> ValidateUser()
+    {
+
+
+        string serializedUser = JsonConvert.SerializeObject(user);
+
+
+        HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+        httpRequestMessage.Method = new HttpMethod("POST");
+        httpRequestMessage.RequestUri = new Uri("https://localhost:5001/api/Account/Login");
+        httpRequestMessage.Content = new StringContent(serializedUser);
+        httpRequestMessage.Content.Headers.ContentType
+        = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+        var response = await Http.SendAsync(httpRequestMessage);
+        var responseStatusCode = response.StatusCode;
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var returnedUser = JsonConvert.DeserializeObject<Models.User>(responseBody);
+
+        return await Task.FromResult(true);
+
+    }
 }

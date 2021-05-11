@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net.Http;
 using System.Text;
 using ToDoList.DatabaseContext;
 using ToDoList.Repositories.ToDoItemRepos;
@@ -70,6 +71,7 @@ namespace ToDoList
             services.AddScoped<IAccountManagmentService, AccountManagmentService>();
             services.AddScoped<IDataManagementService, DataManagementService>();
             services.AddHttpContextAccessor();
+            services.AddSingleton<HttpClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
