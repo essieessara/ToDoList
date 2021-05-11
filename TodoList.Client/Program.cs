@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TodoList.Client.Services;
+
 
 namespace TodoList.Client
 {
@@ -18,9 +18,12 @@ namespace TodoList.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri ("https://localhost:44325/api/")
+                                            
+            });
 
-            builder.Services.AddScoped<IUserServices, UserServices>();
             await builder.Build().RunAsync();
         }
     }

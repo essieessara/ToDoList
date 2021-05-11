@@ -1,11 +1,7 @@
-﻿@page "/Login"
-@using Newtonsoft.Json
-@using System.Security.Claims
-@inject HttpClient Http
-@inject TodoList.Client.Models.User User
+﻿
+@page "/Login"
 
-
-<EditForm Model="@user" OnValidSubmit="@ValidateUser">
+<EditForm Model="loginModel" OnValidSubmit="@ValidateUser">
     <div>
         <br /><br /><br /><br /><br />
     </div>
@@ -16,11 +12,11 @@
         <br />
     </div>
     <div class="col-12 row">
-        <input class="form-control col-12" @bind="user.Username" placeholder="email address" />
+        <input class="form-control col-12" @bind="loginModel.Username" placeholder="Username" />
     </div>
     <br />
     <div class="col-12 row">
-        <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
+        <input type="password" class="form-control col-12" @bind="loginModel.Password" placeholder="password" />
     </div>
     <br />
     <div class="col-12 row">
@@ -30,40 +26,54 @@
     </div>
     <br />
     <div class="col-12 row" style="text-align:left; font-weight:bold">
-
+        @responseBody
     </div>
 </EditForm>
 
 @code {
 
-    public Models.User user;
+    private LoginUserModel loginModel { get; set;} = new();
+    string responseBody = string.Empty;
+    private IAccountManagementService _account;
+
     protected override Task OnInitializedAsync()
     {
-        user = new Models.User();
+        //user = new Models.User();
         return base.OnInitializedAsync();
     }
 
-    private async Task<bool> ValidateUser()
+    private async Task  ValidateUser()
     {
+        await _account.LoginAsync<Task>("https://localhost:44325/api/Account/Login", loginModel);
+
+        //try
+        //{
+        //    string serializedUser = JsonConvert.SerializeObject(loginModel);
 
 
-        string serializedUser = JsonConvert.SerializeObject(user);
+        //    HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+        //    httpRequestMessage.Method = new HttpMethod("POST");
+        //    httpRequestMessage.RequestUri = new Uri("./Account/Login");
+        //    httpRequestMessage.Content = new StringContent(serializedUser);
+        //    httpRequestMessage.Content.Headers.ContentType
+        //        = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+        //    var response = await Http.SendAsync(httpRequestMessage);
+        //    response.EnsureSuccessStatusCode();
+        //    responseBody = await response.Content.ReadAsStringAsync();
+
+        //}
+        //catch (Exception)
+        //{
+
+        //    responseBody = "smothing went wrong !";
+        //}
+        //finally
+        //{
+        //    this.StateHasChanged();
+        //}
 
 
-        HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-        httpRequestMessage.Method = new HttpMethod("POST");
-        httpRequestMessage.RequestUri = new Uri("https://localhost:5001/api/Account/Login");
-        httpRequestMessage.Content = new StringContent(serializedUser);
-        httpRequestMessage.Content.Headers.ContentType
-        = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-
-        var response = await Http.SendAsync(httpRequestMessage);
-        var responseStatusCode = response.StatusCode;
-        var responseBody = await response.Content.ReadAsStringAsync();
-
-        var returnedUser = JsonConvert.DeserializeObject<Models.User>(responseBody);
-
-        return await Task.FromResult(true);
 
     }
 }

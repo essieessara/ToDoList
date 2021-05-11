@@ -21,6 +21,7 @@ namespace ToDoList
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -72,6 +73,16 @@ namespace ToDoList
             services.AddScoped<IDataManagementService, DataManagementService>();
             services.AddHttpContextAccessor();
             services.AddSingleton<HttpClient>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("BlazorClient", bulider => {
+                    bulider.WithOrigins("https://localhost:5001")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +98,7 @@ namespace ToDoList
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("BlazorClient");
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -94,6 +106,8 @@ namespace ToDoList
             {
                 endpoints.MapControllers();
             });
+
+           
         }
     }
 }
