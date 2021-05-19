@@ -13,8 +13,6 @@ namespace TodoList.Client.Pages
         string responseBody = string.Empty;
         [Inject]
         public IAccountManagementService _account { get; set; }
-        [Inject]
-        public ILocalStorageService _storage { get; set; }
 
         private async Task ValidateUser()
         {
@@ -23,12 +21,10 @@ namespace TodoList.Client.Pages
             try
             {
                 SuccesLogin tokenString = await _account.LoginAsync(loginModel);
-                await _storage.SetItemAsync("userToken", tokenString);
-                await _storage.GetItemAsync<SuccesLogin>("userToken");
+                if (tokenString != null) { responseBody = "Welcome  " + loginModel.Username; }
             }
             catch (Exception e)
             {
-
                 responseBody = e.Message;
             }
 

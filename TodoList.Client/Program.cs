@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using TodoList.Client.Helpers;
 using TodoList.Client.Services.AccountManagementServ;
 using TodoList.Client.Services.ApiClient;
 
@@ -27,7 +28,7 @@ namespace TodoList.Client
 
             builder.Services.AddScoped<IAccountManagementService, AccountManagementService>();
             builder.Services.AddScoped<IApiClient, ApiClient>();
-            // builder.Services.AddScoped<IHttpClientFactory, HttpClientService>();
+            builder.Services.AddScoped<ILocalStorage, LocalStorage>();
             await builder.Build().RunAsync();
         }
     }
