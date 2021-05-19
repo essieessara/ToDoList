@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
-using ToDoList.Exceptions.UserExceptions;
 using ToDoList.Helpers;
 using ToDoList.Services.AccountMangmentService;
 using ToDoList.Services.UserServices;
@@ -45,7 +44,7 @@ namespace ToDoList.Controllers
             {
                 var user = await _service.ResetPasswordAsync(model);
                 return Ok(user);
-            });  
+            });
         [Authorize]
         [HttpPost("Logout")]
         public async Task<ActionResult> Logout()

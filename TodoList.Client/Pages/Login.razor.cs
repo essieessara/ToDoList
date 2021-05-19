@@ -16,9 +16,6 @@ namespace TodoList.Client.Pages
         [Inject]
         public ILocalStorageService _storage { get; set; }
 
-        //public Login(IAccountManagementService account)
-        //    => _account = account;
-
         private async Task ValidateUser()
         {
 
@@ -34,39 +31,6 @@ namespace TodoList.Client.Pages
 
                 responseBody = e.Message;
             }
-            //finally
-            //{
-            //    this.StateHasChanged();
-            //}
-
-            //try
-            //{
-            //    string serializedUser = JsonConvert.SerializeObject(loginModel);
-
-
-            //    HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-            //    httpRequestMessage.Method = new HttpMethod("POST");
-            //    httpRequestMessage.RequestUri = new Uri("./Account/Login");
-            //    httpRequestMessage.Content = new StringContent(serializedUser);
-            //    httpRequestMessage.Content.Headers.ContentType
-            //        = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-
-            //    var response = await Http.SendAsync(httpRequestMessage);
-            //    response.EnsureSuccessStatusCode();
-            //    responseBody = await response.Content.ReadAsStringAsync();
-
-            //}
-            //catch (Exception)
-            //{
-
-            //    responseBody = "something went wrong !";
-            //}
-            //finally
-            //{
-            //    this.StateHasChanged();
-            //}
-
-
 
         }
 

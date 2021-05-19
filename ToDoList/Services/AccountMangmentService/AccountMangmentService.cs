@@ -9,7 +9,7 @@ using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
 using ToDoList.Services.ToDoServices;
-using ToDoList.Services.UserServices;  
+using ToDoList.Services.UserServices;
 
 namespace ToDoList.Services.AccountMangmentService
 {

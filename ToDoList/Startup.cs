@@ -75,7 +75,8 @@ namespace ToDoList
 
             services.AddCors(options =>
             {
-                options.AddPolicy("BlazorClient", bulider => {
+                options.AddPolicy("BlazorClient", bulider =>
+                {
                     bulider.WithOrigins("https://localhost:5001")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
@@ -106,7 +107,7 @@ namespace ToDoList
                 endpoints.MapControllers();
             });
 
-           
+
         }
     }
 }
