@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
 using ToDoList.Exceptions.UserExceptions;
 using ToDoList.Helpers;
-using ToDoList.Models.UserModels;
 using ToDoList.Services.AccountMangmentService;
 using ToDoList.Services.UserServices;
 

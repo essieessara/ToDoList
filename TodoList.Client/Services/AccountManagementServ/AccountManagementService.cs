@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
 using Todolist.Shared.Models.UserModels;
-using TodoList.Client.Services.HttpClientServ;
+using TodoList.Client.Services.ApiClient;
 
 namespace TodoList.Client.Services.AccountManagementServ
 {
     public class AccountManagementService : IAccountManagementService
     {
-        private readonly IHttpClientService _httpClient;
-        public AccountManagementService(IHttpClientService httpClient)
+        private readonly IApiClient _httpClient;
+        public AccountManagementService(IApiClient httpClient)
            => _httpClient = httpClient;
 
-        public async Task<T> LoginAsync<T>(string URL, object Data)
+        public async Task<SuccesLogin> LoginAsync(LoginUserModel model)
         {
-            var result = await _httpClient.PostAsync<T>(URL, Data);
+            SuccesLogin result = await _httpClient.PostAsync<SuccesLogin>("Account/Login", model);
             return result;
         }
     }

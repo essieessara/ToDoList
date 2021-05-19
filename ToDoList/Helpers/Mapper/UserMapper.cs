@@ -1,6 +1,7 @@
-﻿using ToDoList.Database;
+﻿using Todolist.Shared.Models.UserModels;
+using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
-using ToDoList.Models.UserModels;
+
 
 namespace ToDoList.Helpers.Mapper
 {

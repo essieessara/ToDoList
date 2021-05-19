@@ -1,13 +1,11 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-
+using TodoList.Client.Services.AccountManagementServ;
+using TodoList.Client.Services.ApiClient;
 
 namespace TodoList.Client
 {
@@ -18,12 +16,18 @@ namespace TodoList.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient
+            builder.Services.AddHttpClient("backEnd", confing =>
             {
-                BaseAddress = new Uri ("https://localhost:44325/api/")
-                                            
+                confing.BaseAddress = new Uri("https://localhost:44325/api/");
+                confing.DefaultRequestHeaders.Clear();
+                confing.DefaultRequestHeaders.Add("Accept", "*/*");
+                confing.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
+            builder.Services.AddBlazoredLocalStorage();
 
+            builder.Services.AddScoped<IAccountManagementService, AccountManagementService>();
+            builder.Services.AddScoped<IApiClient, ApiClient>();
+            // builder.Services.AddScoped<IHttpClientFactory, HttpClientService>();
             await builder.Build().RunAsync();
         }
     }

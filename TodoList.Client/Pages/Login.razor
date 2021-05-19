@@ -1,12 +1,11 @@
 ﻿
 @page "/Login"
-
 <EditForm Model="loginModel" OnValidSubmit="@ValidateUser">
     <div>
         <br /><br /><br /><br /><br />
     </div>
     <div>
-        <h3 style="font-weight:bold; color:red">ToDo Login</h3>
+        <h3 style="font-weight:bold; color:darkslategrey">ToDo Login</h3>
     </div>
     <div>
         <br />
@@ -29,51 +28,3 @@
         @responseBody
     </div>
 </EditForm>
-
-@code {
-
-    private LoginUserModel loginModel { get; set;} = new();
-    string responseBody = string.Empty;
-    private IAccountManagementService _account;
-
-    protected override Task OnInitializedAsync()
-    {
-        //user = new Models.User();
-        return base.OnInitializedAsync();
-    }
-
-    private async Task  ValidateUser()
-    {
-        await _account.LoginAsync<Task>("https://localhost:44325/api/Account/Login", loginModel);
-
-        //try
-        //{
-        //    string serializedUser = JsonConvert.SerializeObject(loginModel);
-
-
-        //    HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-        //    httpRequestMessage.Method = new HttpMethod("POST");
-        //    httpRequestMessage.RequestUri = new Uri("./Account/Login");
-        //    httpRequestMessage.Content = new StringContent(serializedUser);
-        //    httpRequestMessage.Content.Headers.ContentType
-        //        = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-
-        //    var response = await Http.SendAsync(httpRequestMessage);
-        //    response.EnsureSuccessStatusCode();
-        //    responseBody = await response.Content.ReadAsStringAsync();
-
-        //}
-        //catch (Exception)
-        //{
-
-        //    responseBody = "smothing went wrong !";
-        //}
-        //finally
-        //{
-        //    this.StateHasChanged();
-        //}
-
-
-
-    }
-}

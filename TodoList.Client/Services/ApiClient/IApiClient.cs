@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace TodoList.Client.Services.HttpClientServ
+namespace TodoList.Client.Services.ApiClient
 {
-    public interface IHttpClientService
+    public interface IApiClient
     {
         Task<T> PostAsync<T>(string URL, object Data);
     }

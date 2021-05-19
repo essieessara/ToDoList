@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
 using ToDoList.Helpers.Mapper;
 using ToDoList.Models.ResponseModels;
-using ToDoList.Models.UserModels;
+
 using ToDoList.Repositories.UserRepos;
 
 namespace ToDoList.Services.UserServices

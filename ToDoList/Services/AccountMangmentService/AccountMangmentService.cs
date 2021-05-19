@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
 using ToDoList.Models.ResponseModels;
-using ToDoList.Models.UserModels;
 using ToDoList.Services.ToDoServices;
 using ToDoList.Services.UserServices;  
 
@@ -52,7 +52,7 @@ namespace ToDoList.Services.AccountMangmentService
 
           });
 
-        public Task<string> LoginUserAsync(LoginUserModel toDoUser)
+        public Task<SuccesLogin> LoginUserAsync(LoginUserModel toDoUser)
              => TryCatch(async () =>
              {
                  UserEntity todoUser = await _userService.CheckUserAsync(toDoUser);
@@ -73,7 +73,7 @@ namespace ToDoList.Services.AccountMangmentService
 
                  System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler tokenHandler = new();
                  SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-                 string tokenString = tokenHandler.WriteToken(token);
+                 SuccesLogin tokenString = new SuccesLogin { TokenString = tokenHandler.WriteToken(token) };
                  return tokenString;
 
              });

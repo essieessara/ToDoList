@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
+using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
 using ToDoList.Exceptions.UserExceptions;
-using ToDoList.Models.UserModels;
+
 
 namespace ToDoList.Services.UserServices
 {

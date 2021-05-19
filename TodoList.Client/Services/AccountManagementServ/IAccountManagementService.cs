@@ -5,6 +5,6 @@ namespace TodoList.Client.Services.AccountManagementServ
 {
     public interface IAccountManagementService
     {
-        Task<T> LoginAsync<T>(string URL, object Data);
+        Task<SuccesLogin> LoginAsync(LoginUserModel Data);
     }
 }
