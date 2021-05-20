@@ -16,7 +16,7 @@ namespace TodoList.Client.Services.AccountManagementServ
         private readonly ILocalStorage _localstorage;
         string responseBody = string.Empty;
         public AccountManagementService(IApiClient httpClient, ILocalStorage localstorage)
-        { 
+        {
             _httpClient = httpClient;
             _localstorage = localstorage;
         }
@@ -26,7 +26,7 @@ namespace TodoList.Client.Services.AccountManagementServ
             try
             {
                 SuccesLogin result = await _httpClient.PostAsync<SuccesLogin>("Account/Login", model);
-                
+
                 await _localstorage.AddLocalStorageAsync("userToken", result);
 
 
@@ -40,7 +40,6 @@ namespace TodoList.Client.Services.AccountManagementServ
                    .Select(c => c.Value).FirstOrDefault();
                 var fullname = decodedValue.Claims.Where(c => c.Type == "given_name")
                    .Select(c => c.Value).FirstOrDefault();
-                Console.WriteLine("Welcome " + username);
                 return result;
             }
             catch (Exception e)
@@ -48,7 +47,7 @@ namespace TodoList.Client.Services.AccountManagementServ
                 responseBody = e.Message;
                 throw new Exception(responseBody);
             }
-            
+
         }
     }
 }

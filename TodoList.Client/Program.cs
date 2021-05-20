@@ -1,9 +1,11 @@
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using TodoList.Client.Auth;
 using TodoList.Client.Helpers;
 using TodoList.Client.Services.AccountManagementServ;
 using TodoList.Client.Services.ApiClient;
@@ -24,7 +26,10 @@ namespace TodoList.Client
                 confing.DefaultRequestHeaders.Add("Accept", "*/*");
                 confing.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
+
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
             builder.Services.AddScoped<IAccountManagementService, AccountManagementService>();
             builder.Services.AddScoped<IApiClient, ApiClient>();
