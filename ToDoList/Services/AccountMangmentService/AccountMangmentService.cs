@@ -63,7 +63,8 @@ namespace ToDoList.Services.AccountMangmentService
 
                  List<Claim> claims = new List<Claim>();
                  claims.Add(new Claim(ClaimTypes.Sid, todoUser.UserID.ToString()));
-                 claims.Add(new Claim(ClaimTypes.GivenName, todoUser.Username));
+                 claims.Add(new Claim(ClaimTypes.Name, todoUser.Username));
+                 claims.Add(new Claim(ClaimTypes.GivenName, todoUser.FullName));
 
                  tokenDescriptor.Subject = new ClaimsIdentity(claims);
 

@@ -16,7 +16,7 @@ namespace TodoList.Client.Helpers
         public ValueTask AddLocalStorageAsync<T>(string key, T Data)
         => _localStorageService.SetItemAsync(key, Data);
 
-        public ValueTask<T> CallLocalStorage<T>(string Key)
+        public ValueTask<T> CallLocalStorageAsync<T>(string Key)
             => _localStorageService.GetItemAsync<T>(Key);
     }
 }

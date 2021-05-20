@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoList.Server", "ToDoList\ToDoList.Server.csproj", "{B564C5BA-ED40-4B71-B5E8-A846404450A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todolist.Shared", "Todolist.Shared\Todolist.Shared.csproj", "{912577BA-3305-4767-BC4F-A3419C770997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todolist.Shared", "Todolist.Shared\Todolist.Shared.csproj", "{912577BA-3305-4767-BC4F-A3419C770997}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Client", "TodoList.Client\TodoList.Client.csproj", "{B5B8055B-260E-41C4-B943-27C201E8FC7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Client", "TodoList.Client\TodoList.Client.csproj", "{B5B8055B-260E-41C4-B943-27C201E8FC7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

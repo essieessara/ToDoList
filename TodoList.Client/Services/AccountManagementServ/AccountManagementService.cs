@@ -25,7 +25,6 @@ namespace TodoList.Client.Services.AccountManagementServ
                 SuccesLogin result = await _httpClient.PostAsync<SuccesLogin>("Account/Login", model);
                 
                 await _localstorage.AddLocalStorageAsync("userToken", result);
-                await _localstorage.CallLocalStorage<SuccesLogin>("userToken");
                 return result;
             }
             catch (Exception e)
