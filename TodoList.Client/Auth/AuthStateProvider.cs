@@ -22,7 +22,11 @@ namespace TodoList.Client.Auth
         {
             await Task.Delay(1500);
             var token = await _storage.CallLocalStorageAsync<SuccesLogin>("userToken");
-            if (string.IsNullOrWhiteSpace(token.TokenString))
+            if (token is null)
+            {
+                return _anonymous;
+            }
+            if (string.IsNullOrWhiteSpace(token.TokenString) )
             {
                 return await Task.FromResult(_anonymous);
             }

@@ -35,6 +35,25 @@ namespace TodoList.Client.Services.ApiClient
                 throw new Exception(response);
             }
         }
+        public async Task<string> PostAsync (string URL, object Data)
+        {
+            string response = string.Empty;
+            try
+            {
 
+                string serializedUser = JsonConvert.SerializeObject(Data);
+                StringContent content = new StringContent(serializedUser,
+                    System.Text.Encoding.UTF8, "application/json");
+                var result = await _httpClient.PostAsync(URL, content);
+                result.EnsureSuccessStatusCode();
+                response = result.Content.ReadAsStringAsync().Result;
+                return response;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(response);
+            }
+        }
     }
 }

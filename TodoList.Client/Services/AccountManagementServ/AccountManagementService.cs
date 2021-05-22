@@ -49,5 +49,19 @@ namespace TodoList.Client.Services.AccountManagementServ
             }
 
         }
+        public async Task <string> SignupAsync(RegisterUserModel model)
+        {
+            try
+            {
+                string result = await _httpClient.PostAsync("Account/Register", model);           
+                return result;
+            }
+            catch (Exception e)
+            {
+                responseBody = e.Message;
+                throw new Exception(responseBody);
+            }
+
+        }
     }
 }
