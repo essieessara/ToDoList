@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Todolist.Shared.Models.UserModels;
 using ToDoList.Exceptions;
 
 namespace ToDoList.Helpers
@@ -8,7 +9,7 @@ namespace ToDoList.Helpers
     public class ToDoControllerBase : ControllerBase
     {
         protected delegate Task<ActionResult> Func();
-        protected delegate Task<ActionResult<T>> Func<T>();
+        protected delegate Task<ActionResult<ResponseModel>> Func<T>();
 
 
 
@@ -27,7 +28,7 @@ namespace ToDoList.Helpers
                 return BadRequest(e.Message);
             }
         }
-        protected async Task<ActionResult<T>> TryCatch<T>(Func<T> model)
+        protected async Task<ActionResult<ResponseModel>> TryCatch<T>(Func<ResponseModel> model)
         {
             try
             {
@@ -35,7 +36,7 @@ namespace ToDoList.Helpers
             }
             catch (ToDoExceptions e)
             {
-                return NotFound(new ResponseError(e.Errors));
+                return NotFound(new ErrorResponseModel(e.Errors));
             }
             catch (Exception e)
             {

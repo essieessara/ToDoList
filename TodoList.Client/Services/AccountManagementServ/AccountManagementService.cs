@@ -49,11 +49,11 @@ namespace TodoList.Client.Services.AccountManagementServ
             }
 
         }
-        public async Task <string> SignupAsync(RegisterUserModel model)
+        public async Task <ResponseModel> SignupAsync(RegisterUserModel model)
         {
             try
             {
-                string result = await _httpClient.PostAsync("Account/Register", model);           
+                ResponseModel result = await _httpClient.PostAsync<ResponseModel>("Account/Register", model);           
                 return result;
             }
             catch (Exception e)
@@ -63,5 +63,34 @@ namespace TodoList.Client.Services.AccountManagementServ
             }
 
         }
+        public async Task<ResponseModel> ResetPasswordAsync(ResetPasswordModel model)
+        {
+            try
+            {
+                var result = await _httpClient.GetAsync("Account/Login");
+                var loggedUser = await _localstorage.CallLocalStorageAsync<SuccesLogin>("userToken");
+                var handler = new JwtSecurityTokenHandler();
+                var decodedValue = handler.ReadJwtToken(loggedUser.TokenString);
+
+                var sid = decodedValue.Claims.Where(c => c.Type == ClaimTypes.Sid)
+                   .Select(c => c.Value).FirstOrDefault();
+                if (sid != null)
+                {
+                    var newPass = await _httpClient.PutAsync<ResponseModel>("Account/ResetPassword", model);
+                    return newPass;
+                }
+
+                else
+                    throw new Exception(responseBody);
+                
+            }
+            catch (Exception e)
+            {
+                responseBody = e.Message;
+                throw new Exception(responseBody);
+            }
+
+        }
+
     }
 }

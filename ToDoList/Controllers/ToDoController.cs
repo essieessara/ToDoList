@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Todolist.Shared.Models.UserModels;
 using ToDoList.Database;
 using ToDoList.Helpers;
 using ToDoList.Models.ResponseModels;
@@ -24,16 +25,17 @@ namespace ToDoList.Controllers
             _data = data;
         }
         [HttpGet("GetAllMyTodo")]
-        public Task<ActionResult<IEnumerable<ToDoItemtEntity>>> GetUserToDoListByIdAsync()
+        public Task<ActionResult<ResponseModel>> GetUserToDoListByIdAsync()
                     => TryCatch<IEnumerable<ToDoItemtEntity>>(async () =>
                     {
-
                         var ToDo = await _service.GetUserToDoListByIdAsync();
-                        return Ok(ToDo);
+                        SucessResponseModel<IEnumerable<ToDoItemtEntity>> response = new SucessResponseModel<IEnumerable<ToDoItemtEntity>>();
+                        response.Data = ToDo;
+                        return Ok(response);
 
                     });
         [HttpGet("GetMytodo/{id}")]
-        public Task<ActionResult<ToDoItemtEntity>> GetListsAsync(int id)
+        public Task<ActionResult<ResponseModel>> GetListsAsync(int id)
            => TryCatch<ToDoItemtEntity>(async () =>
            {
                var output = await _service.GetByIdAsync(id);
@@ -54,7 +56,7 @@ namespace ToDoList.Controllers
                  return Ok(Item);
              });
         [HttpPost("CreateToDo")]
-        public Task<ActionResult<ToDoItemResponseModel>> PostToDodbAsync(CreateTodoItemModel toDodb)
+        public Task<ActionResult<ResponseModel>> PostToDodbAsync(CreateTodoItemModel toDodb)
                => TryCatch<ToDoItemResponseModel>(async () =>
                {
                    return Ok(await _data.CreateAsync(toDodb));

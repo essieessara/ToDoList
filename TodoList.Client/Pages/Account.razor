@@ -1,0 +1,40 @@
+﻿@page "/UserAccount"
+
+<h3>Account Management</h3>
+<AuthorizeView>
+    <Authorized>
+        <div class="card">
+            <div class="card-header">
+                The user: @context.User.FindFirst("given_name").Value is authorized
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <button class="btn btn-primary col-6" @onclick="NavigateToResetPassword" aria-hidden="true">Reset Password</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary col-6" @onclick="NavigateToLogout" aria-hidden="true">Logout</button>
+                </div>
+            </div>
+
+        </div>
+
+    </Authorized>
+    <NotAuthorized>
+        <div class="card">
+            <div class="card-header">
+                The User is not authorized
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <button class="btn btn-danger col-6" @onclick="NavigateToRegister" aria-hidden="true">Register</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary col-6" @onclick="NavigateToLogin" aria-hidden="true">Login</button>
+                </div>
+            </div>
+
+        </div>
+
+
+    </NotAuthorized>
+</AuthorizeView>

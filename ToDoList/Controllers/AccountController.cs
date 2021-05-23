@@ -26,10 +26,13 @@ namespace ToDoList.Controllers
         }
 
         [HttpPost("Register")]
-        public Task<ActionResult<UserEntity>> RegisterUserAsync(RegisterUserModel User)
+        public Task<ActionResult<ResponseModel>> RegisterUserAsync(RegisterUserModel User)
               => TryCatch<UserEntity>(async () =>
               {
-                  return Ok(await _service.RegisterUserAsync(User));
+                  var user = await _service.RegisterUserAsync(User);
+                  SucessResponseModel<UserEntity> response = new SucessResponseModel<UserEntity>();
+                  response.Data = user;
+                  return Ok(response);
               });
         [HttpPost("Login")]
         public Task<ActionResult> LoginUserAsync(LoginUserModel User)
@@ -43,7 +46,9 @@ namespace ToDoList.Controllers
             => TryCatch(async () =>
             {
                 var user = await _service.ResetPasswordAsync(model);
-                return Ok(user);
+                SucessResponseModel<UserEntity> response = new SucessResponseModel<UserEntity>();
+                response.Data = user;
+                return Ok(response);
             });
         [Authorize]
         [HttpPost("Logout")]

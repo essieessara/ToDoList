@@ -120,7 +120,7 @@ namespace ToDoList.Services.UserServices
             => TryCatch(async () =>
             {
                 Validateauthentication();
-                Claim userClaim = _loggedUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName);
+                Claim userClaim = _loggedUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
                 ValidateLogin(userClaim);
 
                 string username = userClaim.Value;

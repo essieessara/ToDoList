@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,5 +19,9 @@ namespace ToDoList.Database
         [Key]
         public int UserID { get; set; }
 
+        public static implicit operator ToDoItemtEntity(List<ToDoItemtEntity> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
