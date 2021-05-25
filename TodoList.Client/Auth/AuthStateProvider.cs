@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Todolist.Shared.Models.UserModels;
@@ -22,11 +24,12 @@ namespace TodoList.Client.Auth
         {
             await Task.Delay(1500);
             var token = await _storage.CallLocalStorageAsync<SuccesLogin>("userToken");
+
             if (token is null)
             {
                 return _anonymous;
             }
-            if (string.IsNullOrWhiteSpace(token.TokenString) )
+            if (string.IsNullOrWhiteSpace(token.TokenString))
             {
                 return await Task.FromResult(_anonymous);
             }
@@ -34,8 +37,14 @@ namespace TodoList.Client.Auth
             {
                 var handler = new JwtSecurityTokenHandler();
                 var decodedValue = handler.ReadJwtToken(token.TokenString);
-                return
-                    new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(decodedValue.Claims, "AuthType")));
+                if ((decodedValue.ValidTo > DateTime.UtcNow) && (decodedValue.ValidFrom < DateTime.UtcNow))
+                {
+                    return
+                     new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(decodedValue.Claims, "AuthType")));
+                }
+                else
+                    return await Task.FromResult(_anonymous);
+
             }
 
         }
